@@ -3,137 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti</title>
+    <title>CS Student Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <nav>
-        <div class="logo font-mono">&lt;AS/&gt;</div> <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="resume.pdf" target="_blank" class="btn-resume">Resume</a></li>
-        </ul>
-    </nav>
-
-    <section id="hero">
-        <div class="hero-content">
-            <p class="mono-accent">Hi, my name is</p>
-            <h1>Avinash Sangisetti.</h1>
-            <h2>I build things for the web & mobile.</h2>
-            <p class="hero-text">
-                I'm a Computer Science student at KSIT specializing in software development and artificial intelligence. I'm currently looking for internships.
-            </p>
-            <div class="social-links">
-                <a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://linkedin.com/in/yourusername" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="mailto:youremail@example.com"><i class="fas fa-envelope"></i></a>
-            </div>
+    <header class="fade-in">
+        <a href="#projects" class="start-link">SEE MY WORK ↗</a>
+        <div class="header-name">Avinash Sangisetti</div>
+        <div class="menu-icon">
+            <span></span><span></span><span></span><span></span>
         </div>
-    </section>
+    </header>
 
-    <section id="skills">
-        <h2 class="numbered-heading">Technical Skills</h2>
-        <div class="skills-grid">
-            <div class="skill-category">
-                <h3>Languages</h3>
-                <ul>
-                    <li>Python</li>
-                    <li>Java</li>
-                    <li>C++</li>
-                    <li>JavaScript (ES6+)</li>
-                    <li>SQL</li>
-                </ul>
-            </div>
-            <div class="skill-category">
-                <h3>Frameworks & Libraries</h3>
-                <ul>
-                    <li>React.js</li>
-                    <li>Node.js</li>
-                    <li>Flask</li>
-                    <li>Pandas/NumPy</li>
-                </ul>
-            </div>
-            <div class="skill-category">
-                <h3>Tools & Platforms</h3>
-                <ul>
-                    <li>Git & GitHub</li>
-                    <li>Docker</li>
-                    <li>AWS (EC2, S3)</li>
-                    <li>Linux/Unix</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+    <main class="hero">
+        <div class="big-text-layer layer-1 slide-up">COMPUTER</div>
+        <div class="big-text-layer layer-2 slide-up delay-1">SCIENCE</div>
+        <div class="big-text-layer layer-3 slide-up delay-2">PORTFOLIO</div>
 
-    <section id="projects">
-        <h2 class="numbered-heading">Some Things I've Built</h2>
-        <div class="project-grid">
+        <div class="content-wrapper">
+            <div class="text-block left fade-in delay-3">
+                <h3>AS A CS STUDENT, I FOCUS ON BUILDING EFFICIENT AND SCALABLE SOFTWARE SOLUTIONS.</h3>
+                <p>AVINASH'S DEVELOPMENT EXPERTISE DELIVERED.</p>
+                <a href="mailto:your.email@example.com" class="cta-button">Let's talk <span>⟶</span></a>
+            </div>
 
-            <div class="project-card">
-                <div class="project-content">
-                    <h3 class="project-title">AI Chatbot Assistant</h3>
-                    <div class="project-description">
-                        <p>A chatbot built using Python and OpenAI API that helps summarize lecture notes. Implemented a vector database for context retrieval.</p>
-                    </div>
-                    <ul class="project-tech-list font-mono">
-                        <li>Python</li>
-                        <li>OpenAI API</li>
-                        <li>Pinecone</li>
-                        <li>Streamlit</li>
-                    </ul>
-                    <div class="project-links">
-                        <a href="https://github.com/yourusername/project1" target="_blank"><i class="fab fa-github"></i> Code</a>
-                        <a href="https://yourdemo.com" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                    </div>
+            <div class="image-container fade-in delay-2">
+                <img src="PFP.jpeg" alt="Profile Photo" class="profile-photo">
+            </div>
+
+            <div class="text-block right fade-in delay-3">
+                <p>A TECHNICAL PLATFORM DESIGNED TO SHOWCASE INNOVATIVE PROJECTS AND CODING SKILLS.</p>
+                <p>EXCEPTIONAL PROBLEM SOLVING AND USER EXPERIENCE.</p>
+                <div class="tags">
+                    <span>FULL STACK</span>
+                    <span>2024</span>
                 </div>
             </div>
-
-            <div class="project-card">
-                <div class="project-content">
-                    <h3 class="project-title">Student Task Tracker</h3>
-                    <div class="project-description">
-                        <p>A full-stack web app for managing assignments. Uses React frontend and a Node/Express backend with a MongoDB database. User authentication included.</p>
-                    </div>
-                    <ul class="project-tech-list font-mono">
-                        <li>React</li>
-                        <li>Node.js</li>
-                        <li>MongoDB</li>
-                        <li>JWT Auth</li>
-                    </ul>
-                    <div class="project-links">
-                         <a href="https://github.com/yourusername/project2" target="_blank"><i class="fab fa-github"></i> Code</a>
-                        </div>
-                </div>
-            </div>
-
-             <div class="project-card">
-                <div class="project-content">
-                    <h3 class="project-title">Data Structures Visualizer</h3>
-                    <div class="project-description">
-                        <p>An interactive tool visualizing sorting algorithms like Merge Sort and Quick Sort. Built entirely in vanilla JavaScript to understand DOM manipulation.</p>
-                    </div>
-                    <ul class="project-tech-list font-mono">
-                        <li>HTML5</li>
-                        <li>CSS3</li>
-                        <li>Vanilla JS</li>
-                    </ul>
-                    <div class="project-links">
-                         <a href="https://github.com/yourusername/project3" target="_blank"><i class="fab fa-github"></i> Code</a>
-                         <a href="#" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                    </div>
-                </div>
+             <div class="circle-number rotate-in delay-3">
+                <span>CS</span>
             </div>
         </div>
-    </section>
+    </main>
 
-    <footer>
-        <p class="font-mono">Designed & Built by Avinash Sangisetti</p>
+    <footer class="marquee-banner">
+        <div class="marquee-content">
+            <span>SOFTWARE ENGINEERING ✦ WEB DEVELOPMENT ✦ ALGORITHMS & DATA STRUCTURES ✦ ARTIFICIAL INTELLIGENCE ✦ SOFTWARE ENGINEERING ✦ WEB DEVELOPMENT ✦ ALGORITHMS & DATA STRUCTURES ✦ ARTIFICIAL INTELLIGENCE ✦</span>
+        </div>
     </footer>
 
 </body>
-
 </html>
-
