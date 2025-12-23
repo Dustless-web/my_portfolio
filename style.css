@@ -1,207 +1,88 @@
-/* === CSS VARIABLES & GLOBAL RESET === */
-:root {
-    --bg-color: #2b3324; /* Dark Olive */
-    --text-color: #e6e1c5; /* Cream/Off-white */
-    --accent-color: #6d4c41; /* Muted Brown */
-    --font-display: 'Anton', sans-serif;
-    --font-body: 'Inter', sans-serif;
-}
+/* === RESPONSIVE DESIGN (MOBILE FIX) === */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-body);
-    overflow-x: hidden;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-a { text-decoration: none; color: inherit; }
-
-/* === HEADER === */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-    font-size: 14px;
-    letter-spacing: 1px;
-    z-index: 10;
-    position: relative;
-}
-
-.start-link, .header-name { font-weight: 700; text-transform: uppercase; }
-.menu-icon { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-.menu-icon span { width: 6px; height: 6px; background-color: var(--text-color); border-radius: 50%; }
-
-/* === MAIN HERO SECTION === */
-.hero {
-    flex-grow: 1;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-/* Background Typography Layers */
-.big-text-layer {
-    position: absolute;
-    font-family: var(--font-display);
-    font-size: clamp(80px, 18vw, 250px);
-    line-height: 0.85;
-    text-transform: uppercase;
-    color: rgba(230, 225, 197, 0.15); /* Semi-transparent cream */
-    width: 100%;
-    text-align: center;
-    white-space: nowrap;
-    z-index: 1;
-}
-.layer-1 { top: 10%; }
-.layer-2 { top: 35%; color: rgba(109, 76, 65, 0.4); /* Brown layer */ }
-.layer-3 { top: 60%; }
-
-/* Content Layout */
-.content-wrapper {
-    position: relative;
-    z-index: 5;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1400px;
-    padding: 0 40px;
-    height: 100%;
-}
-
-.text-block {
-    max-width: 300px;
-    text-transform: uppercase;
-    font-size: 14px;
-    line-height: 1.5;
-}
-.text-block h3 { font-weight: 700; margin-bottom: 15px; color: var(--text-color); }
-.text-block p { margin-bottom: 20px; color: rgba(230, 225, 197, 0.8); }
-
-.cta-button {
-    display: inline-block;
-    padding: 12px 24px;
-    border: 2px solid var(--text-color);
-    text-transform: uppercase;
-    font-weight: 700;
-    transition: all 0.3s ease;
-}
-.cta-button span { margin-left: 10px; }
-.cta-button:hover { background-color: var(--text-color); color: var(--bg-color); }
-
-.tags span {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: rgba(230, 225, 197, 0.2);
-    border-radius: 20px;
-    margin-right: 10px;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-/* Profile Photo */
-.image-container {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 100%;
-    margin: 0 20px;
-}
-.profile-photo {
-    max-height: 85vh;
-    width: auto;
-    object-fit: contain;
-    filter: contrast(1.1) sepia(0.2); /* Retro photo filter */
-    mask-image: linear-gradient(to bottom, black 80%, transparent 100%); /* Fade out bottom */
-}
-
-/* Circular Element */
-.circle-number {
-    position: absolute;
-    bottom: 15%;
-    right: 25%;
-    width: 150px;
-    height: 150px;
-    background-color: var(--text-color);
-    color: var(--bg-color);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: var(--font-display);
-    font-size: 60px;
-    border: 5px solid var(--bg-color);
-    box-shadow: 0 0 0 5px var(--text-color);
-}
-
-/* === MARQUEE BANNER === */
-.marquee-banner {
-    background-color: #1a2016;
-    padding: 15px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    z-index: 10;
-}
-.marquee-content {
-    display: inline-block;
-    font-family: var(--font-display);
-    text-transform: uppercase;
-    font-size: 20px;
-    letter-spacing: 2px;
-    animation: scroll-left 30s linear infinite;
-}
-
-/* === ANIMATIONS === */
-/* Keyframes */
-@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slide-up {
-    from { opacity: 0; transform: translateY(50px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes rotate-in {
-    from { opacity: 0; transform: rotate(-90deg) scale(0.8); }
-    to { opacity: 1; transform: rotate(0) scale(1); }
-}
-@keyframes scroll-left {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-
-/* Animation Classes */
-.fade-in { animation: fade-in 1s ease forwards; opacity: 0; }
-.slide-up { animation: slide-up 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; opacity: 0; }
-.rotate-in { animation: rotate-in 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; opacity: 0; }
-
-/* Delays for staggered effect */
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.4s; }
-.delay-3 { animation-delay: 0.6s; }
-
-/* === RESPONSIVE DESIGN === */
+/* Tablets and small laptops */
 @media (max-width: 1024px) {
-    .big-text-layer { font-size: 150px; }
-    .content-wrapper { flex-direction: column; justify-content: center; padding-bottom: 60px;}
-    .image-container { order: 1; margin: 20px 0; max-height: 50vh; }
-    .profile-photo { max-height: 50vh; }
-    .text-block { order: 2; text-align: center; max-width: 100%; margin-bottom: 30px;}
-    .circle-number { display: none; } /* Hide circle on smaller screens */
+    .big-text-layer { font-size: 15vw; opacity: 0.1; } /* Fade out background text */
+    
+    .content-wrapper { 
+        flex-direction: column; 
+        justify-content: flex-start; 
+        padding-top: 40px;
+    }
+
+    .image-container { 
+        order: 2; /* Image in middle */
+        margin: 20px 0; 
+        height: 40vh; /* Limit image height */
+        align-items: center;
+    }
+    
+    .profile-photo { 
+        max-height: 100%; 
+        width: auto;
+    }
+
+    .text-block { 
+        order: 1; /* Text on top */
+        text-align: center; 
+        max-width: 80%; 
+        margin: 0 auto 20px auto;
+    }
+    
+    .text-block.right {
+        order: 3; /* Second text block at bottom */
+        margin-top: 20px;
+    }
+
+    .circle-number { 
+        width: 100px; height: 100px; font-size: 40px; 
+        bottom: 5%; right: 5%; /* Move circle to corner */
+    }
 }
+
+/* Phones (Vertical Layout) */
 @media (max-width: 768px) {
-    header { padding: 20px; }
-    .big-text-layer { font-size: 100px; line-height: 1;}
-    .layer-1 { top: 15%; } .layer-2 { top: 35%; } .layer-3 { top: 55%; }
+    header { 
+        padding: 15px 20px; 
+    }
+    
+    /* Make the massive background text vertical and subtle */
+    .big-text-layer { 
+        font-size: 18vw; 
+        line-height: 1.2;
+        text-align: center;
+        width: 100%;
+        left: 0;
+    }
+    .layer-1 { top: 10%; }
+    .layer-2 { top: 25%; }
+    .layer-3 { top: 40%; }
+
+    /* Content adjustments */
+    .content-wrapper { padding: 0 20px; }
+
+    .text-block { 
+        max-width: 100%; 
+        background: rgba(43, 51, 36, 0.85); /* Semi-transparent bg for readability */
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid rgba(230, 225, 197, 0.1);
+        z-index: 10;
+    }
+    
+    /* Image adjustments */
+    .image-container {
+        height: 35vh; /* Smaller image on phone */
+        margin: 10px 0;
+    }
+    
+    .cta-button {
+        width: 100%; /* Full width button for easier tapping */
+        text-align: center;
+    }
+
+    /* Hide the circle on very small screens to save space */
+    .circle-number { display: none; }
+    
+    .marquee-banner { font-size: 14px; }
 }
