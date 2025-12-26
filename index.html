@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti | AI Engineer</title>
+    <title>Avinash Sangisetti | AI Architect</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -16,17 +16,21 @@
 
     <div id="preloader">
         <div class="loader-content">
-            <div class="loader-text">INITIALIZING CORE...</div>
-            <div class="loader-progress">0%</div>
+            <div class="loader-text">INITIALIZING NEURAL LINK...</div>
+            <div class="loader-bar"><div class="bar-fill"></div></div>
         </div>
     </div>
 
     <div id="canvas-container"></div>
     <div class="grain-overlay"></div>
+    <div class="scroll-progress"></div>
 
     <nav class="fixed-nav">
-        <div class="nav-inner">
-            <div class="logo magnetic">AVINASH<span class="reg">®</span></div>
+        <div class="nav-left">
+            <div class="logo">AVINASH<span class="reg">®</span></div>
+            <div class="status-indicator"><span class="dot"></span> ONLINE</div>
+        </div>
+        <div class="nav-right">
             <div class="menu-btn magnetic" id="menu-toggle">MENU</div>
         </div>
     </nav>
@@ -34,70 +38,64 @@
     <div class="menu-overlay" id="menu-overlay">
         <div class="menu-links">
             <a href="#hero" class="m-link" onclick="toggleMenu()">01 / Home</a>
-            <a href="#journey" class="m-link" onclick="toggleMenu()">02 / Journey</a>
-            <a href="#work" class="m-link" onclick="toggleMenu()">03 / Work</a>
-            <a href="resume.pdf" target="_blank" class="m-link" onclick="toggleMenu()">04 / Resume</a>
-            <a href="#" class="m-link" onclick="toggleMenu(); openModal()">05 / Contact</a>
+            <a href="#philosophy" class="m-link" onclick="toggleMenu()">02 / Philosophy</a>
+            <a href="#work" class="m-link" onclick="toggleMenu()">03 / Works</a>
+            <a href="#arsenal" class="m-link" onclick="toggleMenu()">04 / Arsenal</a>
+            <a href="resume.pdf" target="_blank" class="m-link" onclick="toggleMenu()">05 / Resume</a>
         </div>
-        <div class="menu-close magnetic" onclick="toggleMenu()">CLOSE</div>
+        <div class="menu-footer">
+            <span>Bengaluru, IN</span>
+            <span>Est. 2023</span>
+        </div>
     </div>
 
     <main id="smooth-wrapper">
         
         <section id="hero" class="hero-section">
-            <div class="hero-container">
-                <div class="hero-text">
-                    <span class="label">AI ENGINEER // BENGALURU</span>
-                    <h1 class="scramble-text">Engineering <br> Intelligence.</h1>
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="hero-meta">
+                        <span>AI ENGINEER</span>
+                        <span>BENGALURU, INDIA</span>
+                    </div>
+                    <h1 class="reveal-text">Engineering <br> Intelligence.</h1>
                     <p class="reveal-text delay-1">
-                        I am <strong>Avinash</strong>. A Computer Science Undergraduate building the next generation of AI infrastructure. 
-                        Specializing in Generative Models, Distributed Systems, and Scalable Architecture.
+                        I am <strong>Avinash Sangisetti</strong>. A 20-year-old Computer Science Engineer from KSIT. 
+                        I bridge the gap between theoretical AI models and production-grade distributed systems.
                     </p>
                     <div class="hero-cta reveal-text delay-2">
                         <button class="btn-primary open-contact-btn magnetic">Initialize</button>
-                        <a href="resume.pdf" target="_blank" class="btn-text magnetic">Resume <i class="fas fa-arrow-right"></i></a>
+                        <a href="resume.pdf" target="_blank" class="btn-text magnetic">View Credentials <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 
                 <div class="hero-visual reveal-text delay-1">
                     <div class="glass-monolith">
-                        <img src="PFP.png" alt="Avinash" class="monolith-img">
-                        <div class="monolith-shine"></div>
-                        <div class="monolith-border"></div>
+                        <img src="pfp.png" alt="Avinash" class="monolith-img">
+                        <div class="monolith-overlay"></div>
+                        <div class="data-readout">
+                            <span>SCANNING...</span>
+                            <span>ID: AS-2003</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="journey" class="section-padding">
+        <section id="philosophy" class="section-padding">
             <div class="container">
-                <div class="section-header">
-                    <span class="section-num">01</span>
-                    <h2>The Timeline</h2>
-                </div>
-                
-                <div class="timeline-list">
-                    <div class="timeline-row spotlight-card">
-                        <div class="spotlight-overlay"></div>
-                        <div class="t-date">2023 — PRESENT</div>
-                        <div class="t-role">
-                            <h3>KS Institute of Technology (KSIT)</h3>
-                            <span>B.E. Computer Science & Engineering</span>
-                        </div>
-                        <div class="t-desc">
-                            Focusing on Data Structures, Algorithms, and Neural Network Architectures. Leading research initiatives in Generative AI.
-                        </div>
+                <div class="editorial-layout">
+                    <div class="ed-left">
+                        <span class="section-label">01 / PHILOSOPHY</span>
+                        <h2>Beyond Code.</h2>
                     </div>
-                    <div class="timeline-row spotlight-card">
-                        <div class="spotlight-overlay"></div>
-                        <div class="t-date">2024 — PRESENT</div>
-                        <div class="t-role">
-                            <h3>Freelance AI Architect</h3>
-                            <span>Full Stack & Systems Engineer</span>
-                        </div>
-                        <div class="t-desc">
-                            Developing bespoke automation pipelines and deployed applications. Bridging the gap between theoretical AI and production-grade software.
-                        </div>
+                    <div class="ed-right">
+                        <p class="lead">
+                            Software is no longer just about logic; it's about intuition. My approach combines rigorous system architecture with adaptive neural networks.
+                        </p>
+                        <p class="sub">
+                            Currently pursuing my B.E. at KS Institute of Technology (2023–Present), I focus on building systems that don't just execute commands but anticipate needs. Whether it's optimization algorithms or generative models, I engineer for the future.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -106,96 +104,143 @@
         <section id="work" class="section-padding">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-num">02</span>
-                    <h2>Selected Works</h2>
+                    <span class="section-label">02 / SELECTED WORKS</span>
+                    <h2>Case Studies</h2>
                 </div>
 
-                <div class="work-grid">
-                    <div class="project-item spotlight-card">
-                        <div class="spotlight-overlay"></div>
-                        <div class="p-header">
-                            <h3>Smart Lecture Assistant</h3>
-                            <div class="p-links">
-                                <a href="#" class="magnetic"><i class="fab fa-github"></i></a>
-                            </div>
-                        </div>
-                        <p class="p-desc">NLP engine leveraging LLMs and RAG pipelines to distill audio streams into semantic knowledge bases.</p>
-                        <div class="p-tags">
-                            <span>Python</span><span>OpenAI</span><span>Pinecone</span>
-                        </div>
+                <div class="work-list">
+                    <div class="work-item" onclick="openProject('smart-lecture')">
+                        <div class="w-meta">01</div>
+                        <div class="w-title">Smart Lecture Assistant</div>
+                        <div class="w-tags"><span>NLP</span> / <span>RAG</span></div>
+                        <div class="w-arrow"><i class="fas fa-arrow-right"></i></div>
                     </div>
+                    <div class="divider"></div>
 
-                    <div class="project-item spotlight-card">
-                        <div class="spotlight-overlay"></div>
-                        <div class="p-header">
-                            <h3>FluxSync Engine</h3>
-                            <div class="p-links">
-                                <a href="#" class="magnetic"><i class="fas fa-sitemap"></i></a>
-                            </div>
-                        </div>
-                        <p class="p-desc">Distributed job scheduler designed for high-concurrency. Handles 10k+ jobs with custom Raft Consensus.</p>
-                        <div class="p-tags">
-                            <span>Go</span><span>gRPC</span><span>Kubernetes</span>
-                        </div>
+                    <div class="work-item" onclick="openProject('fluxsync')">
+                        <div class="w-meta">02</div>
+                        <div class="w-title">FluxSync Engine</div>
+                        <div class="w-tags"><span>Distributed Systems</span> / <span>Go</span></div>
+                        <div class="w-arrow"><i class="fas fa-arrow-right"></i></div>
                     </div>
+                    <div class="divider"></div>
 
-                    <div class="project-item spotlight-card">
-                        <div class="spotlight-overlay"></div>
-                        <div class="p-header">
-                            <h3>SGuardian</h3>
-                            <div class="p-links">
-                                <a href="#" class="magnetic"><i class="fas fa-external-link-alt"></i></a>
-                            </div>
-                        </div>
-                        <p class="p-desc">Real-time edge computing for Android. Detects fall anomalies using local TensorFlow Lite inference.</p>
-                        <div class="p-tags">
-                            <span>Kotlin</span><span>TFLite</span><span>Android SDK</span>
-                        </div>
+                    <div class="work-item" onclick="openProject('sguardian')">
+                        <div class="w-meta">03</div>
+                        <div class="w-title">SGuardian</div>
+                        <div class="w-tags"><span>Edge AI</span> / <span>Android</span></div>
+                        <div class="w-arrow"><i class="fas fa-arrow-right"></i></div>
                     </div>
-
-                    <div class="project-item spotlight-card">
-                        <div class="spotlight-overlay"></div>
-                        <div class="p-header">
-                            <h3>LiveCode Collab</h3>
-                            <div class="p-links">
-                                <a href="#" class="magnetic"><i class="fab fa-github"></i></a>
-                            </div>
-                        </div>
-                        <p class="p-desc">Real-time code editor featuring Operational Transformation (OT) for conflict-free synchronization.</p>
-                        <div class="p-tags">
-                            <span>Node.js</span><span>WebSockets</span><span>Redis</span>
-                        </div>
-                    </div>
+                    <div class="divider"></div>
                 </div>
             </div>
         </section>
 
-        <section class="marquee-wrap">
-            <div class="marquee-inner">
-                <span>PYTHON • PYTORCH • GO • DOCKER • KUBERNETES • AWS • JAVA • KAFKA • </span>
-                <span>PYTHON • PYTORCH • GO • DOCKER • KUBERNETES • AWS • JAVA • KAFKA • </span>
+        <section id="arsenal" class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">03 / ARSENAL</span>
+                    <h2>Technical Proficiency</h2>
+                </div>
+                
+                <div class="arsenal-grid">
+                    <div class="arsenal-card">
+                        <h3>Core</h3>
+                        <ul>
+                            <li>Python</li>
+                            <li>Java</li>
+                            <li>C++</li>
+                            <li>Data Structures</li>
+                        </ul>
+                    </div>
+                    <div class="arsenal-card">
+                        <h3>AI / ML</h3>
+                        <ul>
+                            <li>PyTorch</li>
+                            <li>TensorFlow</li>
+                            <li>LangChain</li>
+                            <li>CUDA</li>
+                        </ul>
+                    </div>
+                    <div class="arsenal-card">
+                        <h3>Systems</h3>
+                        <ul>
+                            <li>Docker & K8s</li>
+                            <li>AWS</li>
+                            <li>Kafka</li>
+                            <li>Redis</li>
+                        </ul>
+                    </div>
+                    <div class="arsenal-card">
+                        <h3>Dev</h3>
+                        <ul>
+                            <li>Android (Kotlin)</li>
+                            <li>React / Next.js</li>
+                            <li>PostgreSQL</li>
+                            <li>GitOps</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
 
         <footer>
-            <div class="container footer-flex">
-                <div class="f-left">
-                    <p>Avinash Sangisetti © 2025</p>
+            <div class="container footer-content">
+                <div class="f-top">
+                    <h2>Let's build the future.</h2>
+                    <button class="btn-primary open-contact-btn magnetic">Start Dialogue</button>
                 </div>
-                <div class="f-right">
-                    <a href="https://linkedin.com/in/avinashsangisetti" target="_blank" class="magnetic">LinkedIn</a>
-                    <a href="https://github.com/avinashsangisetti" target="_blank" class="magnetic">GitHub</a>
-                    <a href="https://instagram.com/avinashsangisetti" target="_blank" class="magnetic">Instagram</a>
+                <div class="f-bottom">
+                    <div class="f-col">
+                        <span>Socials</span>
+                        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                        <a href="https://github.com" target="_blank">GitHub</a>
+                        <a href="https://instagram.com/avinashsangisetti" target="_blank">Instagram</a>
+                    </div>
+                    <div class="f-col">
+                        <span>Contact</span>
+                        <a href="mailto:avinashsangisetti@gmail.com">avinashsangisetti@gmail.com</a>
+                        <a href="tel:+917795150609">+91 7795150609</a>
+                    </div>
+                    <div class="f-col copyright">
+                        <span>© 2025 Avinash Sangisetti</span>
+                    </div>
                 </div>
             </div>
         </footer>
 
     </main>
 
+    <div id="project-overlay" class="project-overlay">
+        <button class="close-overlay" onclick="closeProject()">CLOSE</button>
+        <div class="overlay-content">
+            <span class="overlay-label">CASE STUDY</span>
+            <h2 id="overlay-title">Project Title</h2>
+            <div class="overlay-meta">
+                <div class="meta-item">
+                    <span>ROLE</span>
+                    <p>Lead Engineer</p>
+                </div>
+                <div class="meta-item">
+                    <span>STACK</span>
+                    <p id="overlay-stack">Python, AI</p>
+                </div>
+                <div class="meta-item">
+                    <span>YEAR</span>
+                    <p>2024</p>
+                </div>
+            </div>
+            <div class="overlay-body">
+                <p id="overlay-desc">Project description goes here.</p>
+            </div>
+            <a href="#" id="overlay-link" target="_blank" class="btn-primary magnetic">View Source Code</a>
+        </div>
+    </div>
+
     <div id="contact-modal" class="modal-wrap">
         <div class="modal-content">
             <div class="modal-top">
-                <h3>Start a Project</h3>
+                <h3>Initialize Uplink</h3>
                 <button class="modal-close magnetic" onclick="closeModal()">✕</button>
             </div>
             <div class="modal-body">
@@ -208,7 +253,7 @@
                     <span class="val">+91 7795150609</span>
                 </a>
                 <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-link">
-                    <span>Social</span>
+                    <span>Instagram</span>
                     <span class="val">@avinashsangisetti</span>
                 </a>
             </div>
