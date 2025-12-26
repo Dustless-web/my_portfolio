@@ -10,17 +10,41 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
         /* === CSS RESET & VARS === */
-        :root { --bg: #050505; --text: #f0f0f0; --border: rgba(255, 255, 255, 0.15); --font-main: 'Manrope', sans-serif; --font-display: 'Syncopate', sans-serif; --font-mono: 'JetBrains Mono', monospace; }
+        :root { 
+            --bg: #050505; 
+            --text: #e0e0e0; 
+            --text-muted: #888;
+            --accent: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
+            --font-main: 'Manrope', sans-serif;
+            --font-display: 'Syncopate', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        ::selection { background: #fff; color: #000; }
+        
         html { scroll-behavior: auto; }
-        body { background-color: var(--bg); color: var(--text); font-family: var(--font-main); overflow-x: hidden; line-height: 1.6; }
+        body { 
+            background-color: var(--bg); color: var(--text); 
+            font-family: var(--font-main); overflow-x: hidden; line-height: 1.6; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* FILM GRAIN TEXTURE */
+        .grain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9000; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
 
         /* PRELOADER */
         #preloader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-in-out; }
-        .loader-bar { width: 200px; height: 2px; background: #222; overflow: hidden; }
+        .loader-bar { width: 200px; height: 2px; background: #222; overflow: hidden; position: relative; }
         .bar-fill { width: 0%; height: 100%; background: #fff; transition: width 0.5s; }
 
         /* BACKGROUND (CANVAS STARS) */
@@ -30,141 +54,205 @@
         .fixed-nav { position: fixed; top: 0; width: 100%; padding: 30px 50px; z-index: 100; display: flex; justify-content: center; mix-blend-mode: difference; }
         .nav-inner { width: 100%; max-width: 1400px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: 2px; }
-        .menu-btn { font-size: 12px; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
+        
+        .menu-btn { 
+            font-size: 12px; font-weight: 600; letter-spacing: 2px; 
+            cursor: pointer; text-transform: uppercase; padding: 10px 20px;
+            border: 1px solid transparent; transition: 0.3s;
+            border-radius: 50px;
+        }
+        .menu-btn:hover { border-color: rgba(255,255,255,0.3); }
 
         /* CURSOR */
         #cursor { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 999999; mix-blend-mode: difference; }
-        .cursor-dot { width: 8px; height: 8px; background: white; border-radius: 50%; position: absolute; top: -4px; left: -4px; }
-        .cursor-ring { width: 40px; height: 40px; border: 1px solid white; border-radius: 50%; position: absolute; top: -20px; left: -20px; transition: transform 0.15s ease-out; }
-        body.hovering .cursor-ring { width: 60px; height: 60px; top: -30px; left: -30px; background-color: rgba(255,255,255,0.2); border-color: transparent; }
+        .cursor-dot { width: 8px; height: 8px; background: white; border-radius: 50%; position: absolute; top: -4px; left: -4px; transition: transform 0.1s; }
+        .cursor-ring { width: 40px; height: 40px; border: 1px solid white; border-radius: 50%; position: absolute; top: -20px; left: -20px; transition: transform 0.2s ease-out, width 0.3s, height 0.3s; }
+        body.hovering .cursor-ring { width: 60px; height: 60px; top: -30px; left: -30px; background-color: rgba(255,255,255,0.1); border-color: transparent; backdrop-filter: blur(2px); }
 
         /* === MENU OVERLAY === */
-        .menu-overlay { position: fixed; inset: 0; background: #050505; z-index: 200; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); visibility: hidden; }
+        .menu-overlay { position: fixed; inset: 0; background: #050505; z-index: 200; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); visibility: hidden; }
         .menu-overlay.active { opacity: 1; pointer-events: all; visibility: visible; }
         
         /* 3D Container */
         #neural-cortex-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        
+        #neural-cortex-container canvas { pointer-events: auto; }
+
         .menu-content-wrapper { display: flex; width: 100%; max-width: 1400px; justify-content: flex-end; align-items: center; padding: 0 50px; position: relative; z-index: 10; height: 100%; }
-        .menu-links-container { width: 50%; display: flex; justify-content: flex-end; backdrop-filter: blur(5px); padding: 40px; border-radius: 20px; }
-        .menu-links { display: flex; flex-direction: column; text-align: right; gap: 20px; }
-        .m-link { font-family: var(--font-display); font-size: 60px; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.5); text-decoration: none; text-transform: uppercase; transition: 0.3s; display: inline-block; cursor: pointer !important; }
-        .m-link:hover { color: white; -webkit-text-stroke: 1px white; transform: translateX(-20px); }
-        .menu-footer { position: absolute; bottom: 50px; width: 100%; max-width: 1400px; display: flex; justify-content: space-between; padding: 0 50px; font-family: var(--font-mono); font-size: 12px; color: #666; left: 50%; transform: translateX(-50%); z-index: 20; }
-        .menu-close { cursor: pointer; color: white; padding: 10px; }
-
-        /* MOBILE HIDE */
-        @media (max-width: 768px) { 
-            #neural-cortex-container { opacity: 0.3; } /* Dim on mobile */
-            #cursor { display: none; } * { cursor: auto !important; } .menu-content-wrapper { justify-content: center; } .menu-links { text-align: center; } .m-link { font-size: 32px; } 
+        .menu-links-container { width: 50%; display: flex; justify-content: flex-end; backdrop-filter: blur(8px); padding: 60px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); background: rgba(5,5,5,0.4); }
+        .menu-links { display: flex; flex-direction: column; text-align: right; gap: 15px; }
+        .m-link { 
+            font-family: var(--font-display); font-size: 50px; color: transparent; 
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3); text-decoration: none; 
+            text-transform: uppercase; transition: 0.4s; display: inline-block; 
+            cursor: pointer !important; position: relative;
         }
+        .m-link::before {
+            content: attr(data-index); position: absolute; left: -40px; top: 50%; transform: translateY(-50%);
+            font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); -webkit-text-stroke: 0; opacity: 0; transition: 0.3s;
+        }
+        .m-link:hover { color: white; -webkit-text-stroke: 1px white; transform: translateX(-10px); }
+        .m-link:hover::before { opacity: 1; left: -60px; }
+        
+        .menu-footer { position: absolute; bottom: 50px; width: 100%; max-width: 1400px; display: flex; justify-content: space-between; padding: 0 50px; font-family: var(--font-mono); font-size: 12px; color: #666; left: 50%; transform: translateX(-50%); z-index: 20; }
+        .menu-close { cursor: pointer; color: white; padding: 10px; border: 1px solid transparent; border-radius: 50px; transition: 0.3s; }
+        .menu-close:hover { border-color: rgba(255,255,255,0.3); }
 
-        /* OTHER SECTIONS (Standard) */
+        /* HERO & LAYOUT */
         .hero-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 50px 0 50px; overflow: hidden; }
-        .hero-container { max-width: 1400px; width: 100%; display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: 40px; }
-        .hero-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: flex; gap: 20px; margin-bottom: 30px; letter-spacing: 1px; }
-        h1 { font-family: var(--font-main); font-size: clamp(3rem, 6vw, 6rem); line-height: 1.1; font-weight: 400; margin-bottom: 30px; letter-spacing: -2px; }
-        p { font-size: 18px; color: var(--text-muted); max-width: 500px; margin-bottom: 40px; }
-        .btn-primary { background: white; color: black; border: none; padding: 16px 32px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-primary:hover { background: #ccc; transform: scale(1.05); }
-        .btn-text { color: white; text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-left: 20px; }
-        .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; width: 100%; }
-        .fade-in { animation: simpleFade 1.5s ease-out forwards; opacity: 0; }
-        @keyframes simpleFade { from { opacity: 0; } to { opacity: 1; } }
-        .glitch-wrapper { width: 350px; height: 480px; position: relative; perspective: 1000px; }
-        .glitch-card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.1s; }
-        .glitch-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: grayscale(100%) contrast(1.1) brightness(0.9); transition: all 0.3s; }
+        .hero-container { max-width: 1400px; width: 100%; display: grid; grid-template-columns: 1.2fr 0.8fr; align-items: center; gap: 60px; }
+        .hero-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: flex; gap: 20px; margin-bottom: 30px; letter-spacing: 2px; }
+        
+        h1 { 
+            font-family: var(--font-main); font-size: clamp(3.5rem, 6vw, 6.5rem); 
+            line-height: 1; font-weight: 300; margin-bottom: 30px; letter-spacing: -3px; 
+            background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; color: transparent;
+        }
+        
+        p { font-size: 18px; color: var(--text-muted); max-width: 500px; margin-bottom: 50px; font-weight: 300; }
+        
+        .btn-primary { 
+            background: white; color: black; border: none; padding: 18px 40px; 
+            font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; 
+            cursor: pointer; transition: transform 0.2s, background 0.3s; 
+            border-radius: 2px;
+        }
+        .btn-primary:hover { background: #e0e0e0; }
+        .btn-text { color: white; text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-left: 30px; position: relative; }
+        .btn-text::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 1px; background: white; transition: 0.3s; }
+        .btn-text:hover::after { width: 100%; }
+
+        .hero-visual { display: flex; justify-content: flex-end; align-items: center; position: relative; z-index: 1; width: 100%; }
+        
+        /* SCROLL REVEAL ANIMATIONS */
+        .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.2, 1, 0.3, 1); }
+        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* Glitch Styles */
+        .glitch-wrapper { width: 100%; max-width: 400px; aspect-ratio: 3/4; position: relative; }
+        .glitch-card { width: 100%; height: 100%; position: relative; overflow: hidden; border-radius: 4px; }
+        .glitch-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: grayscale(100%) contrast(1.1) brightness(0.9); transition: all 0.5s; }
         .glitch-img:nth-child(n+2) { opacity: 0; }
-        .glitch-wrapper:hover .glitch-img:first-child { filter: grayscale(0%) contrast(1.1) brightness(1); }
-        .glitch-wrapper:hover .glitch-img:nth-child(2) { opacity: 1; transform: translate(5px, 0); filter: grayscale(100%) brightness(0.8) drop-shadow(-2px 0 red); mix-blend-mode: color-dodge; animation: noise-1 3s infinite linear alternate-reverse; }
-        .glitch-wrapper:hover .glitch-img:nth-child(3) { opacity: 1; transform: translate(-5px, 0); filter: grayscale(100%) brightness(0.8) drop-shadow(2px 0 blue); mix-blend-mode: exclusion; animation: noise-2 2.5s infinite linear alternate-reverse; }
-        .glitch-scanlines { position: absolute; inset: 0; pointer-events: none; z-index: 10; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.4)); background-size: 100% 4px; opacity: 0.6; }
-        @keyframes noise-1 { 0% { clip-path: inset(40% 0 61% 0); } 100% { clip-path: inset(58% 0 43% 0); } }
-        @keyframes noise-2 { 0% { clip-path: inset(12% 0 58% 0); } 100% { clip-path: inset(67% 0 11% 0); } }
-        .section-padding { padding: 150px 50px; }
+        .glitch-wrapper:hover .glitch-img:first-child { filter: grayscale(0%) contrast(1) brightness(1); transform: scale(1.05); }
+        .glitch-scanlines { position: absolute; inset: 0; pointer-events: none; z-index: 10; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.4)); background-size: 100% 4px; opacity: 0.3; }
+
+        /* SECTIONS & CARDS */
+        .section-padding { padding: 180px 50px; }
         .container { max-width: 1400px; margin: 0 auto; }
-        .section-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 20px; }
-        h2 { font-family: var(--font-display); font-size: 48px; margin-bottom: 60px; font-weight: 400; }
-        .spotlight-card { position: relative; overflow: hidden; background: rgba(255,255,255,0.02); border: 1px solid var(--border); transition: transform 0.3s; }
-        .spotlight-card:hover { transform: translateY(-3px); }
-        .spotlight-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.06), transparent 40%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .section-header { margin-bottom: 80px; }
+        .section-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 20px; letter-spacing: 2px; }
+        h2 { font-family: var(--font-display); font-size: 48px; margin-bottom: 0; font-weight: 400; color: #fff; }
+        
+        .spotlight-card { 
+            position: relative; overflow: hidden; background: rgba(255,255,255,0.01); 
+            border: 1px solid var(--border); transition: transform 0.4s, border-color 0.4s; 
+        }
+        .spotlight-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.3); }
+        .spotlight-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.04), transparent 40%); 
+            opacity: 0; transition: opacity 0.3s; pointer-events: none; 
+        }
         .spotlight-card:hover .spotlight-overlay { opacity: 1; }
-        .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .project-item { padding: 40px; display: flex; flex-direction: column; height: 100%; cursor: pointer; }
-        .p-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .p-header h3 { font-family: var(--font-display); font-size: 18px; }
-        .p-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; flex-grow: 1; }
-        .p-tags span { font-size: 10px; text-transform: uppercase; border: 1px solid var(--border); padding: 6px 12px; margin-right: 8px; border-radius: 100px; }
-        .timeline-row { display: grid; grid-template-columns: 1fr 2fr 2fr; gap: 40px; padding: 40px; border-bottom: 1px solid var(--border); margin-bottom: 10px;}
+        
+        .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .project-item { padding: 50px; display: flex; flex-direction: column; height: 100%; cursor: pointer; min-height: 300px; }
+        .p-header h3 { font-family: var(--font-display); font-size: 20px; margin-bottom: 15px; }
+        .p-desc { font-size: 15px; color: #aaa; margin-bottom: 40px; line-height: 1.7; flex-grow: 1; font-weight: 300; }
+        .p-tags span { font-size: 10px; text-transform: uppercase; border: 1px solid var(--border); padding: 8px 16px; margin-right: 8px; border-radius: 100px; letter-spacing: 1px; color: #888; }
+        
+        .timeline-row { display: grid; grid-template-columns: 1fr 2fr 2fr; gap: 40px; padding: 50px; border-bottom: 1px solid var(--border); transition: background 0.3s; }
+        .timeline-row:hover { background: rgba(255,255,255,0.02); }
         .t-date { font-family: var(--font-display); font-size: 12px; color: var(--text-muted); }
-        .t-role h3 { font-size: 20px; font-weight: 400; margin-bottom: 5px; }
-        .t-role span { font-size: 14px; color: var(--text-muted); }
-        .t-desc { font-size: 15px; color: #ccc; }
-        .marquee-wrap { padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
-        .marquee-inner { white-space: nowrap; animation: scroll 40s linear infinite; }
-        .marquee-inner span { font-family: var(--font-display); font-size: 4vw; font-weight: 700; color: rgba(255,255,255,0.05); }
+        .t-role h3 { font-size: 22px; font-weight: 400; margin-bottom: 5px; color: #fff; }
+        .t-role span { font-size: 14px; color: var(--text-muted); font-family: var(--font-mono); }
+        .t-desc { font-size: 16px; color: #ccc; font-weight: 300; max-width: 400px; }
+        
+        .marquee-wrap { padding: 60px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; background: rgba(255,255,255,0.01); }
+        .marquee-inner { white-space: nowrap; animation: scroll 60s linear infinite; }
+        .marquee-inner span { font-family: var(--font-display); font-size: 6vw; font-weight: 700; color: rgba(255,255,255,0.03); margin-right: 50px; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        footer { padding: 100px 50px 50px; background: #080808; margin-top: 100px; }
-        .f-top { margin-bottom: 80px; display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
-        .f-top h2 { font-size: 60px; margin-bottom: 0; line-height: 1; }
+        
+        footer { padding: 100px 50px 50px; margin-top: 50px; border-top: 1px solid var(--border); }
+        .f-top { margin-bottom: 100px; display: flex; flex-direction: column; align-items: flex-start; gap: 40px; }
+        .f-top h2 { font-size: clamp(40px, 5vw, 80px); line-height: 1; color: #fff; }
         .f-bottom { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid var(--border); padding-top: 40px; }
-        .f-col { display: flex; flex-direction: column; gap: 10px; }
-        .f-col span { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 10px; display: block; }
-        .f-col a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; }
-        .f-col a:hover { opacity: 0.6; }
+        .f-col { display: flex; flex-direction: column; gap: 15px; }
+        .f-col span { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 10px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+        .f-col a { color: white; text-decoration: none; font-size: 14px; transition: 0.3s; opacity: 0.7; }
+        .f-col a:hover { opacity: 1; transform: translateX(5px); display: inline-block; }
+        
+        /* OVERLAYS */
         .project-overlay, .modal-wrap { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 400; display: flex; opacity: 0; pointer-events: none; transition: 0.4s; visibility: hidden; }
         .project-overlay.active, .modal-wrap.active { opacity: 1; pointer-events: all; visibility: visible; }
-        .project-overlay { z-index: 500; transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1); flex-direction: column; padding: 50px; overflow-y: auto; background: #050505; }
+        .project-overlay { z-index: 500; transform: translateY(100%); transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1); flex-direction: column; padding: 50px; overflow-y: auto; background: #050505; }
         .project-overlay.active { transform: translateY(0); opacity: 1; }
-        .close-overlay { position: absolute; top: 30px; right: 50px; background: none; border: none; color: white; font-family: var(--font-mono); cursor: pointer; font-size: 12px; }
-        .overlay-content { max-width: 1000px; margin: 0 auto; margin-top: 50px; }
+        .close-overlay { position: absolute; top: 40px; right: 50px; background: none; border: none; color: white; font-family: var(--font-mono); cursor: pointer; font-size: 12px; letter-spacing: 2px; }
+        .overlay-content { max-width: 1000px; margin: 0 auto; margin-top: 80px; }
         .overlay-content h2 { font-size: 60px; line-height: 1.1; margin-bottom: 60px; }
-        .overlay-meta { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 30px 0; margin-bottom: 50px; }
-        .overlay-body { font-size: 20px; line-height: 1.7; max-width: 800px; margin-bottom: 50px; color: #ccc; }
-        .modal-wrap { justify-content: center; align-items: center; }
-        .modal-content { width: 90%; max-width: 500px; }
-        .modal-top { display: flex; justify-content: space-between; margin-bottom: 40px; border-bottom: 1px solid white; padding-bottom: 20px; }
+        .overlay-meta { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 40px 0; margin-bottom: 60px; }
+        .meta-item span { font-family: var(--font-mono); font-size: 11px; color: #666; display: block; margin-bottom: 10px; }
+        .overlay-body { font-size: 22px; line-height: 1.8; max-width: 800px; margin-bottom: 60px; color: #ddd; font-weight: 300; }
+        
+        .modal-wrap { justify-content: center; align-items: center; backdrop-filter: blur(10px); }
+        .modal-content { width: 90%; max-width: 500px; background: #0a0a0a; padding: 40px; border: 1px solid var(--border); }
+        .modal-top { display: flex; justify-content: space-between; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
         .modal-close { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
         .c-link { display: flex; justify-content: space-between; padding: 25px 0; border-bottom: 1px solid var(--border); color: white; text-decoration: none; font-size: 18px; transition: 0.3s; }
-        .c-link:hover { padding-left: 15px; color: #ccc; }
+        .c-link:hover { padding-left: 15px; background: rgba(255,255,255,0.02); }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 768px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .hero-visual { order: -1; justify-content: center; }
+            h1 { font-size: 3rem; }
+            .work-grid, .timeline-row, .f-bottom, .overlay-meta { grid-template-columns: 1fr; }
+            .menu-content-wrapper { justify-content: center; }
+            .menu-links { text-align: center; }
+            .menu-links-container { width: 100%; border: none; background: none; }
+            #neural-cortex-container { opacity: 0.2; }
+            #cursor { display: none; }
+            * { cursor: auto !important; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="cursor"><div class="cursor-dot"></div><div class="cursor-ring"></div></div>
-    <div id="preloader"><div class="loader-content"><div class="loader-text">INITIALIZING CORE...</div><div class="loader-bar"><div class="bar-fill"></div></div></div></div>
+    <div class="grain"></div> <div id="cursor"><div class="cursor-dot"></div><div class="cursor-ring"></div></div>
+    <div id="preloader"><div class="loader-content"><div class="loader-bar"><div class="bar-fill"></div></div></div></div>
     
     <canvas id="star-canvas"></canvas>
     <div class="scroll-progress"></div>
 
-    <nav class="fixed-nav"><div class="nav-inner"><div class="logo magnetic">AVINASH<span class="reg">®</span></div><div class="menu-btn magnetic" id="menu-toggle">MENU</div></div></nav>
+    <nav class="fixed-nav"><div class="nav-inner"><div class="logo magnetic" data-strength="20">AVINASH<span class="reg">®</span></div><div class="menu-btn magnetic" id="menu-toggle" data-strength="30">MENU</div></div></nav>
 
     <div class="menu-overlay" id="menu-overlay">
-        
         <div id="neural-cortex-container"></div>
 
         <div class="menu-content-wrapper">
             <div class="menu-links-container">
                 <div class="menu-links">
-                    <a href="#hero" class="m-link" data-index="0">01 / Home</a>
-                    <a href="#journey" class="m-link" data-index="1">02 / Journey</a>
-                    <a href="#work" class="m-link" data-index="2">03 / Work</a>
-                    <a href="resume.pdf" target="_blank" class="m-link" data-index="3">04 / Resume</a>
-                    <a href="#" class="m-link open-contact-btn" data-index="4">05 / Contact</a>
+                    <a href="#hero" class="m-link" data-index="01">Home</a>
+                    <a href="#journey" class="m-link" data-index="02">Journey</a>
+                    <a href="#work" class="m-link" data-index="03">Work</a>
+                    <a href="resume.pdf" target="_blank" class="m-link" data-index="04">Resume</a>
+                    <a href="#" class="m-link open-contact-btn" data-index="05">Contact</a>
                 </div>
             </div>
         </div>
-        <div class="menu-footer"><span>Bengaluru, IN</span><div class="menu-close magnetic" id="menu-close-btn">CLOSE</div></div>
+        <div class="menu-footer"><span>Bengaluru, IN</span><div class="menu-close magnetic" id="menu-close-btn" data-strength="30">CLOSE</div></div>
     </div>
 
     <main id="smooth-wrapper">
         <section id="hero" class="hero-section">
             <div class="container hero-container">
                 <div class="hero-content">
-                    <div class="hero-meta"><span>AI ENGINEER</span><span>BENGALURU, INDIA</span></div>
+                    <div class="hero-meta reveal-on-scroll"><span>AI ENGINEER</span><span>BENGALURU, INDIA</span></div>
                     <h1 class="scramble-text">Engineering <br> Intelligence.</h1>
-                    <p class="reveal-text delay-1">I am <strong>Avinash Sangisetti</strong>. A 20-year-old Computer Science Engineer from KSIT.</p>
-                    <div class="hero-cta reveal-text delay-2"><button class="btn-primary open-contact-btn magnetic">Initialize</button><a href="resume.pdf" target="_blank" class="btn-text magnetic">View Credentials <i class="fas fa-arrow-right"></i></a></div>
+                    <p class="reveal-on-scroll">I am <strong>Avinash Sangisetti</strong>. A 20-year-old Computer Science Engineer from KSIT building the bridge between theoretical AI and production systems.</p>
+                    <div class="hero-cta reveal-on-scroll">
+                        <button class="btn-primary open-contact-btn magnetic" data-strength="50">Initialize</button>
+                        <a href="resume.pdf" target="_blank" class="btn-text magnetic" data-strength="30">View Credentials</a>
+                    </div>
                 </div>
                 <div class="hero-visual fade-in">
                     <div class="glitch-wrapper">
@@ -182,52 +270,138 @@
         </section>
 
         <section id="journey" class="section-padding">
-            <div class="container"><div class="section-header"><span class="section-label">01 / TIMELINE</span><h2>Experience Log</h2></div>
-            <div class="timeline-list">
-                <div class="timeline-row spotlight-card"><div class="spotlight-overlay"></div><div class="t-date">2023 — PRESENT</div><div class="t-role"><h3>KS Institute of Technology</h3><span>B.E. Computer Science</span></div><div class="t-desc">Neural Networks & System Design.</div></div>
-                <div class="timeline-row spotlight-card"><div class="spotlight-overlay"></div><div class="t-date">2024 — PRESENT</div><div class="t-role"><h3>Freelance Architect</h3><span>Full Stack & AI</span></div><div class="t-desc">Bespoke automation pipelines.</div></div>
-            </div></div>
+            <div class="container">
+                <div class="section-header reveal-on-scroll"><span class="section-label">01 / TIMELINE</span><h2>Experience Log</h2></div>
+                <div class="timeline-list">
+                    <div class="timeline-row spotlight-card reveal-on-scroll">
+                        <div class="spotlight-overlay"></div>
+                        <div class="t-date">2023 — PRESENT</div>
+                        <div class="t-role"><h3>KS Institute of Technology</h3><span>B.E. Computer Science</span></div>
+                        <div class="t-desc">Focusing on Neural Network Architectures and System Design. Leading research initiatives in Generative AI.</div>
+                    </div>
+                    <div class="timeline-row spotlight-card reveal-on-scroll">
+                        <div class="spotlight-overlay"></div>
+                        <div class="t-date">2024 — PRESENT</div>
+                        <div class="t-role"><h3>Freelance Architect</h3><span>Full Stack & AI</span></div>
+                        <div class="t-desc">Developing bespoke automation pipelines and deployed applications. Reducing client data workload by 40%.</div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="work" class="section-padding">
-            <div class="container"><div class="section-header"><span class="section-label">02 / SELECTED WORKS</span><h2>Case Studies</h2></div>
-            <div class="work-grid">
-                <div class="project-item spotlight-card" id="proj-1"><div class="spotlight-overlay"></div><div class="p-header"><h3>Smart Lecture Assistant</h3></div><p class="p-desc">NLP engine leveraging LLMs.</p><div class="p-tags"><span>Python</span><span>OpenAI</span></div></div>
-                <div class="project-item spotlight-card" id="proj-2"><div class="spotlight-overlay"></div><div class="p-header"><h3>FluxSync Engine</h3></div><p class="p-desc">Distributed job scheduler.</p><div class="p-tags"><span>Go</span><span>Kubernetes</span></div></div>
-                <div class="project-item spotlight-card" id="proj-3"><div class="spotlight-overlay"></div><div class="p-header"><h3>SGuardian</h3></div><p class="p-desc">Edge computing fall detection.</p><div class="p-tags"><span>Kotlin</span><span>TFLite</span></div></div>
-                <div class="project-item spotlight-card" id="proj-4"><div class="spotlight-overlay"></div><div class="p-header"><h3>LiveCode Collab</h3></div><p class="p-desc">Real-time collaborative editor.</p><div class="p-tags"><span>Node.js</span><span>WebSockets</span></div></div>
-            </div></div>
+            <div class="container">
+                <div class="section-header reveal-on-scroll"><span class="section-label">02 / SELECTED WORKS</span><h2>Case Studies</h2></div>
+                <div class="work-grid">
+                    <div class="project-item spotlight-card reveal-on-scroll" id="proj-1">
+                        <div class="spotlight-overlay"></div><div class="p-header"><h3>Smart Lecture Assistant</h3></div>
+                        <p class="p-desc">NLP engine leveraging LLMs and RAG pipelines to distill audio streams into semantic knowledge bases.</p>
+                        <div class="p-tags"><span>Python</span><span>OpenAI</span></div>
+                    </div>
+                    <div class="project-item spotlight-card reveal-on-scroll" id="proj-2">
+                        <div class="spotlight-overlay"></div><div class="p-header"><h3>FluxSync Engine</h3></div>
+                        <p class="p-desc">Distributed job scheduler designed for high-concurrency. Handles 10k+ jobs with custom Raft Consensus.</p>
+                        <div class="p-tags"><span>Go</span><span>Kubernetes</span></div>
+                    </div>
+                    <div class="project-item spotlight-card reveal-on-scroll" id="proj-3">
+                        <div class="spotlight-overlay"></div><div class="p-header"><h3>SGuardian</h3></div>
+                        <p class="p-desc">Real-time edge computing for Android. Detects fall anomalies using local TensorFlow Lite inference.</p>
+                        <div class="p-tags"><span>Kotlin</span><span>TFLite</span></div>
+                    </div>
+                    <div class="project-item spotlight-card reveal-on-scroll" id="proj-4">
+                        <div class="spotlight-overlay"></div><div class="p-header"><h3>LiveCode Collab</h3></div>
+                        <p class="p-desc">Real-time code editor featuring Operational Transformation (OT) for conflict-free synchronization.</p>
+                        <div class="p-tags"><span>Node.js</span><span>WebSockets</span></div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section class="marquee-wrap"><div class="marquee-inner"><span>PYTHON • PYTORCH • GO • DOCKER • KUBERNETES • AWS • JAVA • KAFKA • REDIS • C++ • </span><span>PYTHON • PYTORCH • GO • DOCKER • KUBERNETES • AWS • JAVA • KAFKA • REDIS • C++ • </span></div></section>
+        <section class="marquee-wrap">
+            <div class="marquee-inner">
+                <span>PYTHON • PYTORCH • GO • DOCKER • KUBERNETES • AWS • JAVA • KAFKA • REDIS • C++ • </span>
+                <span>PYTHON • PYTORCH • GO • DOCKER • KUBERNETES • AWS • JAVA • KAFKA • REDIS • C++ • </span>
+            </div>
+        </section>
 
-        <footer><div class="container footer-content"><div class="f-top"><h2>Let's build the future.</h2><button class="btn-primary open-contact-btn magnetic">Start Dialogue</button></div><div class="f-bottom"><div class="f-col"><span>Socials</span><a href="https://linkedin.com">LinkedIn</a><a href="https://github.com">GitHub</a></div><div class="f-col"><span>Contact</span><a href="mailto:email@example.com">Email</a></div><div class="f-col copyright"><span>© 2025 Avinash</span></div></div></div></footer>
+        <footer>
+            <div class="container footer-content">
+                <div class="f-top reveal-on-scroll">
+                    <h2>Let's build the future.</h2>
+                    <button class="btn-primary open-contact-btn magnetic" data-strength="50">Start Dialogue</button>
+                </div>
+                <div class="f-bottom reveal-on-scroll">
+                    <div class="f-col"><span>Socials</span><a href="https://linkedin.com">LinkedIn</a><a href="https://github.com">GitHub</a></div>
+                    <div class="f-col"><span>Contact</span><a href="mailto:email@example.com">Email</a></div>
+                    <div class="f-col copyright"><span>© 2025 Avinash</span></div>
+                </div>
+            </div>
+        </footer>
     </main>
 
-    <div id="project-overlay" class="project-overlay"><button class="close-overlay magnetic" id="close-project-btn">CLOSE</button><div class="overlay-content"><span class="overlay-label">CASE STUDY</span><h2 id="overlay-title">Project Title</h2><div class="overlay-meta"><div class="meta-item"><span>ROLE</span><p>Lead Engineer</p></div><div class="meta-item"><span>STACK</span><p id="overlay-stack">Python, AI</p></div><div class="meta-item"><span>YEAR</span><p>2024</p></div></div><div class="overlay-body"><p id="overlay-desc">Description...</p></div><a href="#" id="overlay-link" target="_blank" class="btn-primary magnetic">View Source Code</a></div></div>
-    <div id="contact-modal" class="modal-wrap"><div class="modal-content"><div class="modal-top"><h3>Initialize Uplink</h3><button class="modal-close magnetic" id="close-modal-btn">✕</button></div><div class="modal-body"><a href="#" class="c-link"><span>Email</span><span class="val">avinash@example.com</span></a></div></div></div>
+    <div id="project-overlay" class="project-overlay">
+        <button class="close-overlay magnetic" id="close-project-btn" data-strength="20">CLOSE</button>
+        <div class="overlay-content">
+            <span class="overlay-label">CASE STUDY</span>
+            <h2 id="overlay-title">Project Title</h2>
+            <div class="overlay-meta">
+                <div class="meta-item"><span>ROLE</span><p>Lead Engineer</p></div>
+                <div class="meta-item"><span>STACK</span><p id="overlay-stack">Python, AI</p></div>
+                <div class="meta-item"><span>YEAR</span><p>2024</p></div>
+            </div>
+            <div class="overlay-body"><p id="overlay-desc">Description...</p></div>
+            <a href="#" id="overlay-link" target="_blank" class="btn-primary magnetic" data-strength="40">View Source Code</a>
+        </div>
+    </div>
+    
+    <div id="contact-modal" class="modal-wrap">
+        <div class="modal-content">
+            <div class="modal-top"><h3>Initialize Uplink</h3><button class="modal-close magnetic" id="close-modal-btn" data-strength="20">✕</button></div>
+            <div class="modal-body"><a href="#" class="c-link"><span>Email</span><span class="val">avinash@example.com</span></a></div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("SYSTEM: ONLINE - HYBRID ENGINE");
+            console.log("SYSTEM: ONLINE - PREMIUM");
 
-            // 1. BACKGROUND STARFIELD (CANVAS)
+            // 1. MAGNETIC BUTTONS (NEW)
+            const magnets = document.querySelectorAll('.magnetic');
+            magnets.forEach((el) => {
+                el.addEventListener('mousemove', (e) => {
+                    const pos = el.getBoundingClientRect();
+                    const x = e.clientX - pos.left - pos.width / 2;
+                    const y = e.clientY - pos.top - pos.height / 2;
+                    const strength = el.getAttribute('data-strength') || 30;
+                    gsap.to(el, { x: x * 0.5, y: y * 0.5, duration: 0.2, ease: "power2.out" });
+                });
+                el.addEventListener('mouseleave', () => {
+                    gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+                });
+            });
+
+            // 2. SCROLL REVEAL OBSERVER
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+            // 3. BACKGROUND STARFIELD (SLOW & SUBTLE)
             const canvas = document.getElementById('star-canvas');
             const ctx = canvas.getContext('2d');
             let width, height;
             const stars = [];
             
-            function resizeCanvas() {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            }
+            function resizeCanvas() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
 
             class Star {
-                constructor() {
-                    this.reset();
-                }
+                constructor() { this.reset(); }
                 reset() {
                     this.x = (Math.random() - 0.5) * width * 2;
                     this.y = (Math.random() - 0.5) * height * 2;
@@ -235,7 +409,7 @@
                     this.pz = this.z;
                 }
                 update() {
-                    this.z -= 15; // Warp Speed
+                    this.z -= 2; // SLOWER SPEED
                     if (this.z <= 0) this.reset();
                 }
                 draw() {
@@ -244,35 +418,30 @@
                     const px = (this.x / this.pz) * width/2 + width/2;
                     const py = (this.y / this.pz) * height/2 + height/2;
                     this.pz = this.z;
-
                     if (sx < 0 || sx > width || sy < 0 || sy > height) return;
-
-                    const r = (1 - this.z / width) * 2;
+                    const r = (1 - this.z / width) * 1.5;
                     ctx.beginPath();
                     ctx.moveTo(px, py);
                     ctx.lineTo(sx, sy);
                     ctx.lineWidth = r;
-                    ctx.strokeStyle = `rgba(255,255,255,${1 - this.z/width})`;
+                    ctx.strokeStyle = `rgba(255,255,255,${(1 - this.z/width) * 0.5})`; // SUBTLE OPACITY
                     ctx.stroke();
                 }
             }
-
-            for(let i=0; i<800; i++) stars.push(new Star());
-
+            for(let i=0; i<600; i++) stars.push(new Star());
             function animateStars() {
-                ctx.fillStyle = "rgba(5, 5, 5, 0.4)"; // Trail effect
+                ctx.fillStyle = "rgba(5, 5, 5, 0.3)"; 
                 ctx.fillRect(0, 0, width, height);
                 stars.forEach(s => { s.update(); s.draw(); });
                 requestAnimationFrame(animateStars);
             }
             animateStars();
 
-
-            // 2. PRELOADER & UTILS
+            // 4. PRELOADER & SCRAMBLE
             const preloader = document.getElementById('preloader');
             const bar = document.querySelector('.bar-fill');
             if(preloader) {
-                let width = 0; const interval = setInterval(() => { width += 10; if(bar) bar.style.width = width+'%'; if(width>=100){ clearInterval(interval); preloader.style.opacity='0'; setTimeout(()=>{preloader.style.display='none';triggerScramble();},500);} }, 50);
+                let width = 0; const interval = setInterval(() => { width += 5; if(bar) bar.style.width = width+'%'; if(width>=100){ clearInterval(interval); preloader.style.opacity='0'; setTimeout(()=>{preloader.style.display='none';triggerScramble();},500);} }, 30);
             }
             const lenis = new Lenis({ smooth: true });
             function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
@@ -287,27 +456,7 @@
                 }, 30);
             }
 
-            // Menu Toggle
-            const menu = document.getElementById('menu-overlay');
-            const btns = document.querySelectorAll('#menu-toggle, #menu-close-btn, .m-link:not(.open-contact-btn)');
-            btns.forEach(b => b.addEventListener('click', () => {
-                if(menu.classList.contains('active')) { menu.classList.remove('active'); lenis.start(); }
-                else { menu.classList.add('active'); lenis.stop(); }
-            }));
-
-            // Cursor
-            const cDot = document.querySelector('.cursor-dot');
-            const cRing = document.querySelector('.cursor-ring');
-            let mouseX = 0, mouseY = 0;
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX; mouseY = e.clientY;
-                cDot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-                cRing.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-            });
-
-            // ================================================================
-            // === 3D MENU NEURAL CORTEX (Three.js) ===
-            // ================================================================
+            // 5. NEURAL CORTEX (LEFT POSITIONED)
             function initNeuralCortex() {
                 const container = document.getElementById('neural-cortex-container');
                 if (!container) return;
@@ -319,7 +468,6 @@
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                 container.appendChild(renderer.domElement);
 
-                // Particles (Nodes)
                 const particleCount = 400;
                 const geometry = new THREE.BufferGeometry();
                 const positions = new Float32Array(particleCount * 3);
@@ -330,114 +478,139 @@
                 for (let i = 0; i < particleCount; i++) {
                     const theta = Math.random() * Math.PI * 2;
                     const phi = Math.acos(Math.random() * 2 - 1);
-                    const r = 15 + Math.random() * 5; // Sphere radius variation
+                    const r = 12 + Math.random() * 5; 
                     positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
                     positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
                     positions[i * 3 + 2] = r * Math.cos(phi);
-                    sizes[i] = 0.5 + Math.random(); // Initial size
+                    sizes[i] = 0.5 + Math.random(); 
                     baseColor.toArray(colors, i * 3);
                 }
                 geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
                 geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
                 geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-                // Shader Material
                 const material = new THREE.ShaderMaterial({
-                    uniforms: {
-                        color: { value: new THREE.Color(0xffffff) },
-                    },
+                    uniforms: { color: { value: new THREE.Color(0xffffff) } },
                     vertexShader: `
-                        attribute float size;
-                        attribute vec3 color;
-                        varying vec3 vColor;
-                        void main() {
-                            vColor = color;
-                            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-                            gl_PointSize = size * ( 300.0 / -mvPosition.z );
-                            gl_Position = projectionMatrix * mvPosition;
-                        }
+                        attribute float size; attribute vec3 color; varying vec3 vColor;
+                        void main() { vColor = color; vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 ); gl_PointSize = size * ( 300.0 / -mvPosition.z ); gl_Position = projectionMatrix * mvPosition; }
                     `,
                     fragmentShader: `
                         varying vec3 vColor;
-                        void main() {
-                            float d = distance(gl_PointCoord, vec2(0.5, 0.5));
-                            if(d > 0.5) discard;
-                            gl_FragColor = vec4( vColor, 1.0 - (d * 2.0) );
-                        }
+                        void main() { float d = distance(gl_PointCoord, vec2(0.5, 0.5)); if(d > 0.5) discard; gl_FragColor = vec4( vColor, 1.0 - (d * 2.0) ); }
                     `,
-                    transparent: true,
-                    blending: THREE.AdditiveBlending,
-                    depthTest: false
+                    transparent: true, blending: THREE.AdditiveBlending, depthTest: false
                 });
 
                 const particleSystem = new THREE.Points(geometry, material);
-                // MOVE THE MODEL TO THE LEFT
-                particleSystem.position.x = -12; 
+                particleSystem.position.x = -12; // MOVED LEFT
                 scene.add(particleSystem);
 
-                // Interaction Logic
+                // Raycaster
                 const raycaster = new THREE.Raycaster();
                 const mouse = new THREE.Vector2();
-                const highlightColor = new THREE.Color(0xffffff); // Bright white on hover
+                const highlightColor = new THREE.Color(0xffffff);
 
                 function animate() {
                     requestAnimationFrame(animate);
                     const time = Date.now() * 0.001;
-
-                    // Slow rotation
                     particleSystem.rotation.y += 0.002;
-                    particleSystem.rotation.x += 0.001;
-
+                    
                     // Mouse Interaction
                     mouse.x = (mouseX / window.innerWidth) * 2 - 1;
                     mouse.y = -(mouseY / window.innerHeight) * 2 + 1;
                     raycaster.setFromCamera(mouse, camera);
-
                     const intersects = raycaster.intersectObject(particleSystem);
-                    
                     const sizesAttr = geometry.attributes.size;
                     const colorsAttr = geometry.attributes.color;
 
-                    // Reset all to base state
                     for (let i = 0; i < particleCount; i++) {
-                        sizesAttr.array[i] = 0.5 + Math.sin(time + i) * 0.2; // Gentle pulsing
+                        sizesAttr.array[i] = 0.5 + Math.sin(time + i) * 0.2; 
                         baseColor.toArray(colorsAttr.array, i * 3);
                     }
 
-                    // Highlight nodes near cursor ray
                     if (intersects.length > 0) {
                         const intersectPoint = intersects[0].point;
-                        // Transform point back to local space relative to the shifted group
-                        const localPoint = intersectPoint.clone().sub(particleSystem.position);
-                        
-                        // Inverse rotation roughly (approximation for visual effect)
-                        // Precise would involve matrix math, but this is enough for "glow" feel
-                        
+                        const localPoint = intersectPoint.clone().sub(particleSystem.position); // Adjust for offset
                         for (let i = 0; i < particleCount; i++) {
-                            // Distance check in world space would be better, but loop is cheap here
-                            // Let's just boost random nodes for 'activity' effect when hovering object
-                            if (Math.random() > 0.95) {
-                                sizesAttr.array[i] = 4;
+                            const dx = positions[i*3] - localPoint.x;
+                            const dy = positions[i*3+1] - localPoint.y;
+                            const dz = positions[i*3+2] - localPoint.z;
+                            if (Math.sqrt(dx*dx + dy*dy + dz*dz) < 5) {
+                                sizesAttr.array[i] = 3;
                                 highlightColor.toArray(colorsAttr.array, i * 3);
                             }
                         }
                     }
-                    
                     sizesAttr.needsUpdate = true;
                     colorsAttr.needsUpdate = true;
                     renderer.render(scene, camera);
                 }
                 animate();
-
                 window.addEventListener('resize', () => {
                     camera.aspect = window.innerWidth / window.innerHeight;
                     camera.updateProjectionMatrix();
                     renderer.setSize(window.innerWidth, window.innerHeight);
                 });
             }
-
-            // Initialize the new effect
             initNeuralCortex();
+
+            // MENU TOGGLE
+            const menuOverlay = document.getElementById('menu-overlay');
+            const menuBtn = document.getElementById('menu-toggle');
+            const menuClose = document.getElementById('menu-close-btn');
+            function toggleMenu() {
+                if(!menuOverlay) return;
+                if(menuOverlay.classList.contains('active')) { menuOverlay.classList.remove('active'); lenis.start(); }
+                else { menuOverlay.classList.add('active'); lenis.stop(); }
+            }
+            if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
+            if(menuClose) menuClose.addEventListener('click', toggleMenu);
+            document.querySelectorAll('.m-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetId = link.getAttribute('href');
+                    if(link.classList.contains('open-contact-btn')) return;
+                    if(targetId && targetId.startsWith('#')) { e.preventDefault(); toggleMenu(); lenis.scrollTo(targetId); }
+                });
+            });
+
+            // MODALS & CURSOR
+            const contactModal = document.getElementById('contact-modal');
+            const modalClose = document.querySelector('.modal-close');
+            const projectOverlay = document.getElementById('project-overlay');
+            const closeProjectBtn = document.getElementById('close-project-btn');
+            
+            function openModal() { if(contactModal) { contactModal.classList.add('active'); lenis.stop(); if(menuOverlay.classList.contains('active')) menuOverlay.classList.remove('active'); } }
+            function closeModal() { if(contactModal) contactModal.classList.remove('active'); if(projectOverlay) projectOverlay.classList.remove('active'); lenis.start(); }
+            
+            document.querySelectorAll('.open-contact-btn').forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); openModal(); }));
+            if(modalClose) modalClose.addEventListener('click', closeModal);
+            if(closeProjectBtn) closeProjectBtn.addEventListener('click', closeModal);
+
+            document.querySelectorAll('.project-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    projectOverlay.classList.add('active'); lenis.stop();
+                    // Here you would normally populate data dynamically
+                });
+            });
+
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorRing = document.querySelector('.cursor-ring');
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+                cursorRing.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+            });
+            
+            // Spotlight Effect on Cards
+            document.querySelectorAll('.spotlight-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+                });
+            });
         });
     </script>
 </body>
