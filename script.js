@@ -31,37 +31,35 @@ lenis.on('scroll', ({ progress }) => {
     document.querySelector('.scroll-progress').style.width = `${progress * 100}%`;
 });
 
-// === 3. PHOTO TILT & SPOTLIGHT ===
-// Spotlight
-const cards = document.querySelectorAll('.spotlight-card');
-cards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-    });
+// === 3. CUSTOM CURSOR ===
+const cursor = document.getElementById('cursor');
+const cursorRing = document.querySelector('.cursor-ring');
+const cursorDot = document.querySelector('.cursor-dot');
+
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
 });
 
-// Photo Tilt
-const glitchWrapper = document.querySelector('.glitch-wrapper');
-const glitchCard = document.querySelector('.glitch-card');
-if(glitchWrapper) {
-    glitchWrapper.addEventListener('mousemove', (e) => {
-        const rect = glitchWrapper.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const xRot = -((y - rect.height/2) / rect.height * 10);
-        const yRot = (x - rect.width/2) / rect.width * 10;
-        glitchCard.style.transform = `perspective(1000px) rotateX(${xRot}deg) rotateY(${yRot}deg)`;
-    });
-    glitchWrapper.addEventListener('mouseleave', () => {
-        glitchCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0)`;
-    });
+function animateCursor() {
+    ringX += (mouseX - ringX) * 0.15; // Smooth delay
+    ringY += (mouseY - ringY) * 0.15;
+    cursorRing.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(animateCursor);
 }
+animateCursor();
 
-// === 4. PROJECT OVERLAY LOGIC ===
+// Hover effect for links
+document.querySelectorAll('a, button, .project-item').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+});
+
+// === 4. PROJECT DATA ===
 const projectData = {
     'smart-lecture': { title: 'Smart Lecture Assistant', role: 'AI Engineer', stack: 'Python, OpenAI, Pinecone', desc: 'Autonomous NLP engine for university lectures. Uses Whisper for transcription and RAG for semantic search.', link: '#' },
     'fluxsync': { title: 'FluxSync Engine', role: 'Systems Architect', stack: 'Go, gRPC, Kubernetes', desc: 'Distributed job scheduler handling 10k+ concurrent tasks with custom Raft Consensus.', link: '#' },
@@ -105,17 +103,23 @@ const mesh = new THREE.Points(geometry, material);
 scene.add(mesh);
 camera.position.z = 5;
 
-let mouseX = 0, mouseY = 0;
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX / window.innerWidth - 0.5;
-    mouseY = e.clientY / window.innerHeight - 0.5;
+// Spotlight Effect
+const cards = document.querySelectorAll('.spotlight-card');
+cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+    });
 });
 
 function animate() {
     requestAnimationFrame(animate);
     mesh.rotation.y += 0.001;
-    mesh.rotation.x = mouseY * 0.1;
-    mesh.rotation.z = mouseX * 0.1;
+    mesh.rotation.x = mouseY * 0.0001;
+    mesh.rotation.z = mouseX * 0.0001;
     renderer.render(scene, camera);
 }
 animate();
