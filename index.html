@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti | Systems Engineer</title>
+    <title>Avinash Sangisetti | AI Engineer</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,13 +17,20 @@
 
     <header>
         <nav class="glass-nav">
-            <div class="logo">AS<span class="dot">.</span></div>
-            <div class="menu-toggle" id="mobile-menu-btn"><i class="fas fa-bars"></i></div>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#work" onclick="closeMenu()">Work</a></li>
-                <li><a href="#experience" onclick="closeMenu()">Journey</a></li>
-                <li><button class="btn-primary open-contact-btn" onclick="closeMenu()">Contact</button></li>
-            </ul>
+            <div class="nav-container">
+                <div class="logo">AS<span class="dot">.</span></div>
+                
+                <div class="menu-toggle" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#work" onclick="closeMenu()">Work</a></li>
+                    <li><a href="#experience" onclick="closeMenu()">Journey</a></li>
+                    <li><a href="resume.pdf" target="_blank" class="nav-btn-resume" onclick="closeMenu()">Resume</a></li>
+                    <li><button class="btn-primary open-contact-btn" onclick="closeMenu()">Contact</button></li>
+                </ul>
+            </div>
         </nav>
     </header>
 
@@ -44,9 +51,12 @@
                     I'm <strong>Avinash</strong>. I engineer <span class="white">resilient systems</span>. 
                     Specializing in high-performance Distributed Systems, AI Infrastructure, and Native Android.
                 </p>
+                
                 <div class="hero-actions slide-in delay-2">
                     <button class="btn-primary open-contact-btn">Initiate Uplink</button>
-                    <a href="#work" class="btn-text">View Documentation ↓</a>
+                    <a href="resume.pdf" target="_blank" class="btn-secondary">
+                        <i class="fas fa-file-alt"></i> Resume
+                    </a>
                 </div>
             </div>
             
@@ -207,24 +217,49 @@
     <div id="contact-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="close-btn">&times;</button>
-            <span class="mono-label">/// ESTABLISH CONNECTION</span>
-            <h3>Initialize Uplink</h3>
-            <p>Ready to deploy? I'm open to full-stack and AI engineering roles.</p>
-            <div class="contact-list">
-                <a href="tel:+917795150609" class="c-item"><span>+91 7795150609</span><i class="fas fa-phone"></i></a>
-                <a href="mailto:avinashsangisetti@gmail.com" class="c-item"><span>avinashsangisetti@gmail.com</span><i class="fas fa-envelope"></i></a>
-                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-item"><span>@avinashsangisetti</span><i class="fab fa-instagram"></i></a>
+            <div class="modal-header">
+                <span class="mono-label">/// ESTABLISH CONNECTION</span>
+                <h3>Initialize Uplink</h3>
+                <p>Ready to deploy? I'm open to full-stack and AI engineering roles.</p>
+            </div>
+            
+            <div class="contact-grid">
+                <a href="tel:+917795150609" class="c-item">
+                    <div class="c-icon"><i class="fas fa-phone"></i></div>
+                    <div class="c-info">
+                        <span class="c-label">Phone</span>
+                        <span class="c-value">+91 7795150609</span>
+                    </div>
+                    <div class="c-arrow"><i class="fas fa-arrow-right"></i></div>
+                </a>
+
+                <a href="mailto:avinashsangisetti@gmail.com" class="c-item">
+                    <div class="c-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="c-info">
+                        <span class="c-label">Email</span>
+                        <span class="c-value">avinashsangisetti@gmail.com</span>
+                    </div>
+                    <div class="c-arrow"><i class="fas fa-arrow-right"></i></div>
+                </a>
+
+                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-item">
+                    <div class="c-icon"><i class="fab fa-instagram"></i></div>
+                    <div class="c-info">
+                        <span class="c-label">Instagram</span>
+                        <span class="c-value">@avinashsangisetti</span>
+                    </div>
+                    <div class="c-arrow"><i class="fas fa-arrow-right"></i></div>
+                </a>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. COMPLEX PARTICLE SYSTEM
+        // 1. PARTICLES
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         let particlesArray;
         class Particle {
             constructor() {
@@ -271,10 +306,9 @@
             init();
         });
 
-        // 2. HACKER TEXT DECODE EFFECT
+        // 2. TEXT DECODE
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         const hackText = document.querySelector(".decode-text");
-        
         setTimeout(() => {
             let iterations = 0;
             const interval = setInterval(() => {
@@ -289,7 +323,7 @@
             }, 30);
         }, 500);
 
-        // 3. SCROLL REVEAL (Intersection Observer)
+        // 3. SCROLL REVEAL
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
@@ -297,23 +331,24 @@
                 }
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
 
-        // 4. MENU & MODAL LOGIC
+        // 4. MOBILE MENU & MODAL
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
+        
         const toggleMenu = () => {
             mobileMenuBtn.classList.toggle('active');
             navLinks.classList.toggle('active');
         };
+        
         const closeMenu = () => {
             mobileMenuBtn.classList.remove('active');
             navLinks.classList.remove('active');
         };
+        
         mobileMenuBtn.addEventListener('click', toggleMenu);
 
-        // Modal
         const modal = document.getElementById("contact-modal");
         document.querySelectorAll(".open-contact-btn").forEach(btn => 
             btn.onclick = () => { modal.classList.add("active"); document.body.style.overflow="hidden";}
@@ -321,7 +356,14 @@
         document.querySelector(".close-btn").onclick = () => {
             modal.classList.remove("active"); document.body.style.overflow="auto";
         };
+        
+        // Close modal when clicking outside
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.remove("active");
+                document.body.style.overflow="auto";
+            }
+        }
     </script>
 </body>
 </html>
-
