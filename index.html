@@ -10,12 +10,6 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
 </head>
 <body>
 
@@ -30,9 +24,8 @@
                 <div class="logo">AS<span class="dot">.</span></div>
                 <ul class="nav-links" id="nav-links">
                     <li><a href="#hero" onclick="closeMenu()">Start</a></li>
-                    <li><a href="#proj-1" onclick="closeMenu()">AI/NLP</a></li>
-                    <li><a href="#proj-2" onclick="closeMenu()">Systems</a></li>
-                    <li><a href="#proj-3" onclick="closeMenu()">Mobile</a></li>
+                    <li><a href="#work" onclick="closeMenu()">Work</a></li>
+                    <li><a href="#footer" onclick="closeMenu()">Socials</a></li>
                     <li><a href="resume.pdf" target="_blank" class="nav-btn-resume" onclick="closeMenu()">Resume</a></li>
                     <li><button class="btn-primary open-contact-btn" onclick="closeMenu()">Contact</button></li>
                 </ul>
@@ -45,13 +38,14 @@
         
         <section id="hero" class="scene-section hero-split">
             <div class="content-box hero-box">
-                <div class="code-badge"><i class="fas fa-cube"></i> v4.0.0 // RENDER_ENGINE_INIT</div>
+                <div class="code-badge"><i class="fas fa-network-wired"></i> v5.0.0 // NEURAL_CORE_ONLINE</div>
                 <h1>Architecting<br>Digital Reality.</h1>
-                <p>I'm <strong>Avinash</strong>. I build high-performance AI infrastructure and distributed systems. Scroll to explore the architecture.</p>
+                <p>I'm <strong>Avinash</strong>. I build high-performance AI infrastructure and distributed systems. <br>Scroll to explore the architecture.</p>
                 <div class="hero-actions">
                     <button class="btn-primary open-contact-btn">Initialize Connection</button>
                 </div>
             </div>
+            
             <div class="hero-visual">
                 <div class="pfp-container">
                     <img src="pfp.png" alt="Avinash Sangisetti" class="hero-pfp">
@@ -59,57 +53,55 @@
             </div>
         </section>
 
-        <section id="proj-1" class="scene-section right-align">
-            <div class="content-box project-box">
-                <span class="mono-label">01. / INTELLIGENCE</span>
-                <h2>Smart Lecture Assistant</h2>
-                <p>An autonomous NLP engine. It ingests raw audio streams and reconstructs them into semantic knowledge graphs using Vector Embeddings and RAG pipelines.</p>
-                <div class="tech-row">
-                    <span>Python</span><span>OpenAI</span><span>Pinecone</span><span>LangChain</span>
-                </div>
-                <div class="links">
+        <section id="work" class="scene-section column-layout">
+            <div class="section-header">
+                <span class="mono-label">01. / PROJECT LOG</span>
+                <h2>Engineered Solutions</h2>
+            </div>
+
+            <div class="projects-grid">
+                
+                <div class="content-box project-card">
+                    <div class="card-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Smart Lecture Assistant</h3>
+                    <p>An autonomous NLP engine. It ingests raw audio streams and reconstructs them into semantic knowledge graphs using Vector Embeddings and RAG pipelines.</p>
+                    <div class="tech-row">
+                        <span>Python</span><span>OpenAI</span><span>Pinecone</span>
+                    </div>
                     <a href="#" class="btn-link">View Repo <i class="fab fa-github"></i></a>
                 </div>
-            </div>
-        </section>
 
-        <section id="proj-2" class="scene-section left-align">
-            <div class="content-box project-box">
-                <span class="mono-label">02. / INFRASTRUCTURE</span>
-                <h2>FluxSync Engine</h2>
-                <p>A distributed task scheduler designed for chaos. Handles 10k+ concurrent jobs with a custom Raft Consensus algorithm ensuring fault tolerance across clusters.</p>
-                <div class="tech-row">
-                    <span>Go</span><span>gRPC</span><span>Kubernetes</span><span>Redis</span>
+                <div class="content-box project-card">
+                    <div class="card-icon"><i class="fas fa-project-diagram"></i></div>
+                    <h3>FluxSync Engine</h3>
+                    <p>A distributed task scheduler designed for chaos. Handles 10k+ concurrent jobs with a custom Raft Consensus algorithm ensuring fault tolerance.</p>
+                    <div class="tech-row">
+                        <span>Go</span><span>gRPC</span><span>Kubernetes</span>
+                    </div>
+                    <a href="#" class="btn-link">View Architecture <i class="fas fa-server"></i></a>
                 </div>
-                <div class="links">
-                    <a href="#" class="btn-link">View Architecture <i class="fas fa-project-diagram"></i></a>
-                </div>
-            </div>
-        </section>
 
-        <section id="proj-3" class="scene-section right-align">
-            <div class="content-box project-box">
-                <span class="mono-label">03. / EDGE COMPUTING</span>
-                <h2>SGuardian</h2>
-                <p>Real-time sensor fusion on the edge. A native Android service running TensorFlow Lite models to detect anomalies in accelerometer data for elderly care.</p>
-                <div class="tech-row">
-                    <span>Kotlin</span><span>TFLite</span><span>Android SDK</span>
-                </div>
-                <div class="links">
+                <div class="content-box project-card">
+                    <div class="card-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>SGuardian</h3>
+                    <p>Real-time sensor fusion on the edge. A native Android service running TensorFlow Lite models to detect anomalies in accelerometer data.</p>
+                    <div class="tech-row">
+                        <span>Kotlin</span><span>TFLite</span><span>Android SDK</span>
+                    </div>
                     <a href="#" class="btn-link">View Case Study <i class="fas fa-external-link-alt"></i></a>
                 </div>
+
             </div>
         </section>
 
-        <section class="scene-section center-align footer-section">
+        <section id="footer" class="scene-section center-align footer-section">
             <div class="content-box footer-box">
                 <h2>System Status: Online</h2>
-                <p>Ready to deploy. Open to AI & Backend Roles.</p>
-                <p class="copyright">&copy; 2025 Avinash Sangisetti.</p>
+                <p>&copy; 2025 Avinash Sangisetti.</p>
                 <div class="social-row">
                     <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
                     <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="mailto:avinashsangisetti@gmail.com"><i class="fas fa-envelope"></i></a>
+                    <a href="https://instagram.com/avinashsangisetti" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </section>
@@ -120,18 +112,34 @@
         <div class="modal-content">
             <button class="close-btn">&times;</button>
             <div class="modal-header">
-                <span class="mono-label">/// UPLINK SECURE</span>
+                <span class="mono-label">/// SECURE UPLINK</span>
                 <h3>Initialize Connection</h3>
-                <p class="modal-desc">Open for high-impact engineering roles.</p>
+                <p class="modal-desc">Ready to deploy? Open for high-impact engineering roles.</p>
             </div>
+            
             <div class="contact-grid">
                 <a href="tel:+917795150609" class="c-item">
                     <div class="c-icon"><i class="fas fa-phone"></i></div>
-                    <div class="c-info"><span class="c-label">Phone</span><span class="c-value">+91 7795150609</span></div>
+                    <div class="c-info">
+                        <span class="c-label">Phone</span>
+                        <span class="c-value">+91 7795150609</span>
+                    </div>
                 </a>
+
                 <a href="mailto:avinashsangisetti@gmail.com" class="c-item">
                     <div class="c-icon"><i class="fas fa-envelope"></i></div>
-                    <div class="c-info"><span class="c-label">Email</span><span class="c-value">avinashsangisetti@gmail.com</span></div>
+                    <div class="c-info">
+                        <span class="c-label">Email</span>
+                        <span class="c-value">avinashsangisetti@gmail.com</span>
+                    </div>
+                </a>
+
+                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-item">
+                    <div class="c-icon"><i class="fab fa-instagram"></i></div>
+                    <div class="c-info">
+                        <span class="c-label">Instagram</span>
+                        <span class="c-value">@avinashsangisetti</span>
+                    </div>
                 </a>
             </div>
         </div>
