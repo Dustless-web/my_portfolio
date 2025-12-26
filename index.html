@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti | AI Engineer</title>
+    <title>Avinash Sangisetti | AI Architect</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,12 +29,12 @@
             <div class="nav-container">
                 <div class="logo">AS<span class="dot">.</span></div>
                 <ul class="nav-links" id="nav-links">
-                    <li><a href="#hero">Start</a></li>
-                    <li><a href="#proj-1">AI/NLP</a></li>
-                    <li><a href="#proj-2">Systems</a></li>
-                    <li><a href="#proj-3">Mobile</a></li>
-                    <li><a href="resume.pdf" target="_blank" class="nav-btn-resume">Resume</a></li>
-                    <li><button class="btn-primary open-contact-btn">Contact</button></li>
+                    <li><a href="#hero" onclick="closeMenu()">Start</a></li>
+                    <li><a href="#proj-1" onclick="closeMenu()">AI/NLP</a></li>
+                    <li><a href="#proj-2" onclick="closeMenu()">Systems</a></li>
+                    <li><a href="#proj-3" onclick="closeMenu()">Mobile</a></li>
+                    <li><a href="resume.pdf" target="_blank" class="nav-btn-resume" onclick="closeMenu()">Resume</a></li>
+                    <li><button class="btn-primary open-contact-btn" onclick="closeMenu()">Contact</button></li>
                 </ul>
                 <div class="menu-toggle" id="mobile-menu-btn"><i class="fas fa-bars"></i></div>
             </div>
@@ -43,13 +43,18 @@
 
     <main id="smooth-scroll-wrapper">
         
-        <section id="hero" class="scene-section">
+        <section id="hero" class="scene-section hero-split">
             <div class="content-box hero-box">
                 <div class="code-badge"><i class="fas fa-cube"></i> v4.0.0 // RENDER_ENGINE_INIT</div>
-                <h1 class="glitch-title" data-text="Digital Reality">Architecting<br>Digital Reality.</h1>
-                <p>I'm <strong>Avinash</strong>. I build high-performance AI infrastructure and distributed systems. <br>Scroll to explore the architecture.</p>
+                <h1>Architecting<br>Digital Reality.</h1>
+                <p>I'm <strong>Avinash</strong>. I build high-performance AI infrastructure and distributed systems. Scroll to explore the architecture.</p>
                 <div class="hero-actions">
                     <button class="btn-primary open-contact-btn">Initialize Connection</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="pfp-container">
+                    <img src="pfp.png" alt="Avinash Sangisetti" class="hero-pfp">
                 </div>
             </div>
         </section>
@@ -58,9 +63,9 @@
             <div class="content-box project-box">
                 <span class="mono-label">01. / INTELLIGENCE</span>
                 <h2>Smart Lecture Assistant</h2>
-                <p>An autonomous NLP engine. It ingests raw audio streams and reconstructs them into semantic knowledge graphs using Vector Embeddings.</p>
+                <p>An autonomous NLP engine. It ingests raw audio streams and reconstructs them into semantic knowledge graphs using Vector Embeddings and RAG pipelines.</p>
                 <div class="tech-row">
-                    <span>Python</span><span>OpenAI</span><span>Pinecone</span><span>RAG</span>
+                    <span>Python</span><span>OpenAI</span><span>Pinecone</span><span>LangChain</span>
                 </div>
                 <div class="links">
                     <a href="#" class="btn-link">View Repo <i class="fab fa-github"></i></a>
@@ -72,7 +77,7 @@
             <div class="content-box project-box">
                 <span class="mono-label">02. / INFRASTRUCTURE</span>
                 <h2>FluxSync Engine</h2>
-                <p>A distributed task scheduler designed for chaos. Handles 10k+ concurrent jobs with a custom Raft Consensus algorithm for fault tolerance.</p>
+                <p>A distributed task scheduler designed for chaos. Handles 10k+ concurrent jobs with a custom Raft Consensus algorithm ensuring fault tolerance across clusters.</p>
                 <div class="tech-row">
                     <span>Go</span><span>gRPC</span><span>Kubernetes</span><span>Redis</span>
                 </div>
@@ -86,9 +91,9 @@
             <div class="content-box project-box">
                 <span class="mono-label">03. / EDGE COMPUTING</span>
                 <h2>SGuardian</h2>
-                <p>Real-time sensor fusion on the edge. A native Android service that detects anomalies in accelerometer data to protect the elderly.</p>
+                <p>Real-time sensor fusion on the edge. A native Android service running TensorFlow Lite models to detect anomalies in accelerometer data for elderly care.</p>
                 <div class="tech-row">
-                    <span>Kotlin</span><span>TensorFlow Lite</span><span>Android SDK</span>
+                    <span>Kotlin</span><span>TFLite</span><span>Android SDK</span>
                 </div>
                 <div class="links">
                     <a href="#" class="btn-link">View Case Study <i class="fas fa-external-link-alt"></i></a>
@@ -96,14 +101,15 @@
             </div>
         </section>
 
-        <section class="scene-section center-align">
+        <section class="scene-section center-align footer-section">
             <div class="content-box footer-box">
                 <h2>System Status: Online</h2>
-                <p>&copy; 2026 Avinash Sangisetti.</p>
+                <p>Ready to deploy. Open to AI & Backend Roles.</p>
+                <p class="copyright">&copy; 2025 Avinash Sangisetti.</p>
                 <div class="social-row">
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="mailto:avinashsangisetti@gmail.com"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
         </section>
@@ -119,6 +125,10 @@
                 <p class="modal-desc">Open for high-impact engineering roles.</p>
             </div>
             <div class="contact-grid">
+                <a href="tel:+917795150609" class="c-item">
+                    <div class="c-icon"><i class="fas fa-phone"></i></div>
+                    <div class="c-info"><span class="c-label">Phone</span><span class="c-value">+91 7795150609</span></div>
+                </a>
                 <a href="mailto:avinashsangisetti@gmail.com" class="c-item">
                     <div class="c-icon"><i class="fas fa-envelope"></i></div>
                     <div class="c-info"><span class="c-label">Email</span><span class="c-value">avinashsangisetti@gmail.com</span></div>
