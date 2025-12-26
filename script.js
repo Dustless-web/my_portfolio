@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+    console.log("ROCKET ENGINE V2 STARTED"); // Check console to confirm new file loaded
+
     // === 1. PRELOADER ===
     const preloader = document.getElementById('preloader');
     const bar = document.querySelector('.bar-fill');
@@ -57,6 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.m-link').forEach(link => {
         link.addEventListener('click', (e) => {
             const targetId = link.getAttribute('href');
+            // Allow opening modal without closing menu immediately or special handling
+            if(link.classList.contains('open-contact-btn')) return;
+
             if(targetId && targetId.startsWith('#')) {
                 e.preventDefault();
                 toggleMenu();
@@ -187,10 +191,13 @@ function initBackground3D() {
     });
 }
 
-// --- 3D MENU ROCKET (REDESIGNED) ---
+// --- 3D MENU ROCKET (REDESIGNED & LARGER) ---
 function initMenuRocket() {
     const container = document.getElementById('menu-3d-container');
     if(!container) return;
+
+    // Clean up existing canvas if any (Fixes duplication issues)
+    while(container.firstChild) container.removeChild(container.firstChild);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -202,41 +209,42 @@ function initMenuRocket() {
 
     // === BUILD SCI-FI ROCKET ===
     const rocket = new THREE.Group();
-    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
-    const detailMat = new THREE.LineBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.3 });
+    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+    const detailMat = new THREE.LineBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.25 });
 
-    // 1. Main Fuselage (Tapered Cylinder)
-    const bodyGeo = new THREE.CylinderGeometry(0.6, 0.8, 3.5, 16, 4, true); 
+    // 1. Main Fuselage (Long Tapered Cylinder)
+    // RadiusTop, RadiusBottom, Height, RadialSegments, HeightSegments, OpenEnded
+    const bodyGeo = new THREE.CylinderGeometry(0.5, 0.8, 4, 16, 4, true); 
     const bodyWire = new THREE.WireframeGeometry(bodyGeo);
     const body = new THREE.LineSegments(bodyWire, mat);
     rocket.add(body);
 
-    // 2. Cockpit/Nose (Cone)
-    const noseGeo = new THREE.ConeGeometry(0.6, 1.5, 16, 2, true);
+    // 2. Cockpit/Nose (Sharp Cone)
+    const noseGeo = new THREE.ConeGeometry(0.5, 1.5, 16, 2, true);
     const noseWire = new THREE.WireframeGeometry(noseGeo);
     const nose = new THREE.LineSegments(noseWire, mat);
-    nose.position.y = 2.5; 
+    nose.position.y = 2.75; // 4/2 + 1.5/2
     rocket.add(nose);
 
     // 3. Engine Cluster (3 Cylinders)
     for(let i = 0; i < 3; i++) {
-        const engineGeo = new THREE.CylinderGeometry(0.2, 0.3, 0.8, 12);
+        const engineGeo = new THREE.CylinderGeometry(0.25, 0.4, 1, 12);
         const engineWire = new THREE.WireframeGeometry(engineGeo);
         const engine = new THREE.LineSegments(engineWire, mat);
         
         const angle = (Math.PI * 2 / 3) * i;
-        engine.position.x = Math.cos(angle) * 0.4;
-        engine.position.z = Math.sin(angle) * 0.4;
-        engine.position.y = -2;
+        engine.position.x = Math.cos(angle) * 0.5;
+        engine.position.z = Math.sin(angle) * 0.5;
+        engine.position.y = -2.5;
         rocket.add(engine);
     }
 
     // 4. Large Swept Fins (Wings)
     const finShape = new THREE.Shape();
     finShape.moveTo(0, 0);
-    finShape.lineTo(1.2, -1.5);
-    finShape.lineTo(1.2, -2.2);
-    finShape.lineTo(0.5, -1.5);
+    finShape.lineTo(1.5, -2); // Wing tip out
+    finShape.lineTo(1.5, -3); // Wing tip down
+    finShape.lineTo(0.5, -2); // Back to body
     finShape.lineTo(0, 0);
     
     const finGeo = new THREE.ShapeGeometry(finShape);
@@ -247,14 +255,14 @@ function initMenuRocket() {
         const finGroup = new THREE.Group();
         
         finGroup.rotation.y = (Math.PI * 2 / 3) * i;
-        fin.position.x = 0.6; // Offset from body
+        fin.position.x = 0.7; // Offset from body center
         fin.position.y = -0.5;
         finGroup.add(fin);
         rocket.add(finGroup);
     }
 
     // 5. Tech Rings (Details)
-    const ringGeo = new THREE.TorusGeometry(0.7, 0.02, 2, 32);
+    const ringGeo = new THREE.TorusGeometry(0.85, 0.02, 2, 32);
     const ringWire = new THREE.WireframeGeometry(ringGeo);
     
     const ring1 = new THREE.LineSegments(ringWire, detailMat);
@@ -269,12 +277,12 @@ function initMenuRocket() {
 
     scene.add(rocket);
     
-    // Scale Up
-    rocket.scale.set(1.8, 1.8, 1.8);
+    // MAKE IT BIGGER
+    rocket.scale.set(1.5, 1.5, 1.5); 
 
     // Initial Position
-    camera.position.z = 8;
-    rocket.rotation.z = Math.PI / 6;
+    camera.position.z = 9;
+    rocket.rotation.z = Math.PI / 5; // Mild tilt
     rocket.rotation.y = -Math.PI / 4;
 
     // Interaction State
@@ -305,11 +313,11 @@ function initMenuRocket() {
         requestAnimationFrame(animate);
         
         // Interpolate rotation
-        rocket.rotation.z += (targetRotX - rocket.rotation.z + Math.PI / 6) * 0.05;
+        rocket.rotation.z += (targetRotX - rocket.rotation.z + Math.PI / 5) * 0.05;
         rocket.rotation.y += (targetRotY - rocket.rotation.y) * 0.05;
         
         // Idle bobbing
-        rocket.position.y = Math.sin(Date.now() * 0.001) * 0.15;
+        rocket.position.y = Math.sin(Date.now() * 0.001) * 0.2;
         
         // Resize check
         if(container.clientWidth > 0 && (renderer.domElement.width !== container.clientWidth * window.devicePixelRatio)) {
