@@ -14,11 +14,6 @@
 </head>
 <body>
 
-    <div id="cursor">
-        <div class="cursor-dot"></div>
-        <div class="cursor-ring"></div>
-    </div>
-
     <div id="preloader">
         <div class="loader-content">
             <div class="loader-text">INITIALIZING CORE...</div>
@@ -38,12 +33,16 @@
     </nav>
 
     <div class="menu-overlay" id="menu-overlay">
-        <div class="menu-links">
-            <a href="#hero" class="m-link" onclick="toggleMenu()">01 / Home</a>
-            <a href="#journey" class="m-link" onclick="toggleMenu()">02 / Journey</a>
-            <a href="#work" class="m-link" onclick="toggleMenu()">03 / Work</a>
-            <a href="resume.pdf" target="_blank" class="m-link" onclick="toggleMenu()">04 / Resume</a>
-            <a href="#" class="m-link" onclick="toggleMenu(); openModal()">05 / Contact</a>
+        <div class="menu-content-wrapper">
+            <div id="menu-3d-container"></div> <div class="menu-links-container">
+                <div class="menu-links">
+                    <a href="#hero" class="m-link" onclick="toggleMenu()" data-index="0">01 / Home</a>
+                    <a href="#journey" class="m-link" onclick="toggleMenu()" data-index="1">02 / Journey</a>
+                    <a href="#work" class="m-link" onclick="toggleMenu()" data-index="2">03 / Work</a>
+                    <a href="resume.pdf" target="_blank" class="m-link" onclick="toggleMenu()" data-index="3">04 / Resume</a>
+                    <a href="#" class="m-link" onclick="toggleMenu(); openModal()" data-index="4">05 / Contact</a>
+                </div>
+            </div>
         </div>
         <div class="menu-footer">
             <span>Bengaluru, IN</span>
