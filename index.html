@@ -259,7 +259,7 @@
     </div>
 
     <script>
-        // 1. NEURAL FLOW FIELD (The "Effortless" Animation)
+        // 1. NEURAL FLOW FIELD
         const canvas = document.getElementById('neural-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -281,9 +281,8 @@
             lastScrollY = scrollY;
         });
 
-        // Click Interaction (Shockwave)
         window.addEventListener('mousedown', (e) => {
-            clickPulse = 1; // Trigger pulse
+            clickPulse = 1;
             hoverX = e.clientX;
             hoverY = e.clientY;
         });
@@ -300,18 +299,13 @@
             }
 
             update() {
-                // Base Flow (Perlin-like noise simulation using Sin/Cos)
-                // This creates the "curvy" aesthetic look
                 const noise = Math.sin(this.y * 0.002 + scrollY * 0.0002) * Math.cos(this.x * 0.002);
                 const angle = noise * 10;
-                
-                // Add Scroll Speed influence (straightens the flow)
                 const scrollFactor = Math.min(Math.abs(scrollSpeed) * 0.1, 5);
                 
                 this.vx = Math.cos(angle) * this.baseSpeed;
                 this.vy = Math.sin(angle) * this.baseSpeed + scrollFactor; 
 
-                // Apply Click Pulse (Repel)
                 if (clickPulse > 0.01) {
                     const dx = this.x - hoverX;
                     const dy = this.y - hoverY;
@@ -326,7 +320,6 @@
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Wrap around screen
                 if (this.x > width) this.x = 0;
                 if (this.x < 0) this.x = width;
                 if (this.y > height) this.y = 0;
@@ -336,39 +329,33 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = "rgba(212, 175, 55, 0.4)"; // Gold color
+                ctx.fillStyle = "rgba(212, 175, 55, 0.4)";
                 ctx.fill();
             }
         }
 
+        // REDUCED PARTICLES HERE
         function initParticles() {
             particles = [];
-            const particleCount = Math.min(width * 0.15, 150); // Responsive count
+            // Reduced to 0.05 (from 0.15) and capped at 60 (from 150)
+            const particleCount = Math.min(width * 0.05, 60); 
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle());
             }
         }
 
         function animate() {
-            // Trail effect
             ctx.fillStyle = 'rgba(5, 5, 5, 0.1)'; 
             ctx.fillRect(0, 0, width, height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            // Decay click pulse
+            particles.forEach(p => { p.update(); p.draw(); });
             clickPulse *= 0.92;
-
             requestAnimationFrame(animate);
         }
 
         resize();
         animate();
 
-        // 2. TEXT DECODE
+        // 2. TEXT DECODE EFFECT
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         const hackText = document.querySelector(".decode-text");
         if(hackText) {
@@ -387,10 +374,16 @@
             }, 500);
         }
 
-        // 3. INTERACTIVE BENTO SCAN
+        // 3. COMPLEX CARD INTERACTION
         window.triggerScan = function(card) {
             card.classList.add('scanning');
             setTimeout(() => card.classList.remove('scanning'), 1000);
+            anime({
+                targets: card,
+                scale: [1, 0.98, 1],
+                duration: 400,
+                easing: 'easeInOutQuad'
+            });
         }
 
         // 4. SCROLL REVEAL
@@ -398,13 +391,13 @@
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Subtle scale up using Anime.js
                     anime({
                         targets: entry.target,
-                        scale: [0.98, 1],
+                        translateY: [20, 0],
                         opacity: [0, 1],
                         easing: 'easeOutExpo',
-                        duration: 800
+                        duration: 1000,
+                        delay: anime.stagger(100)
                     });
                     observer.unobserve(entry.target);
                 }
@@ -412,7 +405,7 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
 
-        // 5. MOBILE MENU & MODAL
+        // 5. MOBILE MENU
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
         
@@ -426,6 +419,7 @@
             navLinks.classList.toggle('active');
         });
 
+        // 6. MODAL
         const modal = document.getElementById("contact-modal");
         document.querySelectorAll(".open-contact-btn").forEach(btn => 
             btn.onclick = () => { modal.classList.add("active"); document.body.style.overflow="hidden";}
