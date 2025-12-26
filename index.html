@@ -13,7 +13,7 @@
 
     <div class="scanlines"></div>
     <div class="noise-overlay"></div>
-    <canvas id="particle-canvas"></canvas>
+    <canvas id="matrix-canvas"></canvas>
 
     <header>
         <nav class="glass-nav">
@@ -259,56 +259,71 @@
     </div>
 
     <script>
-        // 1. SCROLL-REACTIVE PARTICLE SYSTEM (HYPERSPACE)
-        const canvas = document.getElementById('particle-canvas');
+        // 1. DIGITAL RAIN SYSTEM (NO PARTICLES, JUST CODE)
+        const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        let width, height, particles = [];
+        let width, height;
         let scrollY = 0, lastScrollY = 0, scrollVelocity = 0;
+
+        // Characters to use (Hex + Binary)
+        const chars = '01010101010101010123456789ABCDEF'; 
+        const fontSize = 14;
+        let columns = 0;
+        let drops = []; // Array to store Y position of drops
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
+            columns = width / fontSize;
+            drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.random() * -100; // Start off screen
+            }
         }
         window.addEventListener('resize', resize);
         resize();
 
+        // Scroll Velocity Tracker
         window.addEventListener('scroll', () => {
             scrollY = window.scrollY;
-            scrollVelocity = (scrollY - lastScrollY) * 0.5; 
+            scrollVelocity = (scrollY - lastScrollY) * 2; // Multiplier for effect
             lastScrollY = scrollY;
         });
 
-        class Particle {
-            constructor() { this.init(); }
-            init() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.z = Math.random() * 2 + 0.5; 
-                this.size = Math.random() * 1.5;
-            }
-            update() {
-                let movement = 0.5 * this.z - (scrollVelocity * this.z * 2);
-                this.y -= movement;
-                if (this.y < 0) { this.y = height; this.x = Math.random() * width; }
-                if (this.y > height) { this.y = 0; this.x = Math.random() * width; }
-            }
-            draw() {
-                ctx.beginPath();
-                let stretch = Math.abs(scrollVelocity) * 3;
-                let length = Math.max(this.size, stretch);
-                ctx.fillStyle = `rgba(212, 175, 55, ${0.3 * this.z})`; 
-                ctx.rect(this.x, this.y, this.size, length);
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < 100; i++) particles.push(new Particle());
-
         function animate() {
-            ctx.clearRect(0, 0, width, height);
-            scrollVelocity *= 0.95; // Friction
-            if (Math.abs(scrollVelocity) < 0.01) scrollVelocity = 0;
-            particles.forEach(p => { p.update(); p.draw(); });
+            // Semi-transparent black to create trail effect
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = '#d4af37'; // Gold Color
+            ctx.font = fontSize + 'px "JetBrains Mono"';
+
+            for (let i = 0; i < drops.length; i++) {
+                // Random character
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                
+                // Opacity variation
+                ctx.globalAlpha = Math.random() * 0.5 + 0.1;
+                
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Reset drop to top randomly
+                if (drops[i] * fontSize > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                // Move drop down. Add Scroll Velocity for "Warp" effect
+                let speed = 1;
+                if (scrollVelocity > 0) speed += scrollVelocity * 0.1;
+                
+                drops[i] += speed;
+            }
+            ctx.globalAlpha = 1; // Reset opacity
+
+            // Dampen velocity
+            scrollVelocity *= 0.9;
+            if (Math.abs(scrollVelocity) < 0.1) scrollVelocity = 0;
+
             requestAnimationFrame(animate);
         }
         animate();
@@ -360,7 +375,6 @@
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
         
-        // Expose to window for HTML onclicks
         window.closeMenu = function() {
             mobileMenuBtn.classList.remove('active');
             navLinks.classList.remove('active');
