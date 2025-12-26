@@ -3,153 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti | Portfolio</title>
+    <title>Avinash Sangisetti | Software Engineer</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="ambient-background">
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
-        <div class="grid-overlay"></div>
-    </div>
+    <div class="tech-grid"></div>
+    <div class="vignette"></div>
 
     <header>
-        <nav class="glass-nav fade-in-down">
-            <div class="logo">AS.</div>
+        <nav class="glass-nav">
+            <div class="logo">AS<span class="dot">.</span></div>
             <ul class="nav-links">
-                <li><a href="#work">Work</a></li>
-                <li><a href="#skills">Expertise</a></li>
-                <li><button class="btn-nav open-contact-btn">Contact</button></li>
+                <li><a href="#work">Projects</a></li>
+                <li><a href="#stack">Stack</a></li>
+                <li><button class="btn-primary open-contact-btn">Contact Me</button></li>
             </ul>
         </nav>
-
-        <div class="hero-container">
-            <div class="profile-wrapper fade-in-up">
-                <img src="PFP.jpeg" alt="Avinash Sangisetti" class="profile-pic">
-            </div>
-            <h1 class="fade-in-up delay-1">
-                Hello, I'm <span class="highlight">Avinash.</span>
-            </h1>
-            <p class="hero-bio fade-in-up delay-2">
-                A 20-year-old CSE Student from <strong>KSIT, Bangalore</strong>.<br>
-                Crafting intelligent systems with <span class="gold-text">AI/ML</span> and <span class="gold-text">Prompt Engineering</span>.
-            </p>
-            
-            <button class="btn-hero fade-in-up delay-3 open-contact-btn">
-                Let's Talk <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
     </header>
 
     <main>
-        <div class="container" id="work">
-            <div class="section-header hidden">
-                <h2 class="section-title">Selected Works</h2>
-                <div class="section-line"></div>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="profile-badge">
+                    <div class="status-dot"></div>
+                    <span>Available for Summer '25</span>
+                </div>
+                <h1>Building intelligent<br><span class="gradient-text">systems & interfaces.</span></h1>
+                <p class="bio">
+                    I'm <strong>Avinash</strong>, a CS student at KSIT Bangalore. I bridge the gap between <span class="white">AI engineering</span> and <span class="white">native mobile performance</span>.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn-primary open-contact-btn">Get in Touch</button>
+                    <a href="#work" class="btn-secondary">View Work</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="avatar-container">
+                    <img src="PFP.jpeg" alt="Avinash" class="avatar-img">
+                    <div class="avatar-glow"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="cards-wrapper">
+            <div class="section-header">
+                <h2>Selected Work</h2>
             </div>
             
-            <div class="featured-grid">
-                <article class="card glass-card hidden">
-                    <div class="card-image gradient-1">
-                        <i class="fas fa-robot"></i>
-                    </div>
+            <div class="bento-grid">
+                <div class="card spotlight-card large-span">
+                    <div class="card-border"></div>
                     <div class="card-content">
-                        <span class="card-subtitle">AI & NLP</span>
-                        <h3>Smart Lecture Assistant</h3>
-                        <p>An intelligent chatbot leveraging OpenAI's API to summarize complex lecture notes in seconds.</p>
-                        <div class="tags">
-                            <span>Python</span>
-                            <span>LLMs</span>
+                        <div class="icon-holder">
+                            <i class="fas fa-robot"></i>
                         </div>
-                        <a href="#" class="link-arrow">View Case Study <span>⟶</span></a>
+                        <div class="text-area">
+                            <h3>Smart Lecture Assistant</h3>
+                            <p>An NLP-powered engine that condenses hours of lecture audio into structured notes using OpenAI's whisper & completion APIs.</p>
+                            <div class="stack-tags">
+                                <span>Python</span>
+                                <span>FastAPI</span>
+                                <span>React</span>
+                            </div>
+                        </div>
                     </div>
-                </article>
+                </div>
 
-                <article class="card glass-card hidden delay-1">
-                    <div class="card-image gradient-2">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
+                <div class="card spotlight-card">
+                    <div class="card-border"></div>
                     <div class="card-content">
-                        <span class="card-subtitle">ANDROID DEV</span>
-                        <h3>SGuardian</h3>
-                        <p>A native Android application designed for elderly care, featuring real-time fall detection algorithms.</p>
-                        <div class="tags">
-                            <span>Kotlin</span>
-                            <span>Sensors</span>
+                        <div class="icon-holder blue">
+                            <i class="fas fa-mobile-alt"></i>
                         </div>
-                        <a href="#" class="link-arrow">View Case Study <span>⟶</span></a>
+                        <div class="text-area">
+                            <h3>SGuardian</h3>
+                            <p>Native Android fall-detection system leveraging accelerometer sensor fusion for elderly safety.</p>
+                            <div class="stack-tags">
+                                <span>Kotlin</span>
+                                <span>Jetpack Compose</span>
+                            </div>
+                        </div>
                     </div>
-                </article>
-            </div>
-        </div>
+                </div>
 
-        <div class="container" id="skills">
-            <div class="section-header hidden">
-                <h2 class="section-title">Technical Arsenal</h2>
-                <div class="section-line"></div>
-            </div>
-            
-            <div class="small-grid">
-                <div class="card small-card glass-card hidden">
-                    <div class="icon-box">✦</div>
-                    <h4>Prompt Engineering</h4>
-                    <p>Advanced Context Design</p>
-                </div>
-                <div class="card small-card glass-card hidden delay-1">
-                    <div class="icon-box">✦</div>
-                    <h4>Machine Learning</h4>
-                    <p>TensorFlow / PyTorch</p>
-                </div>
-                <div class="card small-card glass-card hidden delay-2">
-                    <div class="icon-box">✦</div>
-                    <h4>Android Dev</h4>
-                    <p>Native Kotlin & XML</p>
-                </div>
-                 <div class="card small-card glass-card hidden">
-                    <div class="icon-box">✦</div>
-                    <h4>Web Development</h4>
-                    <p>Modern Full Stack</p>
-                </div>
-                 <div class="card small-card glass-card hidden delay-1">
-                    <div class="icon-box">✦</div>
-                    <h4>Python</h4>
-                    <p>Data Science & Scripting</p>
-                </div>
-                 <div class="card small-card glass-card hidden delay-2">
-                    <div class="icon-box">✦</div>
-                    <h4>Java</h4>
-                    <p>Robust Backend Systems</p>
+                <div class="card spotlight-card">
+                    <div class="card-border"></div>
+                    <div class="card-content">
+                        <div class="icon-holder purple">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <div class="text-area">
+                            <h3>Portfolio V1</h3>
+                            <p>A high-performance personal site built with semantic HTML5 and GPU-accelerated CSS.</p>
+                            <div class="stack-tags">
+                                <span>HTML/CSS</span>
+                                <span>GitHub Pages</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section id="stack" class="stack-section">
+            <div class="section-header">
+                <h2>Technical Arsenal</h2>
+            </div>
+            <div class="stack-grid">
+                <div class="stack-item">
+                    <i class="fab fa-python"></i>
+                    <span>Python</span>
+                </div>
+                <div class="stack-item">
+                    <i class="fab fa-java"></i>
+                    <span>Java</span>
+                </div>
+                <div class="stack-item">
+                    <i class="fab fa-android"></i>
+                    <span>Android</span>
+                </div>
+                <div class="stack-item">
+                    <i class="fas fa-brain"></i>
+                    <span>TensorFlow</span>
+                </div>
+                <div class="stack-item">
+                    <i class="fas fa-terminal"></i>
+                    <span>Prompt Eng.</span>
+                </div>
+                 <div class="stack-item">
+                    <i class="fab fa-git-alt"></i>
+                    <span>Git</span>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
-        <p>Avinash Sangisetti — 2025</p>
-        <div class="socials">
-            <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-            <a href="https://github.com" target="_blank">GitHub</a>
+        <div class="footer-content">
+            <p>&copy; 2025 Avinash Sangisetti</p>
+            <div class="social-links">
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
         </div>
     </footer>
 
     <div id="contact-modal" class="modal">
-        <div class="modal-content glass-card">
-            <span class="close-btn">&times;</span>
-            <h2>Get in Touch</h2>
-            <p>I'm currently open to internship opportunities and collaborations.</p>
-            <div class="contact-links">
-                <a href="tel:+917795150609" class="contact-item">
-                    <i class="fas fa-phone-alt"></i>
+        <div class="modal-box">
+            <button class="close-btn">&times;</button>
+            <h3>Let's Collaborate</h3>
+            <p>I'm open to full-stack and AI engineering roles.</p>
+            
+            <div class="contact-list">
+                <a href="tel:+917795150609" class="c-item">
+                    <i class="fas fa-phone"></i>
                     <span>+91 7795150609</span>
                 </a>
-                <a href="mailto:avinashsangisetti@gmail.com" class="contact-item">
+                <a href="mailto:avinashsangisetti@gmail.com" class="c-item">
                     <i class="fas fa-envelope"></i>
                     <span>avinashsangisetti@gmail.com</span>
                 </a>
-                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="contact-item">
+                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-item">
                     <i class="fab fa-instagram"></i>
                     <span>@avinashsangisetti</span>
                 </a>
@@ -158,37 +176,35 @@
     </div>
 
     <script>
-        // Scroll Animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                }
-            });
-        });
-        document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
+        // 1. Mouse Spotlight Effect
+        document.getElementById("work").onmousemove = e => {
+            for(const card of document.getElementsByClassName("spotlight-card")) {
+                const rect = card.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
 
-        // Contact Modal Logic
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            };
+        }
+
+        // 2. Modal Logic
         const modal = document.getElementById("contact-modal");
-        const openBtns = document.querySelectorAll(".open-contact-btn");
-        const closeBtn = document.querySelector(".close-btn");
+        const btns = document.querySelectorAll(".open-contact-btn");
+        const close = document.querySelector(".close-btn");
 
-        openBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                modal.style.display = "flex"; // Changed to flex for centering
-                setTimeout(() => modal.classList.add('show-modal'), 10);
-            });
+        btns.forEach(btn => btn.onclick = () => {
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden"; // Prevent background scrolling
         });
 
         const closeModal = () => {
-            modal.classList.remove('show-modal');
-            setTimeout(() => modal.style.display = "none", 300);
-        }
+            modal.classList.remove("active");
+            document.body.style.overflow = "auto";
+        };
 
-        closeBtn.addEventListener('click', closeModal);
-        window.addEventListener('click', (e) => {
-            if (e.target == modal) closeModal();
-        });
+        close.onclick = closeModal;
+        window.onclick = (e) => { if(e.target == modal) closeModal(); }
     </script>
 </body>
 </html>
