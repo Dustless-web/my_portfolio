@@ -37,11 +37,10 @@
         .logo { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: 2px; }
         .menu-btn { font-size: 12px; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
 
-        /* === MENU OVERLAY (FIXED VISIBILITY) === */
+        /* === MENU OVERLAY === */
         .menu-overlay { position: fixed; inset: 0; background: #050505; z-index: 200; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); visibility: hidden; }
         .menu-overlay.active { opacity: 1; pointer-events: all; visibility: visible; }
         
-        /* 3D Container - Full Screen */
         #menu-3d-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         
         .menu-content-wrapper { display: flex; width: 100%; max-width: 1400px; justify-content: flex-end; align-items: center; padding: 0 50px; position: relative; z-index: 10; height: 100%; }
@@ -235,7 +234,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("STICKMAN ENGINE V4: ANIMATED");
+            console.log("SYSTEM: ONLINE");
 
             // 1. PRELOADER
             const preloader = document.getElementById('preloader');
@@ -308,8 +307,8 @@
             }
 
             // 6. INITIALIZE 3D
-            initBackground(); // Changed name, no stars
-            initStickman();
+            initStarfield();
+            initRiggedStickman();
         });
 
         function triggerScramble() {
@@ -325,28 +324,44 @@
             }, 30);
         }
 
-        // --- 3D BACKGROUND (EMPTY - PARTICLES REMOVED) ---
-        function initBackground() {
+        // --- 3D BACKGROUND (WARP STARFIELD) ---
+        function initStarfield() {
             const container = document.getElementById('canvas-container');
             if(!container) return;
             while(container.firstChild) container.removeChild(container.firstChild);
             const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x050505, 0.02);
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             container.appendChild(renderer.domElement);
+            
+            const starGeo = new THREE.BufferGeometry();
+            const starCount = 3000;
+            const posArray = new Float32Array(starCount * 3);
+            for(let i=0; i<starCount; i++) { posArray[i*3] = (Math.random()-0.5)*100; posArray[i*3+1] = (Math.random()-0.5)*100; posArray[i*3+2] = (Math.random()-0.5)*100; }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.07 });
+            const starMesh = new THREE.Points(starGeo, starMat);
+            scene.add(starMesh);
             camera.position.z = 1;
 
             function animate() {
                 requestAnimationFrame(animate);
+                const positions = starGeo.attributes.position.array;
+                for(let i=0; i<starCount; i++) {
+                    positions[i*3+2] += 0.05; // Fly speed
+                    if(positions[i*3+2] > 10) { positions[i*3+2] = -100; positions[i*3] = (Math.random()-0.5)*80; positions[i*3+1] = (Math.random()-0.5)*80; }
+                }
+                starGeo.attributes.position.needsUpdate = true;
                 renderer.render(scene, camera);
             }
             animate();
             window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
         }
 
-        // --- 3D MENU STICKMAN (ANIMATED) ---
-        function initStickman() {
+        // --- 3D MENU STICKMAN (HIERARCHICAL RIG) ---
+        function initRiggedStickman() {
             const container = document.getElementById('menu-3d-container');
             if(!container) return;
             while(container.firstChild) container.removeChild(container.firstChild);
@@ -357,75 +372,76 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // STICKMAN GROUP
-            const stickman = new THREE.Group();
-            
-            // Materials
-            const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 2 });
-            const whiteMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            // STICKMAN GROUP (ROOT)
+            const root = new THREE.Group();
+            root.position.set(-4, -1.5, 0); // Position on left
+            root.scale.set(1.5, 1.5, 1.5);
+            scene.add(root);
+            camera.position.z = 12;
+
+            // MATERIALS (Flat white to look like 2D)
+            const mat = new THREE.MeshBasicMaterial({ color: 0xffffff });
             const blackMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
 
-            // 1. HEAD
-            const headGeo = new THREE.RingGeometry(0.7, 0.75, 32); 
-            const head = new THREE.Mesh(headGeo, whiteMat);
-            head.position.y = 1.8;
-            stickman.add(head);
+            // Helper for Limbs (Pivots at Top)
+            function createLimb(w, h) {
+                const g = new THREE.Group();
+                const geo = new THREE.CylinderGeometry(w, w, h, 8);
+                geo.translate(0, -h/2, 0); // Shift so origin is at top
+                const mesh = new THREE.Mesh(geo, mat);
+                g.add(mesh);
+                return g;
+            }
 
-            // 2. EYES
-            const lEye = new THREE.Mesh(new THREE.CircleGeometry(0.12, 16), whiteMat);
-            lEye.position.set(-0.25, 1.9, 0);
-            const rEye = new THREE.Mesh(new THREE.CircleGeometry(0.12, 16), whiteMat);
-            rEye.position.set(0.25, 1.9, 0);
-            stickman.add(lEye); stickman.add(rEye);
+            // HIPS
+            const hips = new THREE.Group();
+            root.add(hips);
 
-            // 3. MOUTH
-            const smileCurve = new THREE.QuadraticBezierCurve3(
-                new THREE.Vector3(-0.3, 1.6, 0),
-                new THREE.Vector3(0, 1.4, 0),
-                new THREE.Vector3(0.3, 1.6, 0)
-            );
-            const smilePoints = smileCurve.getPoints(20);
-            const smileGeo = new THREE.BufferGeometry().setFromPoints(smilePoints);
-            const mouth = new THREE.Line(smileGeo, lineMaterial);
-            stickman.add(mouth);
+            // TORSO (Child of Hips)
+            const torso = createLimb(0.12, 2.5);
+            torso.rotation.z = Math.PI; // Point Up
+            torso.position.y = 0; 
+            hips.add(torso);
 
-            // 4. BODY (SEPARATE PARTS FOR ANIMATION)
-            // Torso
-            const torsoGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 1.1, 0), new THREE.Vector3(0, -0.5, 0)]);
-            const torso = new THREE.Line(torsoGeo, lineMaterial);
-            stickman.add(torso);
-
-            // Left Arm
-            const lArmGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.8, 0), new THREE.Vector3(-0.8, 0.2, 0)]);
-            const lArm = new THREE.Line(lArmGeo, lineMaterial);
-            stickman.add(lArm);
-
-            // Right Arm
-            const rArmGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.8, 0), new THREE.Vector3(0.8, 0.2, 0)]);
-            const rArm = new THREE.Line(rArmGeo, lineMaterial);
-            stickman.add(rArm);
-
-            // Left Leg
-            const lLegGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(-0.6, -2, 0)]);
-            const lLeg = new THREE.Line(lLegGeo, lineMaterial);
-            stickman.add(lLeg);
-
-            // Right Leg
-            const rLegGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.6, -2, 0)]);
-            const rLeg = new THREE.Line(rLegGeo, lineMaterial);
-            stickman.add(rLeg);
-
-            scene.add(stickman);
+            // HEAD (Child of Torso end)
+            const headGroup = new THREE.Group();
+            headGroup.position.y = -2.6; // Top of torso
+            torso.add(headGroup);
             
-            // Positioning
-            stickman.position.set(-3.5, -0.5, 0);
-            stickman.scale.set(1.5, 1.5, 1.5);
-            camera.position.z = 10;
+            const headGeo = new THREE.RingGeometry(0.7, 0.75, 32); 
+            const headMesh = new THREE.Mesh(headGeo, mat);
+            headMesh.rotation.x = Math.PI; // Face forward relative to torso
+            headGroup.add(headMesh);
 
-            // TRACKING & ANIMATION STATE
+            // FACE
+            const lEye = new THREE.Mesh(new THREE.CircleGeometry(0.12, 16), mat); lEye.position.set(-0.25, 0.1, 0);
+            const rEye = new THREE.Mesh(new THREE.CircleGeometry(0.12, 16), mat); rEye.position.set(0.25, 0.1, 0);
+            headGroup.add(lEye); headGroup.add(rEye);
+
+            const smileCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.3, -0.2, 0), new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.3, -0.2, 0));
+            let mouthGeo = new THREE.TubeGeometry(new THREE.CurvePath().add(smileCurve), 20, 0.04, 8, false);
+            const mouth = new THREE.Mesh(mouthGeo, mat);
+            headGroup.add(mouth);
+
+            // ARMS (Children of Torso)
+            const lArm = createLimb(0.1, 1.8); lArm.position.set(0.2, -2.4, 0); lArm.rotation.z = Math.PI - 0.2; torso.add(lArm);
+            const lForearm = createLimb(0.1, 1.8); lForearm.position.y = -1.8; lArm.add(lForearm);
+
+            const rArm = createLimb(0.1, 1.8); rArm.position.set(-0.2, -2.4, 0); rArm.rotation.z = -Math.PI + 0.2; torso.add(rArm);
+            const rForearm = createLimb(0.1, 1.8); rForearm.position.y = -1.8; rArm.add(rForearm);
+
+            // LEGS (Children of Hips)
+            const lLeg = createLimb(0.12, 2.2); lLeg.position.set(-0.4, 0, 0); hips.add(lLeg);
+            const lShin = createLimb(0.12, 2.2); lShin.position.y = -2.2; lLeg.add(lShin);
+
+            const rLeg = createLimb(0.12, 2.2); rLeg.position.set(0.4, 0, 0); hips.add(rLeg);
+            const rShin = createLimb(0.12, 2.2); rShin.position.y = -2.2; rLeg.add(rShin);
+
+
+            // --- ANIMATION STATE ---
+            let time = 0;
             let mouseX = 0, mouseY = 0;
             let isPain = false;
-            let clock = new THREE.Clock();
 
             document.addEventListener('mousemove', (e) => {
                 mouseX = (e.clientX / window.innerWidth) * 2 - 1;
@@ -434,10 +450,13 @@
 
             document.addEventListener('click', () => {
                 isPain = true;
-                lEye.scale.y = 0.1; rEye.scale.y = 0.1;
-                const painCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.1, 1.5, 0), new THREE.Vector3(0, 1.3, 0), new THREE.Vector3(0.1, 1.5, 0));
-                mouth.geometry.setFromPoints(painCurve.getPoints(20));
-                setTimeout(() => { isPain = false; }, 500);
+                // Shock Face
+                lEye.scale.set(0.5, 0.5, 1); rEye.scale.set(0.5, 0.5, 1);
+                // O Mouth
+                const painCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.15, -0.3, 0), new THREE.Vector3(0, -0.6, 0), new THREE.Vector3(0.15, -0.3, 0));
+                mouth.geometry.dispose();
+                mouth.geometry = new THREE.TubeGeometry(new THREE.CurvePath().add(painCurve), 20, 0.04, 8, false);
+                setTimeout(() => { isPain = false; }, 600);
             });
 
             window.resizeStickman = function() {
@@ -449,33 +468,45 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-                let t = clock.getElapsedTime();
+                time += 0.05;
 
-                // Idle breathe
-                stickman.position.y = -0.5 + Math.sin(t * 2) * 0.05;
+                // IDLE BREATHING
+                root.position.y = -1.5 + Math.sin(time * 0.5) * 0.1;
 
                 if(isPain) {
-                    // Shaking
-                    stickman.position.x = -3.5 + (Math.random()-0.5)*0.2;
+                    // SHAKE
+                    root.position.x = -4 + (Math.random()-0.5) * 0.2;
+                    // Arms Up in Shock
+                    lArm.rotation.z = Math.PI - 2.5; rArm.rotation.z = -Math.PI + 2.5;
                 } else {
-                    // Return to normal
-                    stickman.position.x = -3.5;
-                    if(lEye.scale.y < 1) { 
-                        lEye.scale.y += 0.1; rEye.scale.y += 0.1; 
-                        const sCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.3, 1.6, 0), new THREE.Vector3(0, 1.4, 0), new THREE.Vector3(0.3, 1.6, 0));
-                        mouth.geometry.setFromPoints(sCurve.getPoints(20));
-                    }
+                    // RETURN NORMAL
+                    root.position.x += (-4 - root.position.x) * 0.1;
                     
-                    // Look at cursor
-                    stickman.rotation.y = mouseX * 0.3;
-                    stickman.rotation.x = -mouseY * 0.2;
+                    // Reset Face
+                    if(lEye.scale.x < 1) { 
+                        lEye.scale.set(1,1,1); rEye.scale.set(1,1,1); 
+                        const sCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.3, -0.2, 0), new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.3, -0.2, 0));
+                        mouth.geometry.dispose();
+                        mouth.geometry = new THREE.TubeGeometry(new THREE.CurvePath().add(sCurve), 20, 0.04, 8, false);
+                    }
 
-                    // ANIMATE BODY PARTS (SWAYING)
-                    torso.rotation.z = Math.sin(t * 2) * 0.05; // Sway torso
-                    lArm.rotation.z = Math.sin(t * 3) * 0.2;   // Swing Left Arm
-                    rArm.rotation.z = Math.cos(t * 3) * 0.2;   // Swing Right Arm
-                    lLeg.rotation.z = Math.cos(t * 3) * 0.1;   // Sway Left Leg
-                    rLeg.rotation.z = Math.sin(t * 3) * 0.1;   // Sway Right Leg
+                    // POSE 1: Swaying & Looking
+                    hips.rotation.z = Math.sin(time * 0.5) * 0.05; // Sway Hips
+                    torso.rotation.z = Math.PI + Math.sin(time * 0.5) * 0.05; // Counter sway torso
+
+                    // Arms Swing
+                    lArm.rotation.z = Math.PI - 0.2 + Math.cos(time * 0.5) * 0.1;
+                    rArm.rotation.z = -Math.PI + 0.2 + Math.cos(time * 0.5) * 0.1;
+                    lForearm.rotation.z = Math.sin(time) * 0.1;
+                    rForearm.rotation.z = Math.sin(time) * 0.1;
+
+                    // Legs Stance
+                    lLeg.rotation.z = 0.1; rLeg.rotation.z = -0.1;
+                    lShin.rotation.z = 0; rShin.rotation.z = 0;
+
+                    // HEAD TRACKING
+                    headGroup.rotation.y = mouseX * 0.5;
+                    headGroup.rotation.x = -mouseY * 0.3;
                 }
 
                 renderer.render(scene, camera);
