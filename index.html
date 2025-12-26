@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
     <style>
@@ -51,93 +52,24 @@
         .menu-footer { position: absolute; bottom: 50px; width: 100%; max-width: 1400px; display: flex; justify-content: space-between; padding: 0 50px; font-family: var(--font-mono); font-size: 12px; color: #666; left: 50%; transform: translateX(-50%); z-index: 20; }
         .menu-close { cursor: pointer; color: white; padding: 10px; }
 
-        /* === STICKMAN RIG (THE FIX) === */
-        #stickman-stage { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 5; pointer-events: none; /* Let clicks pass to links */
-            display: flex; align-items: center; 
-            justify-content: flex-start; 
-            padding-left: 30%; /* MOVED CLOSER TO CENTER/RIGHT */
+        /* === NEW: NEURAL CORTEX CONTAINER === */
+        #neural-cortex-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1; /* Behind links but visible */
+            pointer-events: none; /* Allow interactions to pass through to canvas */
         }
-        
-        /* The Skeleton Wrapper */
-        .stick-rig { 
-            position: relative; width: 150px; height: 350px; 
-            transform-origin: bottom center; 
-            pointer-events: auto; /* Enable clicks on stickman */
-        }
-        
-        /* Base Styles for Body Parts */
-        .bone { 
-            position: absolute; background: white; border-radius: 10px; 
-            transform-origin: top center; transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        #neural-cortex-container canvas {
+             pointer-events: auto; /* Canvas needs to catch mouse movement */
         }
 
-        /* 1. TORSO (Central Anchor) */
-        .torso { 
-            width: 4px; height: 120px; 
-            top: 100px; left: 73px; 
-            transform-origin: bottom center; /* Pivot from hips */
-        }
-
-        /* 2. HEAD (Inside Torso so it follows lean) */
-        .head { 
-            width: 70px; height: 70px; 
-            border: 3px solid white; border-radius: 50%; background: #050505;
-            position: absolute; top: -75px; left: -33px; /* Centered on torso */
-            transform-origin: bottom center;
-        }
-        
-        /* Face Features */
-        .eyes-row { display: flex; justify-content: space-between; width: 35px; position: absolute; top: 25px; left: 15px; }
-        .eye { width: 10px; height: 10px; background: white; border-radius: 50%; position: relative; }
-        .pupil { width: 5px; height: 5px; background: black; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .mouth { width: 25px; height: 12px; border-bottom: 2px solid white; border-radius: 0 0 25px 25px; position: absolute; bottom: 15px; left: 20px; transition: 0.2s; }
-
-        /* 3. ARMS (Inside Torso) */
-        .arm-L { width: 4px; height: 70px; top: 5px; left: -2px; transform: rotate(20deg); }
-        .forearm-L { width: 4px; height: 70px; top: 65px; left: 0; transform: rotate(10deg); } /* Nested */
-
-        .arm-R { width: 4px; height: 70px; top: 5px; left: 2px; transform: rotate(-20deg); }
-        .forearm-R { width: 4px; height: 70px; top: 65px; left: 0; transform: rotate(-10deg); } /* Nested */
-
-        /* 4. LEGS (Independent, anchored to hips) */
-        .hips { position: absolute; top: 215px; left: 73px; width: 4px; height: 4px; }
-        
-        .leg-L { width: 4px; height: 80px; top: 0; left: 0; transform: rotate(15deg); }
-        .shin-L { width: 4px; height: 80px; top: 75px; left: 0; transform: rotate(-15deg); }
-
-        .leg-R { width: 4px; height: 80px; top: 0; left: 0; transform: rotate(-15deg); }
-        .shin-R { width: 4px; height: 80px; top: 75px; left: 0; transform: rotate(15deg); }
-
-        /* === POSES === */
-        
-        /* IDLE: Hands on Hips */
-        .pose-idle .arm-L { transform: rotate(35deg) !important; }
-        .pose-idle .forearm-L { transform: rotate(-110deg) !important; }
-        .pose-idle .arm-R { transform: rotate(-35deg) !important; }
-        .pose-idle .forearm-R { transform: rotate(110deg) !important; }
-        .pose-idle .torso { animation: breathe 3s infinite ease-in-out; }
-
-        /* ACTIVE: Tracking (Arms drop) */
-        .pose-active .arm-L { transform: rotate(10deg); }
-        .pose-active .forearm-L { transform: rotate(5deg); }
-        .pose-active .arm-R { transform: rotate(-10deg); }
-        .pose-active .forearm-R { transform: rotate(-5deg); }
-
-        /* SCARED: Click Reaction */
-        .pose-scared .torso { transform: translateY(30px) rotate(0deg) !important; }
-        .pose-scared .head { transform: translateY(10px); }
-        .pose-scared .arm-L { transform: rotate(140deg) !important; }
-        .pose-scared .forearm-L { transform: rotate(40deg) !important; }
-        .pose-scared .arm-R { transform: rotate(-140deg) !important; }
-        .pose-scared .forearm-R { transform: rotate(-40deg) !important; }
-        .pose-scared .mouth { border-radius: 50%; height: 15px; width: 15px; border: 2px solid white; bottom: 10px; background: #000; }
-
-        @keyframes breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.02); } }
 
         /* MOBILE HIDE */
-        @media (max-width: 768px) { #stickman-stage { display: none; } #cursor { display: none; } * { cursor: auto !important; } .menu-content-wrapper { justify-content: center; } .menu-links { text-align: center; } .m-link { font-size: 32px; } }
+        @media (max-width: 768px) { 
+            #neural-cortex-container { opacity: 0.3; } /* Dim on mobile */
+            #cursor { display: none; } * { cursor: auto !important; } .menu-content-wrapper { justify-content: center; } .menu-links { text-align: center; } .m-link { font-size: 32px; } 
+        }
 
         /* OTHER SECTIONS (Unchanged) */
         .hero-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 50px 0 50px; overflow: hidden; }
@@ -221,26 +153,7 @@
 
     <div class="menu-overlay" id="menu-overlay">
         
-        <div id="stickman-stage">
-            <div class="stick-rig pose-idle" id="stickman">
-                <div class="hips">
-                    <div class="bone leg-L"><div class="bone shin-L"></div></div>
-                    <div class="bone leg-R"><div class="bone shin-R"></div></div>
-                </div>
-                
-                <div class="bone torso">
-                    <div class="head">
-                        <div class="eyes-row">
-                            <div class="eye"><div class="pupil"></div></div>
-                            <div class="eye"><div class="pupil"></div></div>
-                        </div>
-                        <div class="mouth"></div>
-                    </div>
-                    <div class="bone arm-L"><div class="bone forearm-L"></div></div>
-                    <div class="bone arm-R"><div class="bone forearm-R"></div></div>
-                </div>
-            </div>
-        </div>
+        <div id="neural-cortex-container"></div>
 
         <div class="menu-content-wrapper">
             <div class="menu-links-container">
@@ -308,9 +221,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("STICKMAN: RIGGED & ALIVE");
+            console.log("SYSTEM: ONLINE - NEURAL CORTEX ACTIVE");
 
-            // 1. GENERATE STARS
+            // 1. GENERATE STARS (Background)
             const starContainer = document.querySelector('.stars');
             for(let i=0; i<100; i++) {
                 const star = document.createElement('div');
@@ -323,70 +236,24 @@
                 starContainer.appendChild(star);
             }
 
-            // 2. STICKMAN BEHAVIOR
-            const stickman = document.getElementById('stickman');
-            const torso = document.querySelector('.torso');
-            const head = document.querySelector('.head'); // Correct selector
-            const pupils = document.querySelectorAll('.pupil');
-            
-            let mouseX = window.innerWidth / 2;
-            let mouseY = window.innerHeight / 2;
-            let isMoving = false;
-            let idleTimer;
-
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                isMoving = true;
-                
-                // Switch to Active Pose (Drop arms)
-                stickman.classList.remove('pose-idle');
-                stickman.classList.add('pose-active');
-                
-                clearTimeout(idleTimer);
-                idleTimer = setTimeout(() => {
-                    isMoving = false;
-                    stickman.classList.remove('pose-active');
-                    stickman.classList.add('pose-idle'); // Back to hands on hips
-                }, 2000);
-
-                // BODY LEAN
-                const centerX = window.innerWidth * 0.3; // Stickman X anchor (approx)
-                const lean = (mouseX - centerX) / window.innerWidth * 20; // +/- 20deg
-                
-                if(torso && !stickman.classList.contains('pose-scared')) {
-                    torso.style.transform = `rotate(${lean}deg)`;
-                    // Counter-rotate head slightly so he keeps looking forward
-                    if(head) head.style.transform = `rotate(${-lean * 0.5}deg)`;
-                }
-
-                // EYE TRACKING
-                pupils.forEach(pupil => {
-                    const rect = pupil.parentElement.getBoundingClientRect();
-                    const eyeX = rect.left + rect.width/2;
-                    const eyeY = rect.top + rect.height/2;
-                    const angle = Math.atan2(mouseY - eyeY, mouseX - eyeX);
-                    const distance = 2; 
-                    pupil.style.transform = `translate(-50%, -50%) translate(${Math.cos(angle)*distance}px, ${Math.sin(angle)*distance}px)`;
-                });
-            });
-
-            // Click Reaction
-            const stickStage = document.getElementById('stickman-stage');
-            stickStage.addEventListener('click', () => {
-                stickman.classList.add('pose-scared');
-                setTimeout(() => stickman.classList.remove('pose-scared'), 800);
-            });
-
-            // 3. PRELOADER & UTILS
+            // 2. PRELOADER & UTILS
             const preloader = document.getElementById('preloader');
             const bar = document.querySelector('.bar-fill');
             if(preloader) {
-                let width = 0; const interval = setInterval(() => { width += 10; if(bar) bar.style.width = width+'%'; if(width>=100){ clearInterval(interval); preloader.style.opacity='0'; setTimeout(()=>{preloader.style.display='none';},500);} }, 50);
+                let width = 0; const interval = setInterval(() => { width += 10; if(bar) bar.style.width = width+'%'; if(width>=100){ clearInterval(interval); preloader.style.opacity='0'; setTimeout(()=>{preloader.style.display='none';triggerScramble();},500);} }, 50);
             }
             const lenis = new Lenis({ smooth: true });
             function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
             requestAnimationFrame(raf);
+
+            function triggerScramble() {
+                const el = document.querySelector('.scramble-text'); if(!el) return;
+                const final = "Engineering \n Intelligence."; const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; let iter = 0;
+                const interval = setInterval(() => {
+                    el.innerText = final.split("").map((letter, index) => { if(index < iter) return final[index]; return chars[Math.floor(Math.random() * 26)]; }).join("");
+                    if(iter >= final.length) clearInterval(interval); iter += 1/2;
+                }, 30);
+            }
 
             // Menu Toggle
             const menu = document.getElementById('menu-overlay');
@@ -399,10 +266,142 @@
             // Cursor
             const cDot = document.querySelector('.cursor-dot');
             const cRing = document.querySelector('.cursor-ring');
+            let mouseX = 0, mouseY = 0;
             document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
                 cDot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
                 cRing.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
             });
+
+            // ================================================================
+            // === NEW: 3D INTERACTIVE NEURAL CORTEX (Replacing Stickman) ===
+            // ================================================================
+            function initNeuralCortex() {
+                const container = document.getElementById('neural-cortex-container');
+                if (!container) return;
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                camera.position.z = 30;
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                container.appendChild(renderer.domElement);
+
+                // Particles (Nodes)
+                const particleCount = 400;
+                const geometry = new THREE.BufferGeometry();
+                const positions = new Float32Array(particleCount * 3);
+                const sizes = new Float32Array(particleCount);
+                const colors = new Float32Array(particleCount * 3);
+                const baseColor = new THREE.Color(0x888888);
+
+                for (let i = 0; i < particleCount; i++) {
+                    const theta = Math.random() * Math.PI * 2;
+                    const phi = Math.acos(Math.random() * 2 - 1);
+                    const r = 15 + Math.random() * 5; // Sphere radius variation
+                    positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+                    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+                    positions[i * 3 + 2] = r * Math.cos(phi);
+                    sizes[i] = 0.5 + Math.random(); // Initial size
+                    baseColor.toArray(colors, i * 3);
+                }
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+                // Custom Shader Material for glowing dots
+                const material = new THREE.ShaderMaterial({
+                    uniforms: {
+                        color: { value: new THREE.Color(0xffffff) },
+                    },
+                    vertexShader: `
+                        attribute float size;
+                        attribute vec3 color;
+                        varying vec3 vColor;
+                        void main() {
+                            vColor = color;
+                            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+                            gl_PointSize = size * ( 300.0 / -mvPosition.z );
+                            gl_Position = projectionMatrix * mvPosition;
+                        }
+                    `,
+                    fragmentShader: `
+                        varying vec3 vColor;
+                        void main() {
+                            float d = distance(gl_PointCoord, vec2(0.5, 0.5));
+                            if(d > 0.5) discard;
+                            gl_FragColor = vec4( vColor, 1.0 - (d * 2.0) );
+                        }
+                    `,
+                    transparent: true,
+                    blending: THREE.AdditiveBlending,
+                    depthTest: false
+                });
+
+                const particleSystem = new THREE.Points(geometry, material);
+                scene.add(particleSystem);
+
+                // Interaction Logic
+                const raycaster = new THREE.Raycaster();
+                const mouse = new THREE.Vector2();
+                const highlightColor = new THREE.Color(0xffffff); // Bright white on hover
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    const time = Date.now() * 0.001;
+
+                    // Slow rotation
+                    particleSystem.rotation.y += 0.002;
+                    particleSystem.rotation.x += 0.001;
+
+                    // Mouse Interaction
+                    mouse.x = (mouseX / window.innerWidth) * 2 - 1;
+                    mouse.y = -(mouseY / window.innerHeight) * 2 + 1;
+                    raycaster.setFromCamera(mouse, camera);
+
+                    const intersects = raycaster.intersectObject(particleSystem);
+                    
+                    const sizesAttr = geometry.attributes.size;
+                    const colorsAttr = geometry.attributes.color;
+
+                    // Reset all to base state
+                    for (let i = 0; i < particleCount; i++) {
+                        sizesAttr.array[i] = 0.5 + Math.sin(time + i) * 0.2; // Gentle pulsing
+                        baseColor.toArray(colorsAttr.array, i * 3);
+                    }
+
+                    // Highlight nodes near cursor ray
+                    if (intersects.length > 0) {
+                        const intersectPoint = intersects[0].point;
+                        for (let i = 0; i < particleCount; i++) {
+                            const dx = positions[i*3] - intersectPoint.x;
+                            const dy = positions[i*3+1] - intersectPoint.y;
+                            const dz = positions[i*3+2] - intersectPoint.z;
+                            const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+                            if (dist < 5) { // Interaction radius
+                                const intensity = 1 - (dist / 5);
+                                sizesAttr.array[i] = 3 * intensity + 1; // Scale up
+                                highlightColor.toArray(colorsAttr.array, i * 3); // Turn bright white
+                            }
+                        }
+                    }
+                    
+                    sizesAttr.needsUpdate = true;
+                    colorsAttr.needsUpdate = true;
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+
+            // Initialize the new effect
+            initNeuralCortex();
         });
     </script>
 </body>
