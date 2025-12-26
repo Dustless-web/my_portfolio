@@ -31,48 +31,38 @@ body {
     z-index: -2;
     background-size: 50px 50px;
     background-image: 
-        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-    
-    /* The Constant Animation */
-    animation: gridMove 60s linear infinite;
-    transform: perspective(500px) rotateX(20deg); /* Slight 3D tilt */
-    opacity: 0.6;
-}
-
-@keyframes gridMove {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(50px); }
+        linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+    /* No CSS animation here, Anime.js handles it */
+    transform: perspective(500px) rotateX(20deg);
+    opacity: 0.5;
 }
 
 .vignette {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100vh;
     z-index: -1;
-    /* Darken edges, keep center slighty visible */
     background: radial-gradient(circle at 50% 30%, transparent 0%, var(--bg) 80%);
     pointer-events: none;
 }
 
-/* === LAYER 2: FLOATING PARTICLES === */
-.particles {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+/* === LAYER 2: PARTICLES === */
+.particles-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
     z-index: -1; pointer-events: none;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.particle {
+.anime-particle {
     position: absolute;
-    background: var(--accent);
+    width: 4px;
+    height: 4px;
+    background-color: var(--accent);
     border-radius: 50%;
-    opacity: 0;
-    bottom: -10px;
-    animation: floatUp linear infinite;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0); opacity: 0; }
-    50% { opacity: 0.4; }
-    100% { transform: translateY(-100vh); opacity: 0; }
+    opacity: 0; /* Handled by Anime.js */
 }
 
 /* === NAV === */
@@ -106,6 +96,9 @@ nav {
     padding: 0 5%; max-width: 1200px; margin: 0 auto;
     gap: 40px;
 }
+
+/* Pre-animation state for JS */
+.el-animate { opacity: 0; }
 
 .profile-badge {
     display: inline-flex; align-items: center; gap: 8px;
@@ -167,7 +160,7 @@ h1 {
     border-radius: 12px;
     position: relative;
     cursor: default;
-    height: 100%; /* Ensure full height */
+    height: 100%;
 }
 .spotlight-card:hover::before { opacity: 1; }
 
@@ -207,7 +200,7 @@ h1 {
 .icon-holder {
     width: 50px; height: 50px; background: rgba(255,255,255,0.05);
     display: flex; align-items: center; justify-content: center;
-    border-radius: 10px; font-size: 22px; color: var(--accent); /* Default Gold */
+    border-radius: 10px; font-size: 22px; color: var(--accent);
     margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);
 }
 .purple { color: #c084fc; border-color: rgba(192, 132, 252, 0.2); }
@@ -251,7 +244,7 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 5%; text-align:
     padding: 40px; border-radius: 16px; width: 90%; max-width: 400px;
     position: relative; transform: scale(0.95); transition: 0.3s;
 }
-.modal.active .modal-box { transform: scale(1); }
+/* No hover scale here, managed by Anime.js entry */
 
 .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: var(--text-secondary); font-size: 24px; cursor: pointer; }
 
