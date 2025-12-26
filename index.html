@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avinash Sangisetti | Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -17,7 +17,7 @@
             <ul class="nav-links">
                 <li><a href="#work">Work</a></li>
                 <li><a href="#skills">Expertise</a></li>
-                <li><a href="#contact" class="btn-nav">Contact</a></li>
+                <li><button class="btn-nav open-contact-btn">Contact</button></li>
             </ul>
         </nav>
 
@@ -33,10 +33,7 @@
                 Crafting intelligent systems with <span class="gold-text">AI/ML</span> and <span class="gold-text">Prompt Engineering</span>.
             </p>
             
-            <div class="scroll-indicator fade-in-up delay-3">
-                <span>Explore</span>
-                <div class="line"></div>
-            </div>
+            <button class="btn-hero fade-in-up delay-3 open-contact-btn">Get in Touch</button>
         </div>
     </header>
 
@@ -117,30 +114,6 @@
             </div>
         </div>
 
-        <div class="container hidden" id="contact">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-wrapper">
-                <p class="contact-text">I am currently open to internship opportunities and collaborations. Feel free to reach out.</p>
-                
-                <div class="contact-links">
-                    <a href="tel:+917795150609" class="contact-item">
-                        <i class="fas fa-phone-alt"></i>
-                        <span>+91 7795150609</span>
-                    </a>
-                    
-                    <a href="https://instagram.com/avinashsangisetti" target="_blank" class="contact-item">
-                        <i class="fab fa-instagram"></i>
-                        <span>@avinashsangisetti</span>
-                    </a>
-
-                    <a href="mailto:avinash@example.com" class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email Me</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
     </main>
 
     <footer>
@@ -151,7 +124,30 @@
         </div>
     </footer>
 
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Get in Touch</h2>
+            <p>I'm currently open to internship opportunities and collaborations.</p>
+            <div class="contact-links">
+                <a href="tel:+917795150609" class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>+91 7795150609</span>
+                </a>
+                <a href="mailto:avinashsangisetti@gmail.com" class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>avinashsangisetti@gmail.com</span>
+                </a>
+                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="contact-item">
+                    <i class="fab fa-instagram"></i>
+                    <span>@avinashsangisetti</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Scroll Animation Script
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -161,6 +157,36 @@
         });
         const hiddenElements = document.querySelectorAll('.hidden');
         hiddenElements.forEach((el) => observer.observe(el));
+
+        // Contact Modal Script
+        const modal = document.getElementById("contact-modal");
+        const openBtns = document.querySelectorAll(".open-contact-btn");
+        const closeBtn = document.querySelector(".close-btn");
+
+        openBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.style.display = "block";
+                // Trigger reflow to enable transition
+                void modal.offsetWidth; 
+                modal.classList.add('show-modal');
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('show-modal');
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300); // Match transition duration
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                modal.classList.remove('show-modal');
+                setTimeout(() => {
+                    modal.style.display = "none";
+                }, 300);
+            }
+        });
     </script>
 </body>
 </html>
