@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
     
-    // Connect Scroll Progress
     lenis.on('scroll', ({ progress }) => {
         const progBar = document.querySelector('.scroll-progress');
         if(progBar) progBar.style.width = `${progress * 100}%`;
@@ -40,35 +39,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuBtn = document.getElementById('menu-toggle');
     const menuClose = document.getElementById('menu-close-btn');
     
-    // Function to Toggle Menu
     function toggleMenu() {
         if(!menuOverlay) return;
         const isActive = menuOverlay.classList.contains('active');
-        
         if (isActive) {
             menuOverlay.classList.remove('active');
-            lenis.start(); // Resume scrolling
+            lenis.start(); 
         } else {
             menuOverlay.classList.add('active');
-            lenis.stop(); // Freeze scrolling
+            lenis.stop(); 
         }
     }
 
-    // Bind Click Events
     if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
     if(menuClose) menuClose.addEventListener('click', toggleMenu);
 
-    // Handle Menu Link Clicks (Smooth Scroll & Close)
     document.querySelectorAll('.m-link').forEach(link => {
         link.addEventListener('click', (e) => {
-            // Get target ID (e.g., "#hero")
             const targetId = link.getAttribute('href');
-            
-            // If it's a page link
             if(targetId && targetId.startsWith('#')) {
                 e.preventDefault();
-                toggleMenu(); // Close menu
-                lenis.scrollTo(targetId); // Smooth scroll to section
+                toggleMenu();
+                lenis.scrollTo(targetId);
             }
         });
     });
@@ -81,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(contactModal) {
             contactModal.classList.add('active');
             lenis.stop();
-            // Ensure menu is closed if open
             if(menuOverlay && menuOverlay.classList.contains('active')) {
                 menuOverlay.classList.remove('active');
             }
@@ -125,17 +116,13 @@ document.addEventListener('DOMContentLoaded', () => {
         animateCursor();
     }
 
-    // === 6. THREE.JS BACKGROUND ===
+    // === 6. THREE.JS INITIALIZATION ===
     initBackground3D();
-    
-    // === 7. THREE.JS MENU ROCKET ===
     initMenuRocket();
 
-}); // End DOMContentLoaded
-
+}); 
 
 // --- HELPERS ---
-
 function triggerScramble() {
     const el = document.querySelector('.scramble-text');
     if(!el) return;
@@ -165,7 +152,6 @@ function initBackground3D() {
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
-    // Particles
     const geometry = new THREE.BufferGeometry();
     const count = 1200;
     const posArray = new Float32Array(count * 3);
@@ -201,7 +187,7 @@ function initBackground3D() {
     });
 }
 
-// --- 3D MENU ROCKET ---
+// --- 3D MENU ROCKET (REDESIGNED) ---
 function initMenuRocket() {
     const container = document.getElementById('menu-3d-container');
     if(!container) return;
@@ -214,29 +200,43 @@ function initMenuRocket() {
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
-    // GROUP FOR ROCKET PARTS
+    // === BUILD SCI-FI ROCKET ===
     const rocket = new THREE.Group();
     const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
+    const detailMat = new THREE.LineBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.3 });
 
-    // 1. Main Body (Cylinder)
-    const bodyGeo = new THREE.CylinderGeometry(0.5, 0.5, 3, 12);
+    // 1. Main Fuselage (Tapered Cylinder)
+    const bodyGeo = new THREE.CylinderGeometry(0.6, 0.8, 3.5, 16, 4, true); 
     const bodyWire = new THREE.WireframeGeometry(bodyGeo);
     const body = new THREE.LineSegments(bodyWire, mat);
     rocket.add(body);
 
-    // 2. Nose Cone
-    const noseGeo = new THREE.ConeGeometry(0.5, 1, 12);
+    // 2. Cockpit/Nose (Cone)
+    const noseGeo = new THREE.ConeGeometry(0.6, 1.5, 16, 2, true);
     const noseWire = new THREE.WireframeGeometry(noseGeo);
     const nose = new THREE.LineSegments(noseWire, mat);
-    nose.position.y = 2; // Sit on top of body (1.5 + 0.5)
+    nose.position.y = 2.5; 
     rocket.add(nose);
 
-    // 3. Fins (Triangles)
-    // Create a triangle shape
+    // 3. Engine Cluster (3 Cylinders)
+    for(let i = 0; i < 3; i++) {
+        const engineGeo = new THREE.CylinderGeometry(0.2, 0.3, 0.8, 12);
+        const engineWire = new THREE.WireframeGeometry(engineGeo);
+        const engine = new THREE.LineSegments(engineWire, mat);
+        
+        const angle = (Math.PI * 2 / 3) * i;
+        engine.position.x = Math.cos(angle) * 0.4;
+        engine.position.z = Math.sin(angle) * 0.4;
+        engine.position.y = -2;
+        rocket.add(engine);
+    }
+
+    // 4. Large Swept Fins (Wings)
     const finShape = new THREE.Shape();
     finShape.moveTo(0, 0);
-    finShape.lineTo(1, -1);
-    finShape.lineTo(0, -1);
+    finShape.lineTo(1.2, -1.5);
+    finShape.lineTo(1.2, -2.2);
+    finShape.lineTo(0.5, -1.5);
     finShape.lineTo(0, 0);
     
     const finGeo = new THREE.ShapeGeometry(finShape);
@@ -244,44 +244,55 @@ function initMenuRocket() {
 
     for(let i = 0; i < 3; i++) {
         const fin = new THREE.LineSegments(finWireGeo, mat);
-        const finPivot = new THREE.Group();
+        const finGroup = new THREE.Group();
         
-        fin.position.x = 0.5; // Offset from body surface
-        fin.position.y = -1;  // Bottom of body
-        finPivot.rotation.y = (Math.PI * 2 / 3) * i; // 120 degrees apart
-        finPivot.add(fin);
-        rocket.add(finPivot);
+        finGroup.rotation.y = (Math.PI * 2 / 3) * i;
+        fin.position.x = 0.6; // Offset from body
+        fin.position.y = -0.5;
+        finGroup.add(fin);
+        rocket.add(finGroup);
     }
 
-    // 4. Engine Nozzle
-    const engineGeo = new THREE.CylinderGeometry(0.3, 0.6, 0.5, 12, 1, true);
-    const engineWire = new THREE.WireframeGeometry(engineGeo);
-    const engine = new THREE.LineSegments(engineWire, mat);
-    engine.position.y = -1.75;
-    rocket.add(engine);
+    // 5. Tech Rings (Details)
+    const ringGeo = new THREE.TorusGeometry(0.7, 0.02, 2, 32);
+    const ringWire = new THREE.WireframeGeometry(ringGeo);
+    
+    const ring1 = new THREE.LineSegments(ringWire, detailMat);
+    ring1.rotation.x = Math.PI / 2;
+    ring1.position.y = 1;
+    rocket.add(ring1);
+
+    const ring2 = new THREE.LineSegments(ringWire, detailMat);
+    ring2.rotation.x = Math.PI / 2;
+    ring2.position.y = -1;
+    rocket.add(ring2);
 
     scene.add(rocket);
-    camera.position.z = 7;
+    
+    // Scale Up
+    rocket.scale.set(1.8, 1.8, 1.8);
 
-    // Initial Tilt
-    rocket.rotation.z = Math.PI / 4;
+    // Initial Position
+    camera.position.z = 8;
+    rocket.rotation.z = Math.PI / 6;
     rocket.rotation.y = -Math.PI / 4;
 
-    // INTERACTION
-    let targetRotX = 0;
+    // Interaction State
+    let targetRotX = 0; 
     let targetRotY = -Math.PI / 4;
 
+    // Add Listeners to Menu Items
     document.querySelectorAll('.m-link').forEach((link, idx) => {
         link.addEventListener('mouseenter', () => {
-            // Rocket "Prepares for Launch" effect based on menu item
-            // Index 0 (top) = Look up
-            // Index 4 (bottom) = Look down
-            targetRotX = (idx - 2) * 0.3; 
-            targetRotY = -Math.PI / 2 + (idx * 0.2);
+            // Logic: 
+            // idx 0 (Top) -> Pitch Up (Negative X rot)
+            // idx 4 (Bottom) -> Pitch Down (Positive X rot)
+            // Spin constantly (Y rot)
+            targetRotX = (idx - 2) * 0.4; 
+            targetRotY = -Math.PI / 2 + (idx * 0.5);
         });
     });
 
-    // Reset when leaving menu area
     const menuArea = document.querySelector('.menu-links');
     if(menuArea) {
         menuArea.addEventListener('mouseleave', () => {
@@ -293,14 +304,14 @@ function initMenuRocket() {
     function animate() {
         requestAnimationFrame(animate);
         
-        // Smooth interpolation
-        rocket.rotation.z += (targetRotX - rocket.rotation.z + Math.PI / 4) * 0.05;
+        // Interpolate rotation
+        rocket.rotation.z += (targetRotX - rocket.rotation.z + Math.PI / 6) * 0.05;
         rocket.rotation.y += (targetRotY - rocket.rotation.y) * 0.05;
         
-        // Idle Float
-        rocket.position.y = Math.sin(Date.now() * 0.001) * 0.1;
+        // Idle bobbing
+        rocket.position.y = Math.sin(Date.now() * 0.001) * 0.15;
         
-        // Dynamic Resize check
+        // Resize check
         if(container.clientWidth > 0 && (renderer.domElement.width !== container.clientWidth * window.devicePixelRatio)) {
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
