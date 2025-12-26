@@ -259,87 +259,90 @@
     </div>
 
     <script>
-        // 1. PARTICLES
+        // 1. SCROLL-REACTIVE PARTICLE SYSTEM (HYPERSPACE)
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        let particlesArray;
+        let width, height, particles = [];
+        let scrollY = 0, lastScrollY = 0, scrollVelocity = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+            scrollVelocity = (scrollY - lastScrollY) * 0.5; 
+            lastScrollY = scrollY;
+        });
+
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.directionX = (Math.random() * 0.4) - 0.2;
-                this.directionY = (Math.random() * 0.4) - 0.2;
-                this.size = Math.random() * 2;
-                this.color = '#d4af37';
+            constructor() { this.init(); }
+            init() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.z = Math.random() * 2 + 0.5; 
+                this.size = Math.random() * 1.5;
+            }
+            update() {
+                let movement = 0.5 * this.z - (scrollVelocity * this.z * 2);
+                this.y -= movement;
+                if (this.y < 0) { this.y = height; this.x = Math.random() * width; }
+                if (this.y > height) { this.y = 0; this.x = Math.random() * width; }
             }
             draw() {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = 0.5;
+                let stretch = Math.abs(scrollVelocity) * 3;
+                let length = Math.max(this.size, stretch);
+                ctx.fillStyle = `rgba(212, 175, 55, ${0.3 * this.z})`; 
+                ctx.rect(this.x, this.y, this.size, length);
                 ctx.fill();
             }
-            update() {
-                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-                this.x += this.directionX;
-                this.y += this.directionY;
-                this.draw();
-            }
         }
-        function init() {
-            particlesArray = [];
-            for (let i = 0; i < 100; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
+
+        for (let i = 0; i < 100; i++) particles.push(new Particle());
+
         function animate() {
+            ctx.clearRect(0, 0, width, height);
+            scrollVelocity *= 0.95; // Friction
+            if (Math.abs(scrollVelocity) < 0.01) scrollVelocity = 0;
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-            }
         }
-        init();
         animate();
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
 
         // 2. TEXT DECODE
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         const hackText = document.querySelector(".decode-text");
-        setTimeout(() => {
-            let iterations = 0;
-            const interval = setInterval(() => {
-                hackText.innerText = hackText.innerText.split("")
-                    .map((letter, index) => {
-                        if(index < iterations) return hackText.dataset.value[index];
-                        return letters[Math.floor(Math.random() * 26)];
-                    })
-                    .join("");
-                if(iterations >= hackText.dataset.value.length) clearInterval(interval);
-                iterations += 1 / 3;
-            }, 30);
-        }, 500);
+        if(hackText) {
+            setTimeout(() => {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    hackText.innerText = hackText.innerText.split("")
+                        .map((letter, index) => {
+                            if(index < iterations) return hackText.dataset.value[index];
+                            return letters[Math.floor(Math.random() * 26)];
+                        })
+                        .join("");
+                    if(iterations >= hackText.dataset.value.length) clearInterval(interval);
+                    iterations += 1 / 3;
+                }, 30);
+            }, 500);
+        }
 
         // 3. INTERACTIVE BENTO SCAN
-        function triggerScan(card) {
-            // Adds a "scanning" class that triggers CSS animation
+        window.triggerScan = function(card) {
             card.classList.add('scanning');
             setTimeout(() => card.classList.remove('scanning'), 1000);
         }
 
-        // 4. SCROLL REVEAL (Complex Intersection Observer)
+        // 4. SCROLL REVEAL
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Add subtle scale effect on reveal
                     anime({
                         targets: entry.target,
                         scale: [0.95, 1],
@@ -357,17 +360,16 @@
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
         
-        const toggleMenu = () => {
-            mobileMenuBtn.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        };
-        
-        const closeMenu = () => {
+        // Expose to window for HTML onclicks
+        window.closeMenu = function() {
             mobileMenuBtn.classList.remove('active');
             navLinks.classList.remove('active');
         };
         
-        mobileMenuBtn.addEventListener('click', toggleMenu);
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
 
         const modal = document.getElementById("contact-modal");
         document.querySelectorAll(".open-contact-btn").forEach(btn => 
@@ -385,4 +387,3 @@
     </script>
 </body>
 </html>
-
