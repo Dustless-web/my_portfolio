@@ -11,67 +11,65 @@
 <body>
 
     <div class="noise-overlay"></div>
-    <div class="tech-grid-animated"></div>
+    <div class="grid-background"></div>
     <div class="vignette"></div>
 
     <header>
-        <div class="scroll-progress"></div>
         <nav class="glass-nav">
             <div class="logo">AS<span class="dot">.</span></div>
             
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+            <div class="menu-toggle" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
             </div>
 
-            <ul class="nav-links">
-                <li><a href="#work" class="nav-link">Work</a></li>
-                <li><a href="#experience" class="nav-link">Journey</a></li>
-                <li><button class="btn-primary open-contact-btn">Contact</button></li>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#work" onclick="closeMenu()">Work</a></li>
+                <li><a href="#experience" onclick="closeMenu()">Journey</a></li>
+                <li><button class="btn-primary open-contact-btn" onclick="closeMenu()">Contact</button></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <section class="hero">
-            <div class="hero-content">
-                <div class="code-badge fade-in">
+            <div class="hero-content fade-in-up">
+                <div class="code-badge">
                     <i class="fas fa-terminal"></i>
                     <span>v2.5.0 // SYSTEM_READY</span>
                 </div>
-                <h1 class="fade-in delay-1">
+                <h1>
                     Architecting <br>
                     <span class="gradient-text">Digital Reality.</span>
                 </h1>
-                <p class="bio fade-in delay-2">
-                    I'm <strong>Avinash</strong>. I don't just write code; I engineer <span class="white">resilient systems</span>. 
+                <p class="bio">
+                    I'm <strong>Avinash</strong>. I engineer <span class="white">resilient systems</span>. 
                     Specializing in high-performance Distributed Systems, AI Infrastructure, and Native Android.
                 </p>
-                <div class="hero-actions fade-in delay-3">
+                <div class="hero-actions">
                     <button class="btn-primary open-contact-btn">Initiate Uplink</button>
                     <a href="#work" class="btn-text">View Documentation ↓</a>
                 </div>
             </div>
             
-            <div class="hero-visual fade-in delay-2">
-                <div class="avatar-container">
-                    <div class="hex-frame">
+            <div class="hero-visual fade-in-up delay-1">
+                <div class="hex-wrapper">
+                    <div class="hex-border">
                         <img src="PFP.jpeg" alt="Avinash" class="avatar-img">
                     </div>
-                    <div class="glow-effect"></div>
+                    <div class="tech-ring ring-1"></div>
+                    <div class="tech-ring ring-2"></div>
                 </div>
             </div>
         </section>
 
         <section id="work" class="section-padding">
-            <div class="section-header fade-in-scroll">
+            <div class="section-header">
                 <span class="mono-label">01. / SELECTED WORKS</span>
                 <h2>Engineered Solutions</h2>
             </div>
             
             <div class="bento-grid">
-                <div class="card large-span fade-in-scroll">
+                <div class="card large-span">
                     <div class="card-content">
                         <div class="card-top">
                             <div class="folder-icon"><i class="far fa-folder-open"></i></div>
@@ -81,47 +79,47 @@
                             </div>
                         </div>
                         <h3>Smart Lecture Assistant</h3>
-                        <p>An NLP-powered engine processing audio streams into structured knowledge bases. Implemented vector embeddings (Pinecone) for semantic search over lecture content.</p>
-                        <ul class="tech-list">
-                            <li>Python</li>
-                            <li>OpenAI Whisper</li>
-                            <li>React</li>
-                            <li>Docker</li>
-                        </ul>
+                        <p>An NLP-powered engine processing audio streams into structured knowledge bases. Implemented vector embeddings (Pinecone) for semantic search.</p>
+                        <div class="tech-tags">
+                            <span>Python</span>
+                            <span>OpenAI Whisper</span>
+                            <span>React</span>
+                            <span>Docker</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card fade-in-scroll">
+                <div class="card">
                     <div class="card-content">
                         <div class="card-top">
                             <div class="folder-icon"><i class="fas fa-network-wired"></i></div>
                         </div>
                         <h3>FluxSync Engine</h3>
                         <p>Distributed job scheduler handling 10k+ concurrent tasks with custom Raft consensus implementation.</p>
-                        <ul class="tech-list">
-                            <li>Go</li>
-                            <li>gRPC</li>
-                            <li>Redis</li>
-                        </ul>
+                        <div class="tech-tags">
+                            <span>Go</span>
+                            <span>gRPC</span>
+                            <span>Redis</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card fade-in-scroll">
+                <div class="card">
                     <div class="card-content">
                         <div class="card-top">
                             <div class="folder-icon"><i class="fas fa-mobile-alt"></i></div>
                         </div>
                         <h3>SGuardian</h3>
                         <p>Real-time accelerometer sensor fusion for elderly fall detection running as a foreground service.</p>
-                        <ul class="tech-list">
-                            <li>Kotlin</li>
-                            <li>Android SDK</li>
-                            <li>ML Kit</li>
-                        </ul>
+                        <div class="tech-tags">
+                            <span>Kotlin</span>
+                            <span>Android SDK</span>
+                            <span>ML Kit</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="card large-span fade-in-scroll">
+                <div class="card large-span">
                     <div class="card-content">
                         <div class="card-top">
                             <div class="folder-icon"><i class="fas fa-bolt"></i></div>
@@ -131,36 +129,36 @@
                         </div>
                         <h3>LiveCode Collab</h3>
                         <p>Operational Transformation (OT) based code editor. Supports conflict-free concurrent editing via WebSocket clusters on AWS EC2.</p>
-                        <ul class="tech-list">
-                            <li>Node.js</li>
-                            <li>Socket.io</li>
-                            <li>MongoDB</li>
-                            <li>AWS</li>
-                        </ul>
+                        <div class="tech-tags">
+                            <span>Node.js</span>
+                            <span>Socket.io</span>
+                            <span>MongoDB</span>
+                            <span>AWS</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="experience" class="section-padding">
-            <div class="section-header fade-in-scroll">
+            <div class="section-header">
                 <span class="mono-label">02. / THE JOURNEY</span>
                 <h2>Experience Log</h2>
             </div>
 
             <div class="timeline">
-                <div class="timeline-item fade-in-scroll">
+                <div class="timeline-item">
                     <div class="tl-marker"></div>
-                    <div class="tl-content card">
+                    <div class="tl-content">
                         <span class="tl-date mono-label">2021 - Present</span>
                         <h3>KS School of Engineering (KSIT)</h3>
                         <span class="tl-role">Bachelor of Engineering in CSE</span>
-                        <p>Specializing in Artificial Intelligence and System Architecture. Leading the Student Developer Club.</p>
+                        <p>Specializing in Artificial Intelligence and System Architecture.</p>
                     </div>
                 </div>
-                <div class="timeline-item fade-in-scroll">
+                <div class="timeline-item">
                     <div class="tl-marker"></div>
-                    <div class="tl-content card">
+                    <div class="tl-content">
                         <span class="tl-date mono-label">2024</span>
                         <h3>Freelance Developer</h3>
                         <span class="tl-role">Full Stack & Mobile</span>
@@ -194,8 +192,8 @@
     </footer>
 
     <div id="contact-modal" class="modal-overlay">
-        <button class="close-btn">&times;</button>
         <div class="modal-content">
+            <button class="close-btn">&times;</button>
             <span class="mono-label">/// ESTABLISH CONNECTION</span>
             <h3>Initialize Uplink</h3>
             <p>Ready to deploy? I'm open to full-stack and AI engineering roles.</p>
@@ -217,74 +215,52 @@
     </div>
 
     <script>
-        // 1. SCROLL PROGRESS BAR
-        window.addEventListener('scroll', () => {
-            const scrollTotal = document.documentElement.scrollTop;
-            const heightTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrollPercent = (scrollTotal / heightTotal) * 100;
-            document.querySelector('.scroll-progress').style.width = scrollPercent + "%";
-        });
+        // 1. MOBILE MENU LOGIC
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
 
-        // 2. MOBILE MENU TOGGLE
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
-        
-        mobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
+        function toggleMenu() {
+            mobileMenuBtn.classList.toggle('active');
             navLinks.classList.toggle('active');
-        });
+        }
 
-        // Close menu when a link is clicked
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-                navLinks.classList.remove('active');
-            });
-        });
+        function closeMenu() {
+            mobileMenuBtn.classList.remove('active');
+            navLinks.classList.remove('active');
+        }
 
-        // 3. MODAL LOGIC
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+
+        // 2. MODAL LOGIC
         const modal = document.getElementById("contact-modal");
         const openBtns = document.querySelectorAll(".open-contact-btn");
         const closeBtn = document.querySelector(".close-btn");
 
         openBtns.forEach(btn => btn.onclick = () => {
             modal.classList.add("active");
-            document.body.style.overflow = "hidden"; // Prevent background scroll
+            document.body.style.overflow = "hidden"; 
         });
-        
+
         const closeModal = () => {
             modal.classList.remove("active");
             document.body.style.overflow = "auto";
         };
         closeBtn.onclick = closeModal;
-        // Close on clicking outside content
         modal.onclick = (e) => { if(e.target === modal) closeModal(); }
 
-        // 4. SCROLL ANIMATIONS (SIMPLE & SMOOTH)
-        const scrollElements = document.querySelectorAll('.fade-in-scroll');
-        
-        const elementInView = (el, offset = 150) => {
-            const elementTop = el.getBoundingClientRect().top;
-            return (elementTop <= ((window.innerHeight || document.documentElement.clientHeight) - offset));
-        };
-        
-        const displayScrollElement = (element) => {
-            element.classList.add('scrolled');
-        };
-        
-        const handleScrollAnimation = () => {
-            scrollElements.forEach((el) => {
-                if (elementInView(el, 100)) {
-                    displayScrollElement(el);
+        // 3. SCROLL ANIMATIONS (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
-        };
-        
-        window.addEventListener('scroll', () => {
-            handleScrollAnimation();
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card, .timeline-item, .hero-content, .hero-visual').forEach(el => {
+            el.classList.add('animate-on-scroll');
+            observer.observe(el);
         });
-        // Trigger once on load
-        handleScrollAnimation();
     </script>
 </body>
 </html>
