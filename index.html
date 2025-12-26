@@ -8,11 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </head>
 <body>
 
     <div class="tech-grid-animated"></div>
-    <div class="particles" id="particles"></div>
+    
+    <div class="particles-container"></div>
     
     <div class="vignette"></div>
 
@@ -30,20 +32,20 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <div class="profile-badge">
+                <div class="profile-badge el-animate">
                     <div class="status-dot"></div>
                     <span>Available for Summer '25</span>
                 </div>
-                <h1>Engineering scalable<br><span class="gradient-text">intelligence.</span></h1>
-                <p class="bio">
+                <h1 class="el-animate">Engineering scalable<br><span class="gradient-text">intelligence.</span></h1>
+                <p class="bio el-animate">
                     I'm <strong>Avinash</strong>, a CS student at KSIT Bangalore. I architect high-performance systems bridging <span class="white">AI infrastructure</span> and <span class="white">native mobile experiences</span>.
                 </p>
-                <div class="hero-actions">
+                <div class="hero-actions el-animate">
                     <button class="btn-primary open-contact-btn">Get in Touch</button>
                     <a href="#work" class="btn-secondary">View Work</a>
                 </div>
             </div>
-            <div class="hero-visual">
+            <div class="hero-visual el-animate">
                 <div class="avatar-container">
                     <img src="PFP.jpeg" alt="Avinash" class="avatar-img">
                     <div class="avatar-glow"></div>
@@ -53,12 +55,12 @@
 
         <section id="work" class="cards-wrapper">
             <div class="section-header">
-                <h2>Selected Work</h2>
+                <h2 class="el-animate">Selected Work</h2>
             </div>
             
             <div class="bento-grid">
                 
-                <div class="card spotlight-card large-span">
+                <div class="card spotlight-card large-span project-card">
                     <div class="card-border"></div>
                     <div class="card-content">
                         <div class="icon-holder">
@@ -77,7 +79,7 @@
                     </div>
                 </div>
 
-                <div class="card spotlight-card">
+                <div class="card spotlight-card project-card">
                     <div class="card-border"></div>
                     <div class="card-content">
                         <div class="icon-holder purple">
@@ -95,7 +97,7 @@
                     </div>
                 </div>
 
-                <div class="card spotlight-card">
+                <div class="card spotlight-card project-card">
                     <div class="card-border"></div>
                     <div class="card-content">
                         <div class="icon-holder blue">
@@ -112,7 +114,7 @@
                     </div>
                 </div>
 
-                <div class="card spotlight-card large-span">
+                <div class="card spotlight-card large-span project-card">
                     <div class="card-border"></div>
                     <div class="card-content">
                         <div class="icon-holder green">
@@ -131,7 +133,7 @@
                     </div>
                 </div>
 
-                <div class="card spotlight-card">
+                <div class="card spotlight-card project-card">
                     <div class="card-border"></div>
                     <div class="card-content">
                         <div class="icon-holder">
@@ -149,7 +151,7 @@
                     </div>
                 </div>
 
-                <div class="card spotlight-card">
+                <div class="card spotlight-card project-card">
                     <div class="card-border"></div>
                     <div class="card-content">
                         <div class="icon-holder white-icon">
@@ -172,17 +174,17 @@
 
         <section id="stack" class="stack-section">
             <div class="section-header">
-                <h2>Technical Arsenal</h2>
+                <h2 class="el-animate">Technical Arsenal</h2>
             </div>
             <div class="stack-grid">
-                <div class="stack-item"><i class="fab fa-python"></i><span>Python</span></div>
-                <div class="stack-item"><i class="fab fa-java"></i><span>Java</span></div>
-                <div class="stack-item"><i class="fab fa-android"></i><span>Android</span></div>
-                <div class="stack-item"><i class="fas fa-brain"></i><span>TensorFlow</span></div>
-                <div class="stack-item"><i class="fas fa-terminal"></i><span>Prompt Eng.</span></div>
-                <div class="stack-item"><i class="fab fa-git-alt"></i><span>Git</span></div>
-                <div class="stack-item"><i class="fab fa-docker"></i><span>Docker</span></div>
-                <div class="stack-item"><i class="fas fa-database"></i><span>SQL/NoSQL</span></div>
+                <div class="stack-item el-animate"><i class="fab fa-python"></i><span>Python</span></div>
+                <div class="stack-item el-animate"><i class="fab fa-java"></i><span>Java</span></div>
+                <div class="stack-item el-animate"><i class="fab fa-android"></i><span>Android</span></div>
+                <div class="stack-item el-animate"><i class="fas fa-brain"></i><span>TensorFlow</span></div>
+                <div class="stack-item el-animate"><i class="fas fa-terminal"></i><span>Prompt Eng.</span></div>
+                <div class="stack-item el-animate"><i class="fab fa-git-alt"></i><span>Git</span></div>
+                <div class="stack-item el-animate"><i class="fab fa-docker"></i><span>Docker</span></div>
+                <div class="stack-item el-animate"><i class="fas fa-database"></i><span>SQL/NoSQL</span></div>
             </div>
         </section>
     </main>
@@ -220,7 +222,61 @@
     </div>
 
     <script>
-        // 1. Mouse Spotlight Effect
+        // 1. GENERATE PARTICLES DYNAMICALLY
+        const particleContainer = document.querySelector('.particles-container');
+        for (let i = 0; i < 50; i++) {
+            const div = document.createElement('div');
+            div.classList.add('anime-particle');
+            particleContainer.appendChild(div);
+        }
+
+        // 2. ANIMATE PARTICLES (The "Noticeable" Running Animation)
+        // This moves particles in random directions indefinitely
+        anime({
+            targets: '.anime-particle',
+            translateX: function() { return anime.random(-500, 500); },
+            translateY: function() { return anime.random(-500, 500); },
+            scale: function() { return anime.random(0.5, 2); },
+            opacity: function() { return anime.random(0.3, 0.8); },
+            easing: 'easeInOutQuad',
+            duration: function() { return anime.random(3000, 8000); },
+            delay: function() { return anime.random(0, 1000); },
+            direction: 'alternate',
+            loop: true
+        });
+
+        // 3. ANIMATE THE GRID (Breathing Effect)
+        anime({
+            targets: '.tech-grid-animated',
+            backgroundPosition: ['0% 0%', '100% 100%'],
+            scale: [1, 1.1],
+            opacity: [0.3, 0.6],
+            easing: 'linear',
+            duration: 20000,
+            direction: 'alternate',
+            loop: true
+        });
+
+        // 4. STAGGERED ENTRANCE ANIMATION (Hero Section)
+        var tl = anime.timeline({
+            easing: 'easeOutExpo',
+            duration: 1000
+        });
+
+        tl.add({
+            targets: '.glass-nav',
+            translateY: [-50, 0],
+            opacity: [0, 1],
+            delay: 200
+        })
+        .add({
+            targets: '.el-animate',
+            translateY: [20, 0],
+            opacity: [0, 1],
+            delay: anime.stagger(100), // Staggers each element by 100ms
+        }, '-=500');
+
+        // 5. MOUSE SPOTLIGHT (Vanilla JS for performance)
         document.getElementById("work").onmousemove = e => {
             for(const card of document.getElementsByClassName("spotlight-card")) {
                 const rect = card.getBoundingClientRect(),
@@ -232,26 +288,29 @@
             };
         }
 
-        // 2. Particle Generator
-        const particleContainer = document.getElementById('particles');
-        const particleCount = 20;
+        // 6. SCROLL REVEAL FOR PROJECTS
+        // Simple intersection observer to trigger anime.js when projects scroll into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    anime({
+                        targets: entry.target,
+                        translateY: [50, 0],
+                        opacity: [0, 1],
+                        easing: 'easeOutCubic',
+                        duration: 800
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
 
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            
-            // Random positioning and delay
-            const size = Math.random() * 3 + 1;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            particle.style.left = `${Math.random() * 100}vw`;
-            particle.style.animationDuration = `${Math.random() * 10 + 10}s`; // 10-20s float
-            particle.style.animationDelay = `${Math.random() * 5}s`;
-            
-            particleContainer.appendChild(particle);
-        }
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.style.opacity = 0; // Hide initially
+            observer.observe(card);
+        });
 
-        // 3. Modal Logic
+        // 7. MODAL LOGIC
         const modal = document.getElementById("contact-modal");
         const btns = document.querySelectorAll(".open-contact-btn");
         const close = document.querySelector(".close-btn");
@@ -259,6 +318,14 @@
         btns.forEach(btn => btn.onclick = () => {
             modal.classList.add("active");
             document.body.style.overflow = "hidden";
+            // Animate modal content
+            anime({
+                targets: '.modal-box',
+                scale: [0.8, 1],
+                opacity: [0, 1],
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
         });
 
         const closeModal = () => {
