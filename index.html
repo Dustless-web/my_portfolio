@@ -3,57 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS Student Portfolio</title>
+    <title>Avinash Sangisetti | Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-    <header class="fade-in">
-        <a href="#projects" class="start-link">SEE MY WORK ↗</a>
-        <div class="header-name">Avinash Sangisetti</div>
-        <div class="menu-icon">
-            <span></span><span></span><span></span><span></span>
+    <header>
+        <nav>
+            <div class="logo">AS</div> <ul class="nav-links">
+                <li><a href="#work">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact" class="btn-nav">Contact Me</a></li>
+            </ul>
+        </nav>
+
+        <div class="hero-container">
+            <div class="profile-wrapper">
+                <img src="PFP.jpeg" alt="Avinash Sangisetti" class="profile-pic">
+            </div>
+            <h1>
+                Hey, I'm <span class="highlight">Avinash Sangisetti.</span>
+            </h1>
+            <p class="hero-bio">
+                A 20-year-old CSE student from <strong>KSIT, Bangalore</strong>.<br>
+                I build intelligent systems with <span class="heart">♥</span> using <strong>AI/ML</strong> and <strong>Prompt Engineering</strong>.
+            </p>
         </div>
     </header>
 
-    <main class="hero">
-        <div class="big-text-layer layer-1 slide-up">COMPUTER</div>
-        <div class="big-text-layer layer-2 slide-up delay-1">SCIENCE</div>
-        <div class="big-text-layer layer-3 slide-up delay-2">PORTFOLIO</div>
-
-        <div class="content-wrapper">
-            <div class="text-block left fade-in delay-3">
-                <h3>AS A CS STUDENT, I FOCUS ON BUILDING EFFICIENT AND SCALABLE SOFTWARE SOLUTIONS.</h3>
-                <p>AVINASH'S DEVELOPMENT EXPERTISE DELIVERED.</p>
-                <a href="mailto:your.email@example.com" class="cta-button">Let's talk <span>⟶</span></a>
-            </div>
-
-            <div class="image-container fade-in delay-2">
-                <img src="PFP.png" alt="Profile Photo" class="profile-photo">
-            </div>
-
-            <div class="text-block right fade-in delay-3">
-                <p>A TECHNICAL PLATFORM DESIGNED TO SHOWCASE INNOVATIVE PROJECTS AND CODING SKILLS.</p>
-                <p>EXCEPTIONAL PROBLEM SOLVING AND USER EXPERIENCE.</p>
-                <div class="tags">
-                    <span>FULL STACK</span>
-                    <span>2026</span>
-                </div>
-            </div>
+    <main class="dark-section">
+        
+        <div class="container" id="work">
+            <h2 class="section-title">Featured Work</h2>
             
-            <div class="circle-number rotate-in delay-3">
-                <span>CS</span>
+            <div class="featured-grid">
+                <article class="card big-card">
+                    <div class="card-image gradient-1">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>AI Chatbot Assistant</h3>
+                        <p>A smart assistant built with Python and OpenAI API for summarizing lecture notes.</p>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>OpenAI</span>
+                        </div>
+                        <a href="#" class="btn-card">View Project</a>
+                    </div>
+                </article>
+
+                <article class="card big-card">
+                    <div class="card-image gradient-2">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>SGuardian App</h3>
+                        <p>Fall detection app for elderly care. Built with native Android technologies.</p>
+                        <div class="tags">
+                            <span>Kotlin</span>
+                            <span>Android</span>
+                        </div>
+                        <a href="#" class="btn-card">View Project</a>
+                    </div>
+                </article>
             </div>
         </div>
+
+        <div class="container" id="skills">
+            <h2 class="section-title">Skills & Technologies</h2>
+            <p class="section-subtitle">A collection of my technical stack and expertise.</p>
+
+            <div class="small-grid">
+                <div class="card small-card">
+                    <div class="icon-box">🤖</div>
+                    <h4>Prompt Engineering</h4>
+                    <p>Advanced LLM Prompting</p>
+                </div>
+
+                <div class="card small-card">
+                    <div class="icon-box">🧠</div>
+                    <h4>Machine Learning</h4>
+                    <p>TensorFlow & PyTorch</p>
+                </div>
+
+                <div class="card small-card">
+                    <div class="icon-box">💻</div>
+                    <h4>Web Development</h4>
+                    <p>Full Stack Solutions</p>
+                </div>
+
+                <div class="card small-card">
+                    <div class="icon-box">🐍</div>
+                    <h4>Python</h4>
+                    <p>Data Science & Scripting</p>
+                </div>
+
+                <div class="card small-card">
+                    <div class="icon-box">☕</div>
+                    <h4>Java</h4>
+                    <p>Object Oriented Programming</p>
+                </div>
+
+                <div class="card small-card">
+                    <div class="icon-box">📊</div>
+                    <h4>Data Analysis</h4>
+                    <p>Pandas & NumPy</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2 class="section-title">Extras</h2>
+            <div class="list-card">
+                <a href="#" class="list-item">
+                    <span class="green-badge">Blog</span>
+                    <h3>The Future of AI in Education</h3>
+                </a>
+                <a href="#" class="list-item">
+                    <span class="green-badge">Github</span>
+                    <h3>Check out my repositories ↗</h3>
+                </a>
+            </div>
+        </div>
+
     </main>
 
-    <footer class="marquee-banner">
-        <div class="marquee-content">
-            <span>SOFTWARE ENGINEERING ✦ WEB DEVELOPMENT ✦ ALGORITHMS & DATA STRUCTURES ✦ ARTIFICIAL INTELLIGENCE ✦ SOFTWARE ENGINEERING ✦ WEB DEVELOPMENT ✦ ALGORITHMS & DATA STRUCTURES ✦ ARTIFICIAL INTELLIGENCE ✦</span>
+    <footer>
+        <p>© 2025 Avinash Sangisetti. Built with code.</p>
+        <div class="socials">
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+            <a href="#">Email</a>
         </div>
     </footer>
 
 </body>
 </html>
-
