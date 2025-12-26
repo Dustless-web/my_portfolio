@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    console.log("WARP DRIVE ACTIVE - V99"); // Look for this in Console (F12)
+    // Remember to update version number in html to clear cache if needed!
+    console.log("WARP DRIVE ACTIVE - FULLSCREEN MENU V1"); 
 
     // Global Speed Variable
     window.warpSpeed = 0.05; 
@@ -61,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.m-link').forEach(link => {
         link.addEventListener('click', (e) => {
             const targetId = link.getAttribute('href');
+            // Allow opening modal without closing menu immediately
+            if(link.classList.contains('open-contact-btn')) return;
+
             if(targetId && targetId.startsWith('#')) {
                 e.preventDefault();
                 toggleMenu();
@@ -104,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // === 6. INITIALIZE 3D ===
-    initWarpStars();  // Background
-    initHeavyRocket(); // Menu
+    initWarpStars();  // Main Background
+    initHeavyRocket(); // Menu Rocket + Menu Stars
 });
 
 // --- HELPER ---
@@ -125,12 +129,11 @@ function triggerScramble() {
     }, 30);
 }
 
-// --- 3D BACKGROUND: WARP STARFIELD ---
+// --- 3D BACKGROUND: WARP STARFIELD (MAIN PAGE) ---
 function initWarpStars() {
     const container = document.getElementById('canvas-container');
     if(!container) return;
     
-    // Clear old
     while(container.firstChild) container.removeChild(container.firstChild);
 
     const scene = new THREE.Scene();
@@ -142,15 +145,14 @@ function initWarpStars() {
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
-    // Stars
     const starGeo = new THREE.BufferGeometry();
     const starCount = 3000;
     const posArray = new Float32Array(starCount * 3);
     
     for(let i=0; i<starCount; i++) {
-        posArray[i*3] = (Math.random() - 0.5) * 100; // X
-        posArray[i*3+1] = (Math.random() - 0.5) * 100; // Y
-        posArray[i*3+2] = (Math.random() - 0.5) * 100; // Z
+        posArray[i*3] = (Math.random() - 0.5) * 100; 
+        posArray[i*3+1] = (Math.random() - 0.5) * 100;
+        posArray[i*3+2] = (Math.random() - 0.5) * 100;
     }
     
     starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -162,16 +164,10 @@ function initWarpStars() {
 
     function animate() {
         requestAnimationFrame(animate);
-        
-        // ACCELERATE when interacting
         window.warpSpeed += (window.targetWarpSpeed - window.warpSpeed) * 0.05;
-
         const positions = starGeo.attributes.position.array;
         for(let i=0; i<starCount; i++) {
-            // Move stars forward (Warp Effect)
             positions[i*3+2] += window.warpSpeed; 
-            
-            // Reset if behind camera
             if(positions[i*3+2] > 10) {
                 positions[i*3+2] = -100; 
                 positions[i*3] = (Math.random() - 0.5) * 80;
@@ -179,7 +175,6 @@ function initWarpStars() {
             }
         }
         starGeo.attributes.position.needsUpdate = true;
-        
         renderer.render(scene, camera);
     }
     animate();
@@ -191,7 +186,7 @@ function initWarpStars() {
     });
 }
 
-// --- 3D MENU: HEAVY LIFTER ROCKET ---
+// --- 3D MENU: HEAVY LIFTER ROCKET + MENU STARS ---
 function initHeavyRocket() {
     const container = document.getElementById('menu-3d-container');
     if(!container) return;
@@ -199,120 +194,122 @@ function initHeavyRocket() {
     while(container.firstChild) container.removeChild(container.firstChild);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    // Use window dimensions now that container is full screen absolute
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
-    // === BUILD ROCKET (CYAN COLOR TO CONFIRM CHANGE) ===
-    const rocket = new THREE.Group();
-    // Using CYAN (0x00ffff) wireframe to prove code update
-    const mat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.8 });
-    const hullMat = new THREE.LineBasicMaterial({ color: 0x0088aa, transparent: true, opacity: 0.3 });
+    // === 1. ADD MENU STARS ===
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 1500; // Fewer stars than main bg
+    const posArray = new Float32Array(starCount * 3);
+    for(let i=0; i<starCount; i++) {
+        posArray[i*3] = (Math.random() - 0.5) * 150;
+        posArray[i*3+1] = (Math.random() - 0.5) * 150;
+        posArray[i*3+2] = (Math.random() - 0.5) * 150;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    // Slightly dimmer stars for menu
+    const starMat = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.05, transparent: true, opacity: 0.6 });
+    const starMesh = new THREE.Points(starGeo, starMat);
+    scene.add(starMesh);
 
-    // 1. Fuselage
+    // === 2. BUILD ROCKET (Reverted to White for final look) ===
+    const rocket = new THREE.Group();
+    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
+    const hullMat = new THREE.LineBasicMaterial({ color: 0xaaaaaa, transparent: true, opacity: 0.3 });
+
+    // Fuselage
     const bodyGeo = new THREE.CylinderGeometry(0.7, 1, 4.5, 16, 4, true);
     const bodyWire = new THREE.WireframeGeometry(bodyGeo);
-    const body = new THREE.LineSegments(bodyWire, mat);
-    rocket.add(body);
+    rocket.add(new THREE.LineSegments(bodyWire, mat));
 
-    // 2. Nose
+    // Nose
     const noseGeo = new THREE.ConeGeometry(0.7, 1.5, 16, 2, true);
     const noseWire = new THREE.WireframeGeometry(noseGeo);
     const nose = new THREE.LineSegments(noseWire, mat);
     nose.position.y = 3;
     rocket.add(nose);
 
-    // 3. Engine Cluster (Heavy)
+    // Engines
     for(let i = 0; i < 4; i++) {
         const engineGeo = new THREE.CylinderGeometry(0.3, 0.5, 1.2, 12);
         const engineWire = new THREE.WireframeGeometry(engineGeo);
         const engine = new THREE.LineSegments(engineWire, mat);
-        
         const angle = (Math.PI / 2) * i;
-        engine.position.x = Math.cos(angle) * 0.6;
-        engine.position.z = Math.sin(angle) * 0.6;
-        engine.position.y = -2.8;
+        engine.position.set(Math.cos(angle)*0.6, -2.8, Math.sin(angle)*0.6);
         rocket.add(engine);
     }
 
-    // 4. Large Swept Fins
+    // Fins
     const finShape = new THREE.Shape();
-    finShape.moveTo(0, 0);
-    finShape.lineTo(1.8, -2.5);
-    finShape.lineTo(1.8, -3.5);
-    finShape.lineTo(0.8, -2.5);
-    finShape.lineTo(0, 0);
-    const finGeo = new THREE.ShapeGeometry(finShape);
-    const finWireGeo = new THREE.WireframeGeometry(finGeo);
-
+    finShape.moveTo(0, 0); finShape.lineTo(1.8, -2.5); finShape.lineTo(1.8, -3.5); finShape.lineTo(0.8, -2.5); finShape.lineTo(0, 0);
+    const finWireGeo = new THREE.WireframeGeometry(new THREE.ShapeGeometry(finShape));
     for(let i = 0; i < 4; i++) {
         const fin = new THREE.LineSegments(finWireGeo, hullMat);
         const finGroup = new THREE.Group();
         finGroup.rotation.y = (Math.PI / 2) * i;
-        fin.position.x = 0.8;
-        fin.position.y = -0.5;
+        fin.position.set(0.8, -0.5, 0);
         finGroup.add(fin);
         rocket.add(finGroup);
     }
 
     scene.add(rocket);
-    rocket.scale.set(1.8, 1.8, 1.8); // BIGGER
+    rocket.scale.set(2, 2, 2); // Even Bigger
 
-    camera.position.z = 10;
+    camera.position.z = 12; // Move camera back slightly
     rocket.rotation.z = Math.PI / 4;
     rocket.rotation.y = -Math.PI / 4;
+    // Shift rocket left so it's not under the text initially
+    rocket.position.x = -3; 
 
     // Interaction Variables
-    let targetRotX = 0;
-    let targetRotY = -Math.PI / 4;
-    let targetPosZ = 0; // Forward movement
+    let targetRotX = 0; targetRotY = -Math.PI / 4; targetPosZ = 0; targetPosX = -3;
 
     // Link Interaction
     document.querySelectorAll('.m-link').forEach((link, idx) => {
         link.addEventListener('mouseenter', () => {
-            // WARP SPEED UP
-            window.targetWarpSpeed = 0.8 + (idx * 0.2); // Super fast
-
-            // ROCKET PITCHES FORWARD
+            window.targetWarpSpeed = 0.8 + (idx * 0.2); 
             targetRotX = (idx * 0.2); 
             targetRotY = -Math.PI / 2 + (idx * 0.1);
-            
-            // ROCKET MOVES CLOSER (Simulates moving forward)
-            targetPosZ = 2 + (idx * 0.5); 
+            targetPosZ = 3 + (idx * 0.8); 
+            // Move rocket closer to center (under text) when hovering
+            targetPosX = -1; 
         });
     });
 
     const menuArea = document.querySelector('.menu-links');
     if(menuArea) {
         menuArea.addEventListener('mouseleave', () => {
-            window.targetWarpSpeed = 0.05; // Slow down
-            targetRotX = 0;
-            targetRotY = -Math.PI / 4;
-            targetPosZ = 0;
+            window.targetWarpSpeed = 0.05;
+            targetRotX = 0; targetRotY = -Math.PI / 4; targetPosZ = 0;
+            targetPosX = -3; // Move back left
         });
     }
 
     function animate() {
         requestAnimationFrame(animate);
         
-        // Physics Interpolation
+        // Rocket Physics
         rocket.rotation.z += (targetRotX - rocket.rotation.z + Math.PI / 4) * 0.05;
         rocket.rotation.y += (targetRotY - rocket.rotation.y) * 0.05;
-        rocket.position.z += (targetPosZ - rocket.position.z) * 0.05; // Move Forward
+        rocket.position.z += (targetPosZ - rocket.position.z) * 0.05;
+        rocket.position.x += (targetPosX - rocket.position.x) * 0.05; // Smooth sideways movement
         
         // Engine Rumble
-        rocket.position.x = (Math.random() - 0.5) * 0.02;
-        rocket.position.y = (Math.random() - 0.5) * 0.02;
+        rocket.position.y = (Math.random() - 0.5) * 0.03;
 
-        // Resize
-        if (container.clientWidth > 0 && (renderer.domElement.width !== container.clientWidth * window.devicePixelRatio)) {
-             camera.aspect = container.clientWidth / container.clientHeight;
-             camera.updateProjectionMatrix();
-             renderer.setSize(container.clientWidth, container.clientHeight);
-        }
+        // Slowly rotate menu stars
+        starMesh.rotation.y += 0.0005;
+        starMesh.rotation.x += 0.0002;
+
+        // Resize using window dimensions
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
         renderer.render(scene, camera);
     }
