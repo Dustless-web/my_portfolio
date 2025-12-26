@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Remember to update version number in html to clear cache if needed!
-    console.log("WARP DRIVE ACTIVE - FULLSCREEN MENU V1"); 
+    console.log("SYSTEM READY - STICKMAN ONLINE"); 
 
-    // Global Speed Variable
+    // Global Speed Variable (kept for starfield)
     window.warpSpeed = 0.05; 
     window.targetWarpSpeed = 0.05;
 
@@ -49,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isActive) {
             menuOverlay.classList.remove('active');
             lenis.start(); 
-            window.targetWarpSpeed = 0.05; // Reset warp on close
+            window.targetWarpSpeed = 0.05; // Reset stars on close
         } else {
             menuOverlay.classList.add('active');
             lenis.stop(); 
@@ -62,9 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.m-link').forEach(link => {
         link.addEventListener('click', (e) => {
             const targetId = link.getAttribute('href');
-            // Allow opening modal without closing menu immediately
             if(link.classList.contains('open-contact-btn')) return;
-
             if(targetId && targetId.startsWith('#')) {
                 e.preventDefault();
                 toggleMenu();
@@ -109,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === 6. INITIALIZE 3D ===
     initWarpStars();  // Main Background
-    initHeavyRocket(); // Menu Rocket + Menu Stars
+    initMenuStickman(); // NEW: Stickman in Menu
 });
 
 // --- HELPER ---
@@ -133,7 +130,6 @@ function triggerScramble() {
 function initWarpStars() {
     const container = document.getElementById('canvas-container');
     if(!container) return;
-    
     while(container.firstChild) container.removeChild(container.firstChild);
 
     const scene = new THREE.Scene();
@@ -148,18 +144,15 @@ function initWarpStars() {
     const starGeo = new THREE.BufferGeometry();
     const starCount = 3000;
     const posArray = new Float32Array(starCount * 3);
-    
     for(let i=0; i<starCount; i++) {
         posArray[i*3] = (Math.random() - 0.5) * 100; 
         posArray[i*3+1] = (Math.random() - 0.5) * 100;
         posArray[i*3+2] = (Math.random() - 0.5) * 100;
     }
-    
     starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.07 });
     const starMesh = new THREE.Points(starGeo, starMat);
     scene.add(starMesh);
-    
     camera.position.z = 1;
 
     function animate() {
@@ -186,127 +179,129 @@ function initWarpStars() {
     });
 }
 
-// --- 3D MENU: HEAVY LIFTER ROCKET + MENU STARS ---
-function initHeavyRocket() {
+// --- 3D MENU: STICKMAN CHARACTER ---
+function initMenuStickman() {
     const container = document.getElementById('menu-3d-container');
     if(!container) return;
-
     while(container.firstChild) container.removeChild(container.firstChild);
 
     const scene = new THREE.Scene();
-    // Use window dimensions now that container is full screen absolute
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
-    // === 1. ADD MENU STARS ===
+    // === 1. ADD MENU STARS BG ===
     const starGeo = new THREE.BufferGeometry();
-    const starCount = 1500; // Fewer stars than main bg
-    const posArray = new Float32Array(starCount * 3);
-    for(let i=0; i<starCount; i++) {
+    const posArray = new Float32Array(1000 * 3);
+    for(let i=0; i<1000; i++) {
         posArray[i*3] = (Math.random() - 0.5) * 150;
         posArray[i*3+1] = (Math.random() - 0.5) * 150;
         posArray[i*3+2] = (Math.random() - 0.5) * 150;
     }
     starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    // Slightly dimmer stars for menu
-    const starMat = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.05, transparent: true, opacity: 0.6 });
+    const starMat = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.05, transparent: true, opacity: 0.5 });
     const starMesh = new THREE.Points(starGeo, starMat);
     scene.add(starMesh);
 
-    // === 2. BUILD ROCKET (Reverted to White for final look) ===
-    const rocket = new THREE.Group();
-    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
-    const hullMat = new THREE.LineBasicMaterial({ color: 0xaaaaaa, transparent: true, opacity: 0.3 });
+    // === 2. BUILD STICKMAN ===
+    const stickman = new THREE.Group();
+    const upperBody = new THREE.Group(); // Head, torso, arms will rotate together
+    const lowerBody = new THREE.Group(); // Legs stay mostly put
+    
+    const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.9 });
+    const jointMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true }); // Solid-ish joints
 
-    // Fuselage
-    const bodyGeo = new THREE.CylinderGeometry(0.7, 1, 4.5, 16, 4, true);
-    const bodyWire = new THREE.WireframeGeometry(bodyGeo);
-    rocket.add(new THREE.LineSegments(bodyWire, mat));
-
-    // Nose
-    const noseGeo = new THREE.ConeGeometry(0.7, 1.5, 16, 2, true);
-    const noseWire = new THREE.WireframeGeometry(noseGeo);
-    const nose = new THREE.LineSegments(noseWire, mat);
-    nose.position.y = 3;
-    rocket.add(nose);
-
-    // Engines
-    for(let i = 0; i < 4; i++) {
-        const engineGeo = new THREE.CylinderGeometry(0.3, 0.5, 1.2, 12);
-        const engineWire = new THREE.WireframeGeometry(engineGeo);
-        const engine = new THREE.LineSegments(engineWire, mat);
-        const angle = (Math.PI / 2) * i;
-        engine.position.set(Math.cos(angle)*0.6, -2.8, Math.sin(angle)*0.6);
-        rocket.add(engine);
+    // Helper to create lines (limbs)
+    function createLimb(length) {
+        const geo = new THREE.CylinderGeometry(0.05, 0.05, length, 6);
+        return new THREE.Mesh(geo, mat);
+    }
+    // Helper to create joints
+    function createJoint(size) {
+        const geo = new THREE.SphereGeometry(size, 8, 8);
+        return new THREE.Mesh(geo, jointMat);
     }
 
-    // Fins
-    const finShape = new THREE.Shape();
-    finShape.moveTo(0, 0); finShape.lineTo(1.8, -2.5); finShape.lineTo(1.8, -3.5); finShape.lineTo(0.8, -2.5); finShape.lineTo(0, 0);
-    const finWireGeo = new THREE.WireframeGeometry(new THREE.ShapeGeometry(finShape));
-    for(let i = 0; i < 4; i++) {
-        const fin = new THREE.LineSegments(finWireGeo, hullMat);
-        const finGroup = new THREE.Group();
-        finGroup.rotation.y = (Math.PI / 2) * i;
-        fin.position.set(0.8, -0.5, 0);
-        finGroup.add(fin);
-        rocket.add(finGroup);
-    }
+    // --- Upper Body ---
+    // Head
+    const head = createJoint(0.6);
+    head.position.y = 1.8;
+    upperBody.add(head);
 
-    scene.add(rocket);
-    rocket.scale.set(2, 2, 2); // Even Bigger
+    // Torso
+    const torso = createLimb(1.8);
+    torso.position.y = 0.6;
+    upperBody.add(torso);
 
-    camera.position.z = 12; // Move camera back slightly
-    rocket.rotation.z = Math.PI / 4;
-    rocket.rotation.y = -Math.PI / 4;
-    // Shift rocket left so it's not under the text initially
-    rocket.position.x = -3; 
+    // Arms (Simple pose)
+    const leftArm = createLimb(1.5);
+    leftArm.position.set(-0.8, 1.2, 0);
+    leftArm.rotation.z = Math.PI / 8;
+    upperBody.add(leftArm);
 
-    // Interaction Variables
-    let targetRotX = 0; targetRotY = -Math.PI / 4; targetPosZ = 0; targetPosX = -3;
+    const rightArm = createLimb(1.5);
+    rightArm.position.set(0.8, 1.2, 0);
+    rightArm.rotation.z = -Math.PI / 8;
+    upperBody.add(rightArm);
 
-    // Link Interaction
-    document.querySelectorAll('.m-link').forEach((link, idx) => {
-        link.addEventListener('mouseenter', () => {
-            window.targetWarpSpeed = 0.8 + (idx * 0.2); 
-            targetRotX = (idx * 0.2); 
-            targetRotY = -Math.PI / 2 + (idx * 0.1);
-            targetPosZ = 3 + (idx * 0.8); 
-            // Move rocket closer to center (under text) when hovering
-            targetPosX = -1; 
-        });
+    // --- Lower Body ---
+    // Hips joint
+    const hips = createJoint(0.3);
+    hips.position.y = -0.3;
+    lowerBody.add(hips);
+
+    // Legs (Simple stand pose)
+    const leftLeg = createLimb(1.8);
+    leftLeg.position.set(-0.5, -1.2, 0);
+    leftLeg.rotation.z = -Math.PI / 16;
+    lowerBody.add(leftLeg);
+
+    const rightLeg = createLimb(1.8);
+    rightLeg.position.set(0.5, -1.2, 0);
+    rightLeg.rotation.z = Math.PI / 16;
+    lowerBody.add(rightLeg);
+
+    // Combine
+    stickman.add(upperBody);
+    stickman.add(lowerBody);
+    scene.add(stickman);
+
+    // Position Character
+    stickman.position.set(-4, -1, 0); // Move left, slightly down
+    stickman.scale.set(1.5, 1.5, 1.5);
+    camera.position.z = 10;
+
+    // Mouse Tracking for "Look At"
+    let mouseX = 0, mouseY = 0;
+    // Use menu container specifically for mouse tracking within the overlay scope
+    document.getElementById('menu-overlay').addEventListener('mousemove', (e) => {
+        // Normalize mouse from -1 to +1
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
     });
-
-    const menuArea = document.querySelector('.menu-links');
-    if(menuArea) {
-        menuArea.addEventListener('mouseleave', () => {
-            window.targetWarpSpeed = 0.05;
-            targetRotX = 0; targetRotY = -Math.PI / 4; targetPosZ = 0;
-            targetPosX = -3; // Move back left
-        });
-    }
 
     function animate() {
         requestAnimationFrame(animate);
         
-        // Rocket Physics
-        rocket.rotation.z += (targetRotX - rocket.rotation.z + Math.PI / 4) * 0.05;
-        rocket.rotation.y += (targetRotY - rocket.rotation.y) * 0.05;
-        rocket.position.z += (targetPosZ - rocket.position.z) * 0.05;
-        rocket.position.x += (targetPosX - rocket.position.x) * 0.05; // Smooth sideways movement
+        // 1. Personality: Idle Breathing/Bobbing
+        stickman.position.y = -1 + Math.sin(Date.now() * 0.002) * 0.1;
         
-        // Engine Rumble
-        rocket.position.y = (Math.random() - 0.5) * 0.03;
+        // 2. Personality: Look at Cursor (Smoothly rotate upper body)
+        // Limit rotation angles so it doesn't break its neck
+        let targetRotY = mouseX * 0.5; // Turn left/right
+        let targetRotX = -mouseY * 0.3; // Look up/down
 
-        // Slowly rotate menu stars
+        upperBody.rotation.y += (targetRotY - upperBody.rotation.y) * 0.05;
+        upperBody.rotation.x += (targetRotX - upperBody.rotation.x) * 0.05;
+        // Slight counter-rotation for head for more natural look
+        head.rotation.y += (targetRotY * 0.2 - head.rotation.y) * 0.05;
+
+        // Slowly rotate menu stars bg
         starMesh.rotation.y += 0.0005;
-        starMesh.rotation.x += 0.0002;
 
-        // Resize using window dimensions
+        // Resize
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
