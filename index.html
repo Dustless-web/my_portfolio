@@ -259,17 +259,15 @@
     </div>
 
     <script>
-        // 1. DIGITAL RAIN SYSTEM (NO PARTICLES, JUST CODE)
+        // 1. DATA RAIN EFFECT
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
         let scrollY = 0, lastScrollY = 0, scrollVelocity = 0;
-
-        // Characters to use (Hex + Binary)
         const chars = '01010101010101010123456789ABCDEF'; 
         const fontSize = 14;
         let columns = 0;
-        let drops = []; // Array to store Y position of drops
+        let drops = [];
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -277,53 +275,39 @@
             columns = width / fontSize;
             drops = [];
             for (let i = 0; i < columns; i++) {
-                drops[i] = Math.random() * -100; // Start off screen
+                drops[i] = Math.random() * -100;
             }
         }
         window.addEventListener('resize', resize);
         resize();
 
-        // Scroll Velocity Tracker
         window.addEventListener('scroll', () => {
             scrollY = window.scrollY;
-            scrollVelocity = (scrollY - lastScrollY) * 2; // Multiplier for effect
+            scrollVelocity = (scrollY - lastScrollY) * 2;
             lastScrollY = scrollY;
         });
 
         function animate() {
-            // Semi-transparent black to create trail effect
             ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
             ctx.fillRect(0, 0, width, height);
-
-            ctx.fillStyle = '#d4af37'; // Gold Color
+            ctx.fillStyle = '#d4af37';
             ctx.font = fontSize + 'px "JetBrains Mono"';
 
             for (let i = 0; i < drops.length; i++) {
-                // Random character
                 const text = chars.charAt(Math.floor(Math.random() * chars.length));
-                
-                // Opacity variation
                 ctx.globalAlpha = Math.random() * 0.5 + 0.1;
-                
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-                // Reset drop to top randomly
                 if (drops[i] * fontSize > height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
-
-                // Move drop down. Add Scroll Velocity for "Warp" effect
                 let speed = 1;
                 if (scrollVelocity > 0) speed += scrollVelocity * 0.1;
-                
                 drops[i] += speed;
             }
-            ctx.globalAlpha = 1; // Reset opacity
-
-            // Dampen velocity
+            ctx.globalAlpha = 1;
             scrollVelocity *= 0.9;
             if (Math.abs(scrollVelocity) < 0.1) scrollVelocity = 0;
-
             requestAnimationFrame(animate);
         }
         animate();
