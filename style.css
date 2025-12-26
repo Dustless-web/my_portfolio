@@ -48,6 +48,7 @@ nav {
 .nav-container {
     display: flex; justify-content: space-between; align-items: center;
     padding: 15px 5%; max-width: 1400px; margin: 0 auto;
+    width: 100%; /* Force full width for flexbox */
 }
 .logo { font-family: var(--font-head); font-weight: 700; font-size: 20px; }
 .dot { color: var(--accent); }
@@ -148,7 +149,7 @@ nav {
 .card {
     background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08);
     padding: 30px; display: flex; flex-direction: column; position: relative; overflow: hidden;
-    transition: 0.4s ease;
+    transition: 0.4s ease; cursor: pointer;
 }
 .card:hover { transform: translateY(-5px); border-color: rgba(212,175,55,0.4); }
 .card-glow {
@@ -157,6 +158,16 @@ nav {
     opacity: 0; transition: 0.4s;
 }
 .card:hover .card-glow { opacity: 1; }
+
+/* Click Scan Effect */
+.scan-line {
+    position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+    background: var(--accent); opacity: 0; pointer-events: none;
+    box-shadow: 0 0 15px var(--accent);
+}
+.card.scanning .scan-line { animation: scan 1s linear forwards; opacity: 1; }
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
 .card-top { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 22px; color: var(--text-muted); position: relative; z-index: 2; }
 .folder-icon { color: var(--accent); }
 .links a { color: var(--text-main); margin-left: 15px; font-size: 18px; }
@@ -233,9 +244,9 @@ footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 60px 5% 30px; bac
 .close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 24px; cursor: pointer; transition: 0.3s; }
 .close-btn:hover { color: var(--accent); transform: rotate(90deg); }
 
-.modal-header { margin-bottom: 30px; text-align: center; }
+.modal-header { margin-bottom: 40px; text-align: center; }
 .modal-header h3 { font-family: var(--font-head); font-size: 32px; margin-bottom: 10px; }
-.modal-header p { color: var(--text-muted); font-size: 14px; }
+.modal-desc { color: var(--text-muted); font-size: 14px; margin-top: 15px; } /* Added spacing */
 
 .contact-grid { display: flex; flex-direction: column; gap: 15px; }
 .c-item {
@@ -268,4 +279,9 @@ footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 60px 5% 30px; bac
     
     .footer-grid { grid-template-columns: 1fr; text-align: center; }
     .status-badge { justify-content: center; }
+    
+    .orb-container { width: 280px; height: 280px; }
+    .ring-1 { width: 320px; height: 320px; }
+    .ring-2 { width: 380px; height: 380px; }
+    .ring-3 { width: 440px; height: 440px; }
 }
