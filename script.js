@@ -82,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(e) e.preventDefault();
         contactModal.classList.add('active');
         lenis.stop();
-        // Close menu if open
         if(menuOverlay.classList.contains('active')) menuOverlay.classList.remove('active');
     }
     function closeModal() {
@@ -156,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMenu3D();
 });
 
-// --- THREE.JS LOGIC ---
+// --- THREE.JS LOGIC (BACKGROUND) ---
 function initThreeJS() {
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
@@ -202,38 +201,99 @@ function initThreeJS() {
     });
 }
 
-// --- 3D MENU LOGIC ---
+// --- 3D MENU LOGIC (ROCKET) ---
 function initMenu3D() {
     const container = document.getElementById('menu-3d-container');
     const scene = new THREE.Scene();
-    // Initially set size, but will resize when menu opens
     const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
-    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-    const material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.8 });
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-    camera.position.z = 4;
+    // --- BUILD ROCKET ---
+    const rocket = new THREE.Group();
+    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
 
-    let targetRotX = 0, targetRotY = 0;
+    // 1. Body (Cylinder)
+    // CylinderGeometry(radiusTop, radiusBottom, height, radialSegments)
+    const bodyGeo = new THREE.CylinderGeometry(0.5, 0.5, 2.5, 10);
+    const bodyWire = new THREE.WireframeGeometry(bodyGeo);
+    const body = new THREE.LineSegments(bodyWire, mat);
+    rocket.add(body);
 
+    // 2. Nose (Cone)
+    const noseGeo = new THREE.ConeGeometry(0.5, 1, 10);
+    const noseWire = new THREE.WireframeGeometry(noseGeo);
+    const nose = new THREE.LineSegments(noseWire, mat);
+    nose.position.y = 1.75; // 2.5/2 + 1/2
+    rocket.add(nose);
+
+    // 3. Fins (4 simple boxes rotating around)
+    for(let i = 0; i < 4; i++) {
+        const finGeo = new THREE.BoxGeometry(0.8, 0.8, 0.05);
+        const finWire = new THREE.WireframeGeometry(finGeo);
+        const fin = new THREE.LineSegments(finWire, mat);
+        
+        // Pivot hack: Group the fin, rotate the group
+        const finGroup = new THREE.Group();
+        fin.position.x = 0.6; // Offset from center
+        fin.position.y = -0.8; // Bottom of body
+        finGroup.add(fin);
+        finGroup.rotation.y = (Math.PI / 2) * i; // Rotate 0, 90, 180, 270
+        rocket.add(finGroup);
+    }
+
+    // 4. Thruster (Bottom cone)
+    const thrustGeo = new THREE.CylinderGeometry(0.3, 0.5, 0.5, 10);
+    const thrustWire = new THREE.WireframeGeometry(thrustGeo);
+    const thrust = new THREE.LineSegments(thrustWire, mat);
+    thrust.position.y = -1.5;
+    rocket.add(thrust);
+
+    // Add Rocket to scene
+    scene.add(rocket);
+    
+    // Tilt it slightly for better view
+    rocket.rotation.z = Math.PI / 6; 
+    rocket.rotation.y = -Math.PI / 4;
+
+    camera.position.z = 6;
+
+    // Interaction variables
+    let targetRotX = 0; 
+    let targetRotY = -Math.PI / 4;
+
+    // Listen to menu hover
     document.querySelectorAll('.m-link').forEach((link, idx) => {
         link.addEventListener('mouseenter', () => {
-            targetRotX = (idx + 1) * 0.5;
-            targetRotY = (idx + 1) * 0.5;
+            // Calculate rotation based on index (0 to 4)
+            // Rocket spins/tilts as you go down the list
+            targetRotX = (idx - 2) * 0.3; // Tilts up/down
+            targetRotY = -Math.PI / 4 + (idx * 0.5); // Spins
         });
     });
 
+    // Reset when leaving menu area
+    const menuLinksContainer = document.querySelector('.menu-links');
+    if(menuLinksContainer) {
+        menuLinksContainer.addEventListener('mouseleave', () => {
+            targetRotX = 0;
+            targetRotY = -Math.PI / 4;
+        });
+    }
+
     function animate() {
         requestAnimationFrame(animate);
-        mesh.rotation.x += (targetRotX - mesh.rotation.x) * 0.05;
-        mesh.rotation.y += (targetRotY - mesh.rotation.y) * 0.05;
-        mesh.rotation.z += 0.005;
         
-        // Ensure renderer matches container if size changes
+        // Smooth rotation interpolation
+        rocket.rotation.z += (targetRotX - rocket.rotation.z + Math.PI / 6) * 0.05;
+        rocket.rotation.y += (targetRotY - rocket.rotation.y) * 0.05;
+        
+        // Constant idle floating
+        const time = Date.now() * 0.001;
+        rocket.position.y = Math.sin(time) * 0.1;
+
+        // Resize check
         if (container.clientWidth > 0 && (renderer.domElement.width !== container.clientWidth * window.devicePixelRatio)) {
              camera.aspect = container.clientWidth / container.clientHeight;
              camera.updateProjectionMatrix();
