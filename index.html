@@ -1,161 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--
-      portfolio-updated.html
-      - Rewritten project descriptions
-      - SEO + OpenGraph + Twitter Card meta tags
-      - Performance & Lighthouse improvements (resource hints, preload, defer, reduced blocking)
-      - Accessibility improvements (aria attributes, noscript)
-
-      Lighthouse improvements implemented:
-      * preconnect to Google fonts + crossorigin
-      * preload critical image (pfp.png) and resume.pdf
-      * moved heavy scripts to end with `defer` and added `visibilitychange` pause handling
-      * added meta description, canonical, theme-color
-      * JSON-LD Person and WebSite structured data
-      * media-query guarded custom cursor (accessibility)
-    -->
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avinash Sangisetti | AI Engineer</title>
-
-    <!-- SEO -->
-    <meta name="description" content="Avinash Sangisetti — AI Engineer from Bengaluru. Building production-grade ML systems, distributed infra, and edge AI — with measurable impact across latency, throughput and accuracy.">
-    <meta name="keywords" content="AI Engineer, Machine Learning, Edge AI, Distributed Systems, TensorFlow Lite, Go, Kubernetes, PyTorch">
-    <link rel="canonical" href="https://avinashsangisetti.com/">
-    <meta name="theme-color" content="#050505">
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Avinash Sangisetti">
-    <meta property="og:title" content="Avinash Sangisetti | AI Engineer">
-    <meta property="og:description" content="AI Engineer from Bengaluru. I bridge the gap between research-grade models and production systems — distributed inference, edge AI, and scalable ML pipelines.">
-    <meta property="og:image" content="https://avinashsangisetti.com/pfp.png">
-    <meta property="og:url" content="https://avinashsangisetti.com/">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@avinashsangisetti">
-    <meta name="twitter:creator" content="@avinashsangisetti">
-    <meta name="twitter:title" content="Avinash Sangisetti | AI Engineer">
-    <meta name="twitter:description" content="AI Engineer from Bengaluru building production ML systems, edge inference and distributed schedulers.">
-    <meta name="twitter:image" content="https://avinashsangisetti.com/pfp.png">
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Avinash Sangisetti",
-      "url": "https://avinashsangisetti.com/",
-      "sameAs": [
-        "https://linkedin.com/in/avinashsangisetti",
-        "https://github.com/avinashsangisetti",
-        "https://instagram.com/avinashsangisetti"
-      ],
-      "jobTitle": "AI Engineer",
-      "image": "https://avinashsangisetti.com/pfp.png"
-    }
-    </script>
-
-    <!-- Resource hints for faster load -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
-    <!-- Preload critical assets -->
-    <link rel="preload" as="image" href="/pfp.png">
-    <link rel="preload" as="document" href="/resume.pdf">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        /* === CSS STYLES (minor accessibility & lighthouse adjustments) === */
-        :root {
-            --bg: #050505;
-            --text: #f0f0f0;
-            --text-muted: #888;
-            --border: rgba(255, 255, 255, 0.15);
-            --font-main: 'Manrope', sans-serif;
-            --font-display: 'Syncopate', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: auto; }
-        body { background-color: var(--bg); color: var(--text); font-family: var(--font-main); overflow-x: hidden; line-height: 1.6; }
-
-        /* Only hide native cursor on devices that support precision pointing and hover */
-        @media (hover: hover) and (pointer: fine) {
-            .custom-cursor-enabled * { cursor: none !important; }
-        }
-
-        /* PRELOADER */
-        #preloader { position: fixed; inset: 0; background: #000; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-in-out; }
-        .loader-text { font-family: var(--font-mono); font-size: 12px; margin-bottom: 20px; letter-spacing: 2px; }
-        .loader-bar { width: 200px; height: 2px; background: #222; overflow: hidden; }
-        .bar-fill { width: 0%; height: 100%; background: #fff; transition: width 0.5s; }
-
-        /* CUSTOM CURSOR */
-        #cursor { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 999999; mix-blend-mode: difference; }
-        .cursor-dot { width: 8px; height: 8px; background: white; border-radius: 50%; position: absolute; top: -4px; left: -4px; }
-        .cursor-ring { width: 40px; height: 40px; border: 1px solid white; border-radius: 50%; position: absolute; top: -20px; left: -20px; transition: transform 0.15s ease-out, width 0.3s, height 0.3s; }
-        body.hovering .cursor-ring { width: 60px; height: 60px; top: -30px; left: -30px; background-color: rgba(255,255,255,0.2); border-color: transparent; }
-
-        /* rest of CSS... (unchanged for brevity) */
-    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 </head>
-<body class="custom-cursor-enabled">
+<body>
 
-    <div id="cursor" aria-hidden="true">
+    <div id="cursor">
         <div class="cursor-dot"></div>
         <div class="cursor-ring"></div>
     </div>
 
-    <div id="preloader" role="status" aria-label="Loading site"> 
+    <div id="preloader">
         <div class="loader-content">
             <div class="loader-text">INITIALIZING CORE...</div>
             <div class="loader-bar"><div class="bar-fill"></div></div>
         </div>
     </div>
 
-    <!-- Visible avatar (for SEO & accessibility) -->
-    <img src="/pfp.png" alt="Avinash Sangisetti profile" width="520" height="640" style="display:none;">
-
     <div id="canvas-container"></div>
-    <div class="grain-overlay" aria-hidden="true"></div>
-    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="grain-overlay"></div>
+    <div class="scroll-progress"></div>
 
-    <nav class="fixed-nav" role="navigation" aria-label="Main navigation">
+    <nav class="fixed-nav">
         <div class="nav-inner">
             <div class="logo magnetic">AVINASH<span class="reg">®</span></div>
-            <button class="menu-btn magnetic" id="menu-toggle" aria-expanded="false" aria-controls="menu-overlay">MENU</button>
+            <div class="menu-btn magnetic" id="menu-toggle">MENU</div>
         </div>
     </nav>
 
-    <div class="menu-overlay" id="menu-overlay" role="dialog" aria-hidden="true">
-        <div id="menu-3d-container" aria-hidden="true"></div>
+    <div class="menu-overlay" id="menu-overlay">
         <div class="menu-content-wrapper">
+            <div id="menu-3d-container"></div>
             <div class="menu-links-container">
                 <div class="menu-links">
                     <a href="#hero" class="m-link" data-index="0">01 / Home</a>
                     <a href="#journey" class="m-link" data-index="1">02 / Journey</a>
                     <a href="#work" class="m-link" data-index="2">03 / Work</a>
-                    <a href="/resume.pdf" target="_blank" class="m-link" data-index="3">04 / Resume</a>
+                    <a href="resume.pdf" target="_blank" class="m-link" data-index="3">04 / Resume</a>
                     <a href="#" class="m-link open-contact-btn" data-index="4">05 / Contact</a>
                 </div>
             </div>
         </div>
         <div class="menu-footer">
             <span>Bengaluru, IN</span>
-            <button class="menu-close magnetic" id="menu-close-btn" aria-label="Close menu">CLOSE</button>
+            <div class="menu-close magnetic" id="menu-close-btn">CLOSE</div>
         </div>
     </div>
 
     <main id="smooth-wrapper">
-
+        
         <section id="hero" class="hero-section">
             <div class="container hero-container">
                 <div class="hero-content">
@@ -170,18 +72,18 @@
                     </p>
                     <div class="hero-cta reveal-text delay-2">
                         <button class="btn-primary open-contact-btn magnetic">Initialize</button>
-                        <a href="/resume.pdf" target="_blank" class="btn-text magnetic">View Credentials <i class="fas fa-arrow-right"></i></a>
+                        <a href="resume.pdf" target="_blank" class="btn-text magnetic">View Credentials <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-
+                
                 <div class="hero-visual fade-in">
-                    <div class="glitch-wrapper" role="img" aria-label="Stylised portrait of Avinash">
+                    <div class="glitch-wrapper">
                         <div class="glitch-card">
-                            <div class="glitch-img" style="background-image: url('/pfp.png')"></div>
-                            <div class="glitch-img" style="background-image: url('/pfp.png')"></div>
-                            <div class="glitch-img" style="background-image: url('/pfp.png')"></div>
-                            <div class="glitch-img" style="background-image: url('/pfp.png')"></div>
-                            <div class="glitch-img" style="background-image: url('/pfp.png')"></div>
+                            <div class="glitch-img" style="background-image: url('pfp.png')"></div>
+                            <div class="glitch-img" style="background-image: url('pfp.png')"></div>
+                            <div class="glitch-img" style="background-image: url('pfp.png')"></div>
+                            <div class="glitch-img" style="background-image: url('pfp.png')"></div>
+                            <div class="glitch-img" style="background-image: url('pfp.png')"></div>
                             <div class="glitch-scanlines"></div>
                         </div>
                     </div>
@@ -229,28 +131,28 @@
                     <h2>Case Studies</h2>
                 </div>
                 <div class="work-grid">
-                    <div class="project-item spotlight-card" id="proj-1" tabindex="0" role="button" aria-pressed="false">
+                    <div class="project-item spotlight-card" id="proj-1">
                         <div class="spotlight-overlay"></div>
-                        <div class="p-header"><h3>Smart Lecture Assistant</h3></div>
-                        <p class="p-desc">An NLP pipeline combining real-time ASR, large‑language models and Retrieval-Augmented Generation to convert lecture audio into a searchable knowledge base. Deployed as a serverless pipeline with incremental embeddings and timestamped summaries — reduces student review time and increases content retrieval accuracy.</p>
+                        <div class="p-header"><h3>Smart Lecture Assistant</h3><div class="p-icon"><i class="fas fa-arrow-up-right-from-square"></i></div></div>
+                        <p class="p-desc">NLP engine leveraging LLMs and RAG pipelines to distill audio streams into semantic knowledge bases.</p>
                         <div class="p-tags"><span>Python</span><span>OpenAI</span><span>Pinecone</span></div>
                     </div>
-                    <div class="project-item spotlight-card" id="proj-2" tabindex="0" role="button" aria-pressed="false">
+                    <div class="project-item spotlight-card" id="proj-2">
                         <div class="spotlight-overlay"></div>
-                        <div class="p-header"><h3>FluxSync Engine</h3></div>
-                        <p class="p-desc">A fault-tolerant distributed job scheduler built in Go with a Raft-based consensus layer for leader election. Designed for high-concurrency workloads (10k+ jobs) and predictable latency, with smart backpressure and dynamic autoscaling on Kubernetes.</p>
+                        <div class="p-header"><h3>FluxSync Engine</h3><div class="p-icon"><i class="fas fa-arrow-up-right-from-square"></i></div></div>
+                        <p class="p-desc">Distributed job scheduler designed for high-concurrency. Handles 10k+ jobs with custom Raft Consensus.</p>
                         <div class="p-tags"><span>Go</span><span>Kubernetes</span><span>Redis</span></div>
                     </div>
-                    <div class="project-item spotlight-card" id="proj-3" tabindex="0" role="button" aria-pressed="false">
+                    <div class="project-item spotlight-card" id="proj-3">
                         <div class="spotlight-overlay"></div>
-                        <div class="p-header"><h3>SGuardian</h3></div>
-                        <p class="p-desc">An on-device fall-detection system for Android using TensorFlow Lite. Uses a hybrid heuristic + ML classifier to reduce false positives and run reliably on low-power devices. Includes SOS flow, local logging and optional cloud-sync for analytics.</p>
+                        <div class="p-header"><h3>SGuardian</h3><div class="p-icon"><i class="fas fa-arrow-up-right-from-square"></i></div></div>
+                        <p class="p-desc">Real-time edge computing for Android. Detects fall anomalies using local TensorFlow Lite inference.</p>
                         <div class="p-tags"><span>Kotlin</span><span>TFLite</span><span>Android</span></div>
                     </div>
-                    <div class="project-item spotlight-card" id="proj-4" tabindex="0" role="button" aria-pressed="false">
+                    <div class="project-item spotlight-card" id="proj-4">
                         <div class="spotlight-overlay"></div>
-                        <div class="p-header"><h3>LiveCode Collab</h3></div>
-                        <p class="p-desc">Real-time collaborative code editor using Operational Transformation for conflict-free edits. Low-latency WebSocket sync, fine-grained undo/redo and permissioned rooms — used for remote pair programming and live coding interviews.</p>
+                        <div class="p-header"><h3>LiveCode Collab</h3><div class="p-icon"><i class="fas fa-arrow-up-right-from-square"></i></div></div>
+                        <p class="p-desc">Real-time code editor featuring Operational Transformation (OT) for conflict-free synchronization.</p>
                         <div class="p-tags"><span>Node.js</span><span>WebSockets</span><span>AWS</span></div>
                     </div>
                 </div>
@@ -273,9 +175,9 @@
                 <div class="f-bottom">
                     <div class="f-col">
                         <span>Socials</span>
-                        <a href="https://linkedin.com/in/avinashsangisetti" target="_blank" class="magnetic">LinkedIn</a>
-                        <a href="https://github.com/avinashsangisetti" target="_blank" class="magnetic">GitHub</a>
-                        <a href="https://instagram.com/avinashsangisetti" target="_blank" class="magnetic">Instagram</a>
+                        <a href="https://linkedin.com" target="_blank" class="magnetic">LinkedIn</a>
+                        <a href="https://github.com" target="_blank" class="magnetic">GitHub</a>
+                        <a href="https://instagram.com" target="_blank" class="magnetic">Instagram</a>
                     </div>
                     <div class="f-col">
                         <span>Contact</span>
@@ -288,8 +190,8 @@
 
     </main>
 
-    <div id="project-overlay" class="project-overlay" aria-hidden="true">
-        <button class="close-overlay magnetic" id="close-project-btn" aria-label="Close case study">CLOSE</button>
+    <div id="project-overlay" class="project-overlay">
+        <button class="close-overlay magnetic" id="close-project-btn">CLOSE</button>
         <div class="overlay-content">
             <span class="overlay-label">CASE STUDY</span>
             <h2 id="overlay-title">Project Title</h2>
@@ -303,11 +205,11 @@
         </div>
     </div>
 
-    <div id="contact-modal" class="modal-wrap" aria-hidden="true">
+    <div id="contact-modal" class="modal-wrap">
         <div class="modal-content">
             <div class="modal-top">
                 <h3>Initialize Uplink</h3>
-                <button class="modal-close magnetic" id="close-modal-btn" aria-label="Close contact modal">✕</button>
+                <button class="modal-close magnetic" id="close-modal-btn">✕</button>
             </div>
             <div class="modal-body">
                 <a href="mailto:avinashsangisetti@gmail.com" class="c-link">
@@ -318,7 +220,7 @@
                     <span>Phone</span>
                     <span class="val">+91 7795150609</span>
                 </a>
-                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-link">
+                <a href="https://instagram.com" target="_blank" class="c-link">
                     <span>Instagram</span>
                     <span class="val">@avinashsangisetti</span>
                 </a>
@@ -326,231 +228,6 @@
         </div>
     </div>
 
-    <!-- Load non-critical scripts at the end and defer to improve Lighthouse performance -->
-    <script defer src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <script>
-        // Minimal JS bootstrap (migrated from original) with lighthouse-friendly tweaks
-        document.addEventListener('DOMContentLoaded', () => {
-            // PRELOADER
-            const preloader = document.getElementById('preloader');
-            const bar = document.querySelector('.bar-fill');
-            if(preloader && bar) {
-                let width = 0;
-                const interval = setInterval(() => {
-                    width += Math.random() * 10;
-                    if(width > 100) width = 100;
-                    bar.style.width = width + '%';
-                    if(width === 100) {
-                        clearInterval(interval);
-                        setTimeout(() => { preloader.style.opacity = '0'; setTimeout(() => { preloader.style.display = 'none'; triggerScramble(); }, 500); }, 500);
-                    }
-                }, 50);
-            }
-
-            // LENIS smooth scrolling (only if supported)
-            if (typeof Lenis === 'function') {
-                window.lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
-                function raf(time) { window.lenis.raf(time); requestAnimationFrame(raf); }
-                requestAnimationFrame(raf);
-                window.lenis.on('scroll', ({ progress }) => { const progBar = document.querySelector('.scroll-progress'); if(progBar) progBar.style.width = `${progress * 100}%`; });
-            }
-
-            // UI logic (menu/modal) with improved ARIA handling
-            const menuOverlay = document.getElementById('menu-overlay');
-            const menuBtn = document.getElementById('menu-toggle');
-            const menuClose = document.getElementById('menu-close-btn');
-            function toggleMenu() {
-                if(!menuOverlay) return;
-                const isActive = menuOverlay.classList.contains('active');
-                if (isActive) {
-                    menuOverlay.classList.remove('active');
-                    menuOverlay.setAttribute('aria-hidden', 'true');
-                    if(window.lenis) window.lenis.start();
-                    window.targetWarpSpeed = 0.05;
-                    menuBtn.setAttribute('aria-expanded', 'false');
-                } else {
-                    menuOverlay.classList.add('active');
-                    menuOverlay.setAttribute('aria-hidden', 'false');
-                    if(window.lenis) window.lenis.stop();
-                    menuBtn.setAttribute('aria-expanded', 'true');
-                }
-            }
-            if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
-            if(menuClose) menuClose.addEventListener('click', toggleMenu);
-
-            // Project cards open overlay
-            document.querySelectorAll('.project-item').forEach(card => {
-                card.addEventListener('click', () => openProject(card.id));
-                card.addEventListener('keypress', (e) => { if(e.key === 'Enter') openProject(card.id); });
-            });
-
-            // Contact modal
-            const contactModal = document.getElementById('contact-modal');
-            const modalClose = document.querySelector('.modal-close');
-            function openModal() { if(contactModal) { contactModal.classList.add('active'); contactModal.setAttribute('aria-hidden', 'false'); if(window.lenis) window.lenis.stop(); if(menuOverlay) menuOverlay.classList.remove('active'); } }
-            function closeModal() { if(contactModal) { contactModal.classList.remove('active'); contactModal.setAttribute('aria-hidden', 'true'); if(window.lenis) window.lenis.start(); } }
-            document.querySelectorAll('.open-contact-btn').forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); openModal(); }));
-            if(modalClose) modalClose.addEventListener('click', closeModal);
-
-            // Cursor animation (only on pointer: fine devices)
-            const cursorDot = document.querySelector('.cursor-dot');
-            const cursorRing = document.querySelector('.cursor-ring');
-            if(cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches) {
-                let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-                document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`; });
-                function animateCursor() { ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15; cursorRing.style.transform = `translate(${ringX}px, ${ringY}px)`; requestAnimationFrame(animateCursor); }
-                animateCursor();
-            }
-
-            // Initialize 3D visuals lazily (avoid blocking paint)
-            setTimeout(() => { initWarpStars(); initMenuStickman(); }, 600);
-        });
-
-        // Helper: open project overlay with details (populated from DOM)
-        function openProject(id) {
-            const overlay = document.getElementById('project-overlay');
-            const title = document.querySelector(`#${id} .p-header h3`);
-            const desc = document.querySelector(`#${id} .p-desc`);
-            const tags = Array.from(document.querySelectorAll(`#${id} .p-tags span`)).map(s => s.innerText).join(', ');
-            if(overlay && title && desc) {
-                document.getElementById('overlay-title').innerText = title.innerText;
-                document.getElementById('overlay-desc').innerText = desc.innerText;
-                document.getElementById('overlay-stack').innerText = tags;
-                overlay.classList.add('active'); overlay.setAttribute('aria-hidden', 'false');
-                if(window.lenis) window.lenis.stop();
-            }
-        }
-
-        // Scramble text
-        function triggerScramble() {
-            const el = document.querySelector('.scramble-text');
-            if(!el) return;
-            const final = "Engineering \n Intelligence.";
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            let iter = 0;
-            const interval = setInterval(() => {
-                el.innerHTML = final.split("").map((letter, index) => {
-                    if(index < iter) return final[index] === '\n' ? '<br>' : final[index];
-                    return chars[Math.floor(Math.random() * 26)];
-                }).join("");
-                if(iter >= final.length) clearInterval(interval);
-                iter += 1/2;
-            }, 30);
-        }
-
-        // Pause warp animation when page hidden to save CPU (Lighthouse friendly)
-        document.addEventListener('visibilitychange', () => {
-            if(document.hidden) { window.targetWarpSpeed = 0; }
-            else { window.targetWarpSpeed = 0.05; }
-        });
-
-        // --- 3D initializers (same logic as original, but created lazily) ---
-        function initWarpStars() {
-            const container = document.getElementById('canvas-container');
-            if(!container) return;
-            while(container.firstChild) container.removeChild(container.firstChild);
-            const scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x050505, 0.02);
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-            container.appendChild(renderer.domElement);
-            const starGeo = new THREE.BufferGeometry();
-            const starCount = window.innerWidth < 768 ? 1200 : 3000;
-            const posArray = new Float32Array(starCount * 3);
-            for(let i=0; i<starCount; i++) { posArray[i*3] = (Math.random()-0.5)*100; posArray[i*3+1] = (Math.random()-0.5)*100; posArray[i*3+2] = (Math.random()-0.5)*100; }
-            starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.07 });
-            const starMesh = new THREE.Points(starGeo, starMat);
-            scene.add(starMesh);
-            camera.position.z = 1;
-            window.targetWarpSpeed = 0.05; window.warpSpeed = 0.05;
-
-            function animate() {
-                requestAnimationFrame(animate);
-                window.warpSpeed += (window.targetWarpSpeed - window.warpSpeed) * 0.05;
-                const positions = starGeo.attributes.position.array;
-                for(let i=0; i<starCount; i++) {
-                    positions[i*3+2] += window.warpSpeed;
-                    if(positions[i*3+2] > 10) { positions[i*3+2] = -100; positions[i*3] = (Math.random()-0.5)*80; positions[i*3+1] = (Math.random()-0.5)*80; }
-                }
-                starGeo.attributes.position.needsUpdate = true;
-                renderer.render(scene, camera);
-            }
-            animate();
-            window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
-        }
-
-        function initMenuStickman() {
-            const container = document.getElementById('menu-3d-container');
-            if(!container) return;
-            while(container.firstChild) container.removeChild(container.firstChild);
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-            container.appendChild(renderer.domElement);
-
-            const starGeo = new THREE.BufferGeometry();
-            const posArray = new Float32Array(1000 * 3);
-            for(let i=0; i<1000; i++) { posArray[i*3] = (Math.random()-0.5)*150; posArray[i*3+1] = (Math.random()-0.5)*150; posArray[i*3+2] = (Math.random()-0.5)*150; }
-            starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const starMat = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.05, transparent: true, opacity: 0.5 });
-            const starMesh = new THREE.Points(starGeo, starMat);
-            scene.add(starMesh);
-
-            const stickman = new THREE.Group();
-            const upperBody = new THREE.Group();
-            const lowerBody = new THREE.Group();
-            const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.9 });
-            const jointMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
-
-            function createLimb(l) { return new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, l, 6), mat); }
-            function createJoint(s) { return new THREE.Mesh(new THREE.SphereGeometry(s, 8, 8), jointMat); }
-
-            const head = createJoint(0.6); head.position.y = 1.8; upperBody.add(head);
-            const torso = createLimb(1.8); torso.position.y = 0.6; upperBody.add(torso);
-            const lArm = createLimb(1.5); lArm.position.set(-0.8, 1.2, 0); lArm.rotation.z = Math.PI/8; upperBody.add(lArm);
-            const rArm = createLimb(1.5); rArm.position.set(0.8, 1.2, 0); rArm.rotation.z = -Math.PI/8; upperBody.add(rArm);
-            const hips = createJoint(0.3); hips.position.y = -0.3; lowerBody.add(hips);
-            const lLeg = createLimb(1.8); lLeg.position.set(-0.5, -1.2, 0); lLeg.rotation.z = -Math.PI/16; lowerBody.add(lLeg);
-            const rLeg = createLimb(1.8); rLeg.position.set(0.5, -1.2, 0); rLeg.rotation.z = Math.PI/16; lowerBody.add(rLeg);
-
-            stickman.add(upperBody); stickman.add(lowerBody);
-            scene.add(stickman);
-            stickman.position.set(-4, -1, 0);
-            stickman.scale.set(1.5, 1.5, 1.5);
-            camera.position.z = 10;
-
-            let mouseX = 0, mouseY = 0;
-            document.addEventListener('mousemove', (e) => { mouseX = (e.clientX / window.innerWidth) * 2 - 1; mouseY = -(e.clientY / window.innerHeight) * 2 + 1; });
-
-            function animate() {
-                requestAnimationFrame(animate);
-                stickman.position.y = -1 + Math.sin(Date.now() * 0.002) * 0.1;
-                let targetRotY = mouseX * 0.5; 
-                let targetRotX = -mouseY * 0.3;
-                upperBody.rotation.y += (targetRotY - upperBody.rotation.y) * 0.05;
-                upperBody.rotation.x += (targetRotX - upperBody.rotation.x) * 0.05;
-                head.rotation.y += (targetRotY * 0.2 - head.rotation.y) * 0.05;
-                starMesh.rotation.y += 0.0005;
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                renderer.render(scene, camera);
-            }
-            animate();
-        }
-    </script>
-
-    <noscript>
-        <style> .glitch-wrapper, #canvas-container { display:none; } </style>
-        <div style="background:#050505;color:#fff;padding:20px;text-align:center;">This site uses JavaScript for interactive visuals. For best experience enable JavaScript.</div>
-    </noscript>
-
+    <script src="script.js"></script>
 </body>
 </html>
