@@ -23,21 +23,23 @@
         .loader-bar { width: 200px; height: 2px; background: #222; overflow: hidden; }
         .bar-fill { width: 0%; height: 100%; background: #fff; transition: width 0.5s; }
 
-        /* CUSTOM CURSOR */
+        /* CURSOR */
         #cursor { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 999999; mix-blend-mode: difference; }
         .cursor-dot { width: 8px; height: 8px; background: white; border-radius: 50%; position: absolute; top: -4px; left: -4px; }
         .cursor-ring { width: 40px; height: 40px; border: 1px solid white; border-radius: 50%; position: absolute; top: -20px; left: -20px; transition: transform 0.15s ease-out; }
         body.hovering .cursor-ring { width: 60px; height: 60px; top: -30px; left: -30px; background-color: rgba(255,255,255,0.2); border-color: transparent; }
 
-        /* BACKGROUND & NAV */
+        /* BACKGROUND */
         #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: var(--bg); }
         .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: white; width: 0%; z-index: 2000; transition: width 0.1s; }
+
+        /* NAV */
         .fixed-nav { position: fixed; top: 0; width: 100%; padding: 30px 50px; z-index: 100; display: flex; justify-content: center; mix-blend-mode: difference; }
         .nav-inner { width: 100%; max-width: 1400px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: 2px; }
         .menu-btn { font-size: 12px; font-weight: 600; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
 
-        /* === MENU OVERLAY === */
+        /* MENU OVERLAY */
         .menu-overlay { position: fixed; inset: 0; background: #050505; z-index: 200; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); visibility: hidden; }
         .menu-overlay.active { opacity: 1; pointer-events: all; visibility: visible; }
         
@@ -51,7 +53,7 @@
         .menu-footer { position: absolute; bottom: 50px; width: 100%; max-width: 1400px; display: flex; justify-content: space-between; padding: 0 50px; font-family: var(--font-mono); font-size: 12px; color: #666; left: 50%; transform: translateX(-50%); z-index: 20; }
         .menu-close { cursor: pointer; color: white; padding: 10px; }
 
-        /* HERO & LAYOUT */
+        /* SECTIONS */
         .hero-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 50px 0 50px; overflow: hidden; }
         .hero-container { max-width: 1400px; width: 100%; display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: 40px; }
         .hero-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: flex; gap: 20px; margin-bottom: 30px; letter-spacing: 1px; }
@@ -60,11 +62,11 @@
         .btn-primary { background: white; color: black; border: none; padding: 16px 32px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         .btn-primary:hover { background: #ccc; transform: scale(1.05); }
         .btn-text { color: white; text-decoration: none; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-left: 20px; }
+        
         .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; z-index: 1; width: 100%; }
         .fade-in { animation: simpleFade 1.5s ease-out forwards; opacity: 0; }
         @keyframes simpleFade { from { opacity: 0; } to { opacity: 1; } }
         
-        /* Glitch Styles */
         .glitch-wrapper { width: 350px; height: 480px; position: relative; perspective: 1000px; }
         .glitch-card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.1s; }
         .glitch-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; filter: grayscale(100%) contrast(1.1) brightness(0.9); transition: all 0.3s; }
@@ -76,7 +78,6 @@
         @keyframes noise-1 { 0% { clip-path: inset(40% 0 61% 0); } 100% { clip-path: inset(58% 0 43% 0); } }
         @keyframes noise-2 { 0% { clip-path: inset(12% 0 58% 0); } 100% { clip-path: inset(67% 0 11% 0); } }
 
-        /* SECTIONS & CARDS */
         .section-padding { padding: 150px 50px; }
         .container { max-width: 1400px; margin: 0 auto; }
         .section-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 20px; }
@@ -101,7 +102,6 @@
         .marquee-inner span { font-family: var(--font-display); font-size: 4vw; font-weight: 700; color: rgba(255,255,255,0.05); }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         
-        /* FOOTER & OVERLAYS */
         footer { padding: 100px 50px 50px; background: #080808; margin-top: 100px; }
         .f-top { margin-bottom: 80px; display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
         .f-top h2 { font-size: 60px; margin-bottom: 0; line-height: 1; }
@@ -271,6 +271,7 @@
                 } else { 
                     menuOverlay.classList.add('active'); 
                     lenis.stop();
+                    // FORCE RESIZE
                     if(window.resizeStickman) window.resizeStickman();
                 }
             }
@@ -284,7 +285,7 @@
                 });
             });
 
-            // 4. MODAL
+            // 4. MODAL & CURSOR
             const contactModal = document.getElementById('contact-modal');
             const modalClose = document.querySelector('.modal-close');
             function openModal() { if(contactModal) { contactModal.classList.add('active'); lenis.stop(); if(menuOverlay.classList.contains('active')) menuOverlay.classList.remove('active'); } }
@@ -292,7 +293,6 @@
             document.querySelectorAll('.open-contact-btn').forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); openModal(); }));
             if(modalClose) modalClose.addEventListener('click', closeModal);
 
-            // 5. CURSOR
             const cursorDot = document.querySelector('.cursor-dot');
             const cursorRing = document.querySelector('.cursor-ring');
             if(cursorDot && cursorRing) {
@@ -334,6 +334,7 @@
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
             
             const starGeo = new THREE.BufferGeometry();
@@ -360,7 +361,7 @@
             window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
         }
 
-        // --- 3D MENU STICKMAN (HIERARCHICAL RIG) ---
+        // --- 3D MENU STICKMAN (RIGGED) ---
         function initRiggedStickman() {
             const container = document.getElementById('menu-3d-container');
             if(!container) return;
@@ -372,73 +373,79 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // STICKMAN GROUP (ROOT)
-            const root = new THREE.Group();
-            root.position.set(-4, -1.5, 0); // Position on left
-            root.scale.set(1.5, 1.5, 1.5);
-            scene.add(root);
+            // STICKMAN RIG
+            const stickman = new THREE.Group();
+            stickman.position.set(-4, -1.8, 0); // Position left
+            stickman.scale.set(1.5, 1.5, 1.5);
+            scene.add(stickman);
             camera.position.z = 12;
 
-            // MATERIALS (Flat white to look like 2D)
             const mat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            const blackMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+            const jointMat = new THREE.MeshBasicMaterial({ color: 0xffffff }); 
 
-            // Helper for Limbs (Pivots at Top)
-            function createLimb(w, h) {
-                const g = new THREE.Group();
-                const geo = new THREE.CylinderGeometry(w, w, h, 8);
-                geo.translate(0, -h/2, 0); // Shift so origin is at top
+            // Helpers
+            function createLimb(width, height) {
+                const group = new THREE.Group();
+                const geo = new THREE.CylinderGeometry(width, width, height, 8);
+                geo.translate(0, -height/2, 0); // Pivot at top
                 const mesh = new THREE.Mesh(geo, mat);
-                g.add(mesh);
-                return g;
+                group.add(mesh);
+                return group;
             }
+            function createJoint() { return new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), jointMat); }
 
-            // HIPS
+            // Hips
             const hips = new THREE.Group();
-            root.add(hips);
+            stickman.add(hips);
 
-            // TORSO (Child of Hips)
-            const torso = createLimb(0.12, 2.5);
-            torso.rotation.z = Math.PI; // Point Up
-            torso.position.y = 0; 
-            hips.add(torso);
+            // Legs
+            const lLeg = createLimb(0.12, 2.2); lLeg.position.x = -0.4; hips.add(lLeg);
+            const lKnee = createJoint(); lKnee.position.y = -2.2; lLeg.add(lKnee);
+            const lShin = createLimb(0.12, 2.2); lKnee.add(lShin);
 
-            // HEAD (Child of Torso end)
+            const rLeg = createLimb(0.12, 2.2); rLeg.position.x = 0.4; hips.add(rLeg);
+            const rKnee = createJoint(); rKnee.position.y = -2.2; rLeg.add(rKnee);
+            const rShin = createLimb(0.12, 2.2); rKnee.add(rShin);
+
+            // Torso
+            const torsoGroup = new THREE.Group();
+            hips.add(torsoGroup);
+            const spine = createLimb(0.14, 2.5); 
+            spine.rotation.z = Math.PI; // Up
+            torsoGroup.add(spine);
+
+            // Arms (Attached to Spine top)
+            const shoulders = new THREE.Group(); 
+            shoulders.position.y = -2.4; 
+            spine.add(shoulders);
+
+            const lArm = createLimb(0.1, 1.8); lArm.position.x = 0.2; shoulders.add(lArm);
+            const lElbow = createJoint(); lElbow.position.y = -1.8; lArm.add(lElbow);
+            const lForearm = createLimb(0.1, 1.8); lElbow.add(lForearm);
+
+            const rArm = createLimb(0.1, 1.8); rArm.position.x = -0.2; shoulders.add(rArm);
+            const rElbow = createJoint(); rElbow.position.y = -1.8; rArm.add(rElbow);
+            const rForearm = createLimb(0.1, 1.8); rElbow.add(rForearm);
+
+            // Head
             const headGroup = new THREE.Group();
-            headGroup.position.y = -2.6; // Top of torso
-            torso.add(headGroup);
-            
-            const headGeo = new THREE.RingGeometry(0.7, 0.75, 32); 
-            const headMesh = new THREE.Mesh(headGeo, mat);
-            headMesh.rotation.x = Math.PI; // Face forward relative to torso
+            headGroup.position.y = -2.6; 
+            spine.add(headGroup);
+            const headMesh = new THREE.Mesh(new THREE.RingGeometry(0.7, 0.75, 32), mat);
+            headMesh.rotation.x = Math.PI; // Face camera
             headGroup.add(headMesh);
 
-            // FACE
+            // Face
             const lEye = new THREE.Mesh(new THREE.CircleGeometry(0.12, 16), mat); lEye.position.set(-0.25, 0.1, 0);
             const rEye = new THREE.Mesh(new THREE.CircleGeometry(0.12, 16), mat); rEye.position.set(0.25, 0.1, 0);
             headGroup.add(lEye); headGroup.add(rEye);
-
+            
             const smileCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.3, -0.2, 0), new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.3, -0.2, 0));
             let mouthGeo = new THREE.TubeGeometry(new THREE.CurvePath().add(smileCurve), 20, 0.04, 8, false);
             const mouth = new THREE.Mesh(mouthGeo, mat);
             headGroup.add(mouth);
 
-            // ARMS (Children of Torso)
-            const lArm = createLimb(0.1, 1.8); lArm.position.set(0.2, -2.4, 0); lArm.rotation.z = Math.PI - 0.2; torso.add(lArm);
-            const lForearm = createLimb(0.1, 1.8); lForearm.position.y = -1.8; lArm.add(lForearm);
-
-            const rArm = createLimb(0.1, 1.8); rArm.position.set(-0.2, -2.4, 0); rArm.rotation.z = -Math.PI + 0.2; torso.add(rArm);
-            const rForearm = createLimb(0.1, 1.8); rForearm.position.y = -1.8; rArm.add(rForearm);
-
-            // LEGS (Children of Hips)
-            const lLeg = createLimb(0.12, 2.2); lLeg.position.set(-0.4, 0, 0); hips.add(lLeg);
-            const lShin = createLimb(0.12, 2.2); lShin.position.y = -2.2; lLeg.add(lShin);
-
-            const rLeg = createLimb(0.12, 2.2); rLeg.position.set(0.4, 0, 0); hips.add(rLeg);
-            const rShin = createLimb(0.12, 2.2); rShin.position.y = -2.2; rLeg.add(rShin);
-
-
-            // --- ANIMATION STATE ---
+            // Animation vars
             let time = 0;
             let mouseX = 0, mouseY = 0;
             let isPain = false;
@@ -450,13 +457,8 @@
 
             document.addEventListener('click', () => {
                 isPain = true;
-                // Shock Face
-                lEye.scale.set(0.5, 0.5, 1); rEye.scale.set(0.5, 0.5, 1);
-                // O Mouth
-                const painCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.15, -0.3, 0), new THREE.Vector3(0, -0.6, 0), new THREE.Vector3(0.15, -0.3, 0));
-                mouth.geometry.dispose();
-                mouth.geometry = new THREE.TubeGeometry(new THREE.CurvePath().add(painCurve), 20, 0.04, 8, false);
-                setTimeout(() => { isPain = false; }, 600);
+                lEye.scale.set(0.5, 0.2, 1); rEye.scale.set(0.5, 0.2, 1);
+                setTimeout(() => { isPain = false; }, 500);
             });
 
             window.resizeStickman = function() {
@@ -470,43 +472,27 @@
                 requestAnimationFrame(animate);
                 time += 0.05;
 
-                // IDLE BREATHING
-                root.position.y = -1.5 + Math.sin(time * 0.5) * 0.1;
+                // IDLE
+                hips.position.y = Math.sin(time * 0.5) * 0.1;
 
                 if(isPain) {
-                    // SHAKE
-                    root.position.x = -4 + (Math.random()-0.5) * 0.2;
-                    // Arms Up in Shock
+                    stickman.position.x = -4 + (Math.random()-0.5) * 0.2;
                     lArm.rotation.z = Math.PI - 2.5; rArm.rotation.z = -Math.PI + 2.5;
                 } else {
-                    // RETURN NORMAL
-                    root.position.x += (-4 - root.position.x) * 0.1;
-                    
-                    // Reset Face
-                    if(lEye.scale.x < 1) { 
-                        lEye.scale.set(1,1,1); rEye.scale.set(1,1,1); 
-                        const sCurve = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.3, -0.2, 0), new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.3, -0.2, 0));
-                        mouth.geometry.dispose();
-                        mouth.geometry = new THREE.TubeGeometry(new THREE.CurvePath().add(sCurve), 20, 0.04, 8, false);
-                    }
+                    stickman.position.x += (-4 - stickman.position.x) * 0.1;
+                    if(lEye.scale.y < 1) { lEye.scale.set(1,1,1); rEye.scale.set(1,1,1); }
 
-                    // POSE 1: Swaying & Looking
-                    hips.rotation.z = Math.sin(time * 0.5) * 0.05; // Sway Hips
-                    torso.rotation.z = Math.PI + Math.sin(time * 0.5) * 0.05; // Counter sway torso
-
-                    // Arms Swing
-                    lArm.rotation.z = Math.PI - 0.2 + Math.cos(time * 0.5) * 0.1;
-                    rArm.rotation.z = -Math.PI + 0.2 + Math.cos(time * 0.5) * 0.1;
-                    lForearm.rotation.z = Math.sin(time) * 0.1;
-                    rForearm.rotation.z = Math.sin(time) * 0.1;
-
-                    // Legs Stance
-                    lLeg.rotation.z = 0.1; rLeg.rotation.z = -0.1;
-                    lShin.rotation.z = 0; rShin.rotation.z = 0;
-
-                    // HEAD TRACKING
+                    // Looking
                     headGroup.rotation.y = mouseX * 0.5;
-                    headGroup.rotation.x = -mouseY * 0.3;
+                    headGroup.rotation.x = -mouseY * 0.5;
+                    torsoGroup.rotation.z = Math.PI + (mouseX * 0.1);
+
+                    // Arms Sway
+                    lArm.rotation.z = Math.PI - 0.2 + Math.sin(time) * 0.1;
+                    rArm.rotation.z = -Math.PI + 0.2 - Math.sin(time) * 0.1;
+                    
+                    // Legs Adjust
+                    lLeg.rotation.z = 0.1; rLeg.rotation.z = -0.1;
                 }
 
                 renderer.render(scene, camera);
