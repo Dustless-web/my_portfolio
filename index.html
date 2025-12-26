@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti | AI Engineer</title>
+    <title>Avinash Sangisetti | Systems Engineer</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,16 +20,16 @@
             <div class="nav-container">
                 <div class="logo">AS<span class="dot">.</span></div>
                 
-                <div class="menu-toggle" id="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </div>
-
                 <ul class="nav-links" id="nav-links">
                     <li><a href="#work" onclick="closeMenu()">Work</a></li>
                     <li><a href="#experience" onclick="closeMenu()">Journey</a></li>
                     <li><a href="resume.pdf" target="_blank" class="nav-btn-resume" onclick="closeMenu()">Resume</a></li>
                     <li><button class="btn-primary open-contact-btn" onclick="closeMenu()">Contact</button></li>
                 </ul>
+
+                <div class="menu-toggle" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
             </div>
         </nav>
     </header>
@@ -77,8 +77,9 @@
             </div>
             
             <div class="bento-grid">
-                <div class="card large-span scroll-reveal">
+                <div class="card large-span scroll-reveal" onclick="triggerScan(this)">
                     <div class="card-glow"></div>
+                    <div class="scan-line"></div>
                     <div class="card-content">
                         <div class="card-top">
                             <div class="folder-icon"><i class="far fa-folder-open"></i></div>
@@ -95,8 +96,9 @@
                     </div>
                 </div>
 
-                <div class="card scroll-reveal delay-1">
+                <div class="card scroll-reveal delay-1" onclick="triggerScan(this)">
                     <div class="card-glow"></div>
+                    <div class="scan-line"></div>
                     <div class="card-content">
                         <div class="card-top"><div class="folder-icon"><i class="fas fa-network-wired"></i></div></div>
                         <h3>FluxSync Engine</h3>
@@ -107,8 +109,9 @@
                     </div>
                 </div>
 
-                <div class="card scroll-reveal delay-2">
+                <div class="card scroll-reveal delay-2" onclick="triggerScan(this)">
                     <div class="card-glow"></div>
+                    <div class="scan-line"></div>
                     <div class="card-content">
                         <div class="card-top"><div class="folder-icon"><i class="fas fa-mobile-alt"></i></div></div>
                         <h3>SGuardian</h3>
@@ -119,8 +122,9 @@
                     </div>
                 </div>
                 
-                <div class="card large-span scroll-reveal">
+                <div class="card large-span scroll-reveal" onclick="triggerScan(this)">
                     <div class="card-glow"></div>
+                    <div class="scan-line"></div>
                     <div class="card-content">
                         <div class="card-top">
                             <div class="folder-icon"><i class="fas fa-bolt"></i></div>
@@ -220,7 +224,7 @@
             <div class="modal-header">
                 <span class="mono-label">/// ESTABLISH CONNECTION</span>
                 <h3>Initialize Uplink</h3>
-                <p>Ready to deploy? I'm open to full-stack and AI engineering roles.</p>
+                <p class="modal-desc">Ready to deploy? I'm open to full-stack and AI engineering roles.</p>
             </div>
             
             <div class="contact-grid">
@@ -323,17 +327,33 @@
             }, 30);
         }, 500);
 
-        // 3. SCROLL REVEAL
+        // 3. INTERACTIVE BENTO SCAN
+        function triggerScan(card) {
+            // Adds a "scanning" class that triggers CSS animation
+            card.classList.add('scanning');
+            setTimeout(() => card.classList.remove('scanning'), 1000);
+        }
+
+        // 4. SCROLL REVEAL (Complex Intersection Observer)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    // Add subtle scale effect on reveal
+                    anime({
+                        targets: entry.target,
+                        scale: [0.95, 1],
+                        opacity: [0, 1],
+                        easing: 'easeOutExpo',
+                        duration: 1000
+                    });
+                    observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
 
-        // 4. MOBILE MENU & MODAL
+        // 5. MOBILE MENU & MODAL
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
         
@@ -356,8 +376,6 @@
         document.querySelector(".close-btn").onclick = () => {
             modal.classList.remove("active"); document.body.style.overflow="auto";
         };
-        
-        // Close modal when clicking outside
         modal.onclick = (e) => {
             if (e.target === modal) {
                 modal.classList.remove("active");
