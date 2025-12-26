@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti | AI Engineer</title>
+    <title>Avinash Sangisetti | Systems Engineer</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </head>
 <body>
 
+    <div class="scanlines"></div>
     <div class="noise-overlay"></div>
-    <div class="grid-background"></div>
-    <div class="vignette"></div>
+    <canvas id="particle-canvas"></canvas>
 
     <header>
         <nav class="glass-nav">
             <div class="logo">AS<span class="dot">.</span></div>
-            
-            <div class="menu-toggle" id="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </div>
-
+            <div class="menu-toggle" id="mobile-menu-btn"><i class="fas fa-bars"></i></div>
             <ul class="nav-links" id="nav-links">
                 <li><a href="#work" onclick="closeMenu()">Work</a></li>
                 <li><a href="#experience" onclick="closeMenu()">Journey</a></li>
@@ -32,28 +29,33 @@
 
     <main>
         <section class="hero">
-            <div class="hero-content fade-in-up">
-                <div class="code-badge">
+            <div class="hero-content">
+                <div class="code-badge slide-in">
                     <i class="fas fa-terminal"></i>
                     <span>v2.5.0 // SYSTEM_READY</span>
                 </div>
-                <h1>
+                
+                <h1 class="hero-title">
                     Architecting <br>
-                    <span class="gradient-text">Digital Reality.</span>
+                    <span class="gradient-text decode-text" data-value="Digital Reality.">Digital Reality.</span>
                 </h1>
-                <p class="bio">
+                
+                <p class="bio slide-in delay-1">
                     I'm <strong>Avinash</strong>. I engineer <span class="white">resilient systems</span>. 
                     Specializing in high-performance Distributed Systems, AI Infrastructure, and Native Android.
                 </p>
-                <div class="hero-actions">
+                <div class="hero-actions slide-in delay-2">
                     <button class="btn-primary open-contact-btn">Initiate Uplink</button>
                     <a href="#work" class="btn-text">View Documentation ↓</a>
                 </div>
             </div>
             
-            <div class="hero-visual fade-in-up delay-1">
-                <div class="avatar-container">
-                    <img src="PFP.png" alt="Avinash" class="modern-avatar">
+            <div class="hero-visual slide-in delay-1">
+                <div class="orb-container">
+                    <div class="orbit-ring ring-1"></div>
+                    <div class="orbit-ring ring-2"></div>
+                    <div class="orbit-ring ring-3"></div>
+                    <img src="pfp.png" alt="Avinash" class="avatar-img">
                 </div>
             </div>
         </section>
@@ -65,7 +67,8 @@
             </div>
             
             <div class="bento-grid">
-                <div class="card large-span">
+                <div class="card large-span scroll-reveal">
+                    <div class="card-glow"></div>
                     <div class="card-content">
                         <div class="card-top">
                             <div class="folder-icon"><i class="far fa-folder-open"></i></div>
@@ -75,61 +78,48 @@
                             </div>
                         </div>
                         <h3>Smart Lecture Assistant</h3>
-                        <p>An NLP-powered engine processing audio streams into structured knowledge bases. Implemented vector embeddings (Pinecone) for semantic search.</p>
+                        <p>NLP-powered engine processing audio streams into structured knowledge bases. Implemented vector embeddings (Pinecone) for semantic search.</p>
                         <div class="tech-tags">
-                            <span>Python</span>
-                            <span>OpenAI Whisper</span>
-                            <span>React</span>
-                            <span>Docker</span>
+                            <span>Python</span><span>OpenAI Whisper</span><span>React</span><span>Docker</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card scroll-reveal delay-1">
+                    <div class="card-glow"></div>
                     <div class="card-content">
-                        <div class="card-top">
-                            <div class="folder-icon"><i class="fas fa-network-wired"></i></div>
-                        </div>
+                        <div class="card-top"><div class="folder-icon"><i class="fas fa-network-wired"></i></div></div>
                         <h3>FluxSync Engine</h3>
-                        <p>Distributed job scheduler handling 10k+ concurrent tasks with custom Raft consensus implementation.</p>
+                        <p>Distributed job scheduler handling 10k+ concurrent tasks with custom Raft consensus.</p>
                         <div class="tech-tags">
-                            <span>Go</span>
-                            <span>gRPC</span>
-                            <span>Redis</span>
+                            <span>Go</span><span>gRPC</span><span>Redis</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card scroll-reveal delay-2">
+                    <div class="card-glow"></div>
                     <div class="card-content">
-                        <div class="card-top">
-                            <div class="folder-icon"><i class="fas fa-mobile-alt"></i></div>
-                        </div>
+                        <div class="card-top"><div class="folder-icon"><i class="fas fa-mobile-alt"></i></div></div>
                         <h3>SGuardian</h3>
-                        <p>Real-time accelerometer sensor fusion for elderly fall detection running as a foreground service.</p>
+                        <p>Real-time accelerometer sensor fusion for elderly fall detection (Foreground Service).</p>
                         <div class="tech-tags">
-                            <span>Kotlin</span>
-                            <span>Android SDK</span>
-                            <span>ML Kit</span>
+                            <span>Kotlin</span><span>Android SDK</span><span>ML Kit</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="card large-span">
+                <div class="card large-span scroll-reveal">
+                    <div class="card-glow"></div>
                     <div class="card-content">
                         <div class="card-top">
                             <div class="folder-icon"><i class="fas fa-bolt"></i></div>
-                            <div class="links">
-                                <a href="#"><i class="fab fa-github"></i></a>
-                            </div>
+                            <div class="links"><a href="#"><i class="fab fa-github"></i></a></div>
                         </div>
                         <h3>LiveCode Collab</h3>
-                        <p>Operational Transformation (OT) based code editor. Supports conflict-free concurrent editing via WebSocket clusters on AWS EC2.</p>
+                        <p>Operational Transformation (OT) code editor. Supports conflict-free editing via WebSocket clusters on AWS EC2.</p>
                         <div class="tech-tags">
-                            <span>Node.js</span>
-                            <span>Socket.io</span>
-                            <span>MongoDB</span>
-                            <span>AWS</span>
+                            <span>Node.js</span><span>Socket.io</span><span>MongoDB</span><span>AWS</span>
                         </div>
                     </div>
                 </div>
@@ -141,9 +131,8 @@
                 <span class="mono-label">02. / THE JOURNEY</span>
                 <h2>Experience Log</h2>
             </div>
-
             <div class="timeline">
-                <div class="timeline-item">
+                <div class="timeline-item scroll-reveal">
                     <div class="tl-marker"></div>
                     <div class="tl-content">
                         <span class="tl-date mono-label">2021 - Present</span>
@@ -152,17 +141,47 @@
                         <p>Specializing in Artificial Intelligence and System Architecture.</p>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item scroll-reveal delay-1">
                     <div class="tl-marker"></div>
                     <div class="tl-content">
                         <span class="tl-date mono-label">2024</span>
                         <h3>Freelance Developer</h3>
                         <span class="tl-role">Full Stack & Mobile</span>
-                        <p>Delivered 3+ deployed applications for local businesses, reducing manual data entry by 40% via custom automation tools.</p>
+                        <p>Delivered 3+ deployed applications reducing manual data entry by 40%.</p>
                     </div>
                 </div>
             </div>
         </section>
+
+        <section class="marquee-section">
+            <div class="marquee-track">
+                <div class="marquee-group">
+                    <div class="tech-item"><i class="fab fa-python"></i> Python</div>
+                    <div class="tech-item"><i class="fab fa-java"></i> Java</div>
+                    <div class="tech-item"><i class="fas fa-server"></i> Kubernetes</div>
+                    <div class="tech-item"><i class="fab fa-docker"></i> Docker</div>
+                    <div class="tech-item"><i class="fab fa-aws"></i> AWS</div>
+                    <div class="tech-item"><i class="fas fa-database"></i> Kafka</div>
+                    <div class="tech-item"><i class="fas fa-network-wired"></i> Redis</div>
+                    <div class="tech-item"><i class="fas fa-code"></i> Go</div>
+                    <div class="tech-item"><i class="fab fa-android"></i> Android</div>
+                    <div class="tech-item"><i class="fas fa-layer-group"></i> TensorFlow</div>
+                </div>
+                <div class="marquee-group">
+                    <div class="tech-item"><i class="fab fa-python"></i> Python</div>
+                    <div class="tech-item"><i class="fab fa-java"></i> Java</div>
+                    <div class="tech-item"><i class="fas fa-server"></i> Kubernetes</div>
+                    <div class="tech-item"><i class="fab fa-docker"></i> Docker</div>
+                    <div class="tech-item"><i class="fab fa-aws"></i> AWS</div>
+                    <div class="tech-item"><i class="fas fa-database"></i> Kafka</div>
+                    <div class="tech-item"><i class="fas fa-network-wired"></i> Redis</div>
+                    <div class="tech-item"><i class="fas fa-code"></i> Go</div>
+                    <div class="tech-item"><i class="fab fa-android"></i> Android</div>
+                    <div class="tech-item"><i class="fas fa-layer-group"></i> TensorFlow</div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
@@ -182,9 +201,7 @@
                 <span class="status-badge"><span class="pulse"></span> Open to Work</span>
             </div>
         </div>
-        <div class="footer-copyright">
-            &copy; 2025 Avinash Sangisetti. All Systems Normal.
-        </div>
+        <div class="footer-copyright">&copy; 2025 Avinash Sangisetti. All Systems Normal.</div>
     </footer>
 
     <div id="contact-modal" class="modal-overlay">
@@ -194,70 +211,116 @@
             <h3>Initialize Uplink</h3>
             <p>Ready to deploy? I'm open to full-stack and AI engineering roles.</p>
             <div class="contact-list">
-                <a href="tel:+917795150609" class="c-item">
-                    <span>+91 7795150609</span>
-                    <i class="fas fa-phone"></i>
-                </a>
-                <a href="mailto:avinashsangisetti@gmail.com" class="c-item">
-                    <span>avinashsangisetti@gmail.com</span>
-                    <i class="fas fa-envelope"></i>
-                </a>
-                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-item">
-                    <span>@avinashsangisetti</span>
-                    <i class="fab fa-instagram"></i>
-                </a>
+                <a href="tel:+917795150609" class="c-item"><span>+91 7795150609</span><i class="fas fa-phone"></i></a>
+                <a href="mailto:avinashsangisetti@gmail.com" class="c-item"><span>avinashsangisetti@gmail.com</span><i class="fas fa-envelope"></i></a>
+                <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-item"><span>@avinashsangisetti</span><i class="fab fa-instagram"></i></a>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. MOBILE MENU LOGIC
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const navLinks = document.getElementById('nav-links');
+        // 1. COMPLEX PARTICLE SYSTEM
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        function toggleMenu() {
-            mobileMenuBtn.classList.toggle('active');
-            navLinks.classList.toggle('active');
+        let particlesArray;
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.directionX = (Math.random() * 0.4) - 0.2;
+                this.directionY = (Math.random() * 0.4) - 0.2;
+                this.size = Math.random() * 2;
+                this.color = '#d4af37';
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.5;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
         }
-
-        function closeMenu() {
-            mobileMenuBtn.classList.remove('active');
-            navLinks.classList.remove('active');
+        function init() {
+            particlesArray = [];
+            for (let i = 0; i < 100; i++) {
+                particlesArray.push(new Particle());
+            }
         }
-
-        mobileMenuBtn.addEventListener('click', toggleMenu);
-
-        // 2. MODAL LOGIC
-        const modal = document.getElementById("contact-modal");
-        const openBtns = document.querySelectorAll(".open-contact-btn");
-        const closeBtn = document.querySelector(".close-btn");
-
-        openBtns.forEach(btn => btn.onclick = () => {
-            modal.classList.add("active");
-            document.body.style.overflow = "hidden"; 
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+        }
+        init();
+        animate();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
         });
 
-        const closeModal = () => {
-            modal.classList.remove("active");
-            document.body.style.overflow = "auto";
-        };
-        closeBtn.onclick = closeModal;
-        modal.onclick = (e) => { if(e.target === modal) closeModal(); }
+        // 2. HACKER TEXT DECODE EFFECT
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const hackText = document.querySelector(".decode-text");
+        
+        setTimeout(() => {
+            let iterations = 0;
+            const interval = setInterval(() => {
+                hackText.innerText = hackText.innerText.split("")
+                    .map((letter, index) => {
+                        if(index < iterations) return hackText.dataset.value[index];
+                        return letters[Math.floor(Math.random() * 26)];
+                    })
+                    .join("");
+                if(iterations >= hackText.dataset.value.length) clearInterval(interval);
+                iterations += 1 / 3;
+            }, 30);
+        }, 500);
 
-        // 3. SCROLL ANIMATIONS (Intersection Observer)
+        // 3. SCROLL REVEAL (Intersection Observer)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
+                if(entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.card, .timeline-item, .hero-content, .hero-visual').forEach(el => {
-            el.classList.add('animate-on-scroll');
-            observer.observe(el);
-        });
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // 4. MENU & MODAL LOGIC
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
+        const toggleMenu = () => {
+            mobileMenuBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        };
+        const closeMenu = () => {
+            mobileMenuBtn.classList.remove('active');
+            navLinks.classList.remove('active');
+        };
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+
+        // Modal
+        const modal = document.getElementById("contact-modal");
+        document.querySelectorAll(".open-contact-btn").forEach(btn => 
+            btn.onclick = () => { modal.classList.add("active"); document.body.style.overflow="hidden";}
+        );
+        document.querySelector(".close-btn").onclick = () => {
+            modal.classList.remove("active"); document.body.style.overflow="auto";
+        };
     </script>
 </body>
 </html>
-
