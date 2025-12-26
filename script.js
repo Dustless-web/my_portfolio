@@ -46,15 +46,14 @@ document.addEventListener('mousemove', (e) => {
 });
 
 function animateCursor() {
-    ringX += (mouseX - ringX) * 0.15; // Smooth delay
+    ringX += (mouseX - ringX) * 0.15;
     ringY += (mouseY - ringY) * 0.15;
     cursorRing.style.transform = `translate(${ringX}px, ${ringY}px)`;
     requestAnimationFrame(animateCursor);
 }
 animateCursor();
 
-// Hover effect for links
-document.querySelectorAll('a, button, .project-item').forEach(el => {
+document.querySelectorAll('a, button, .project-item, .menu-btn, .m-link').forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
 });
@@ -82,7 +81,7 @@ function closeProject() {
     lenis.start();
 }
 
-// === 5. THREE.JS TERRAIN ===
+// === 5. THREE.JS TERRAIN (BACKGROUND) ===
 const container = document.getElementById('canvas-container');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -103,18 +102,6 @@ const mesh = new THREE.Points(geometry, material);
 scene.add(mesh);
 camera.position.z = 5;
 
-// Spotlight Effect
-const cards = document.querySelectorAll('.spotlight-card');
-cards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-    });
-});
-
 function animate() {
     requestAnimationFrame(animate);
     mesh.rotation.y += 0.001;
@@ -128,9 +115,60 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    // Resize Menu 3D as well
+    menuCamera.aspect = menuContainer.clientWidth / menuContainer.clientHeight;
+    menuCamera.updateProjectionMatrix();
+    menuRenderer.setSize(menuContainer.clientWidth, menuContainer.clientHeight);
 });
 
-// === 6. UI LOGIC ===
+// === 6. THREE.JS MENU WIREFRAME ===
+const menuContainer = document.getElementById('menu-3d-container');
+const menuScene = new THREE.Scene();
+const menuCamera = new THREE.PerspectiveCamera(75, menuContainer.clientWidth / menuContainer.clientHeight, 0.1, 1000);
+const menuRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+menuRenderer.setSize(menuContainer.clientWidth, menuContainer.clientHeight);
+menuContainer.appendChild(menuRenderer.domElement);
+
+// Create a wireframe torus knot
+const menuGeometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+const menuMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.8 });
+const menuMesh = new THREE.Mesh(menuGeometry, menuMaterial);
+menuScene.add(menuMesh);
+menuCamera.position.z = 4;
+
+let targetRotationX = 0;
+let targetRotationY = 0;
+
+// Add interaction to menu links
+document.querySelectorAll('.m-link').forEach((link, index) => {
+    link.addEventListener('mouseenter', () => {
+        targetRotationX = (index + 1) * 0.5;
+        targetRotationY = (index + 1) * 0.5;
+    });
+});
+
+document.querySelector('.menu-links').addEventListener('mouseleave', () => {
+    targetRotationX = 0;
+    targetRotationY = 0;
+});
+
+function animateMenu() {
+    requestAnimationFrame(animateMenu);
+    
+    // Smooth rotation
+    menuMesh.rotation.x += (targetRotationX - menuMesh.rotation.x) * 0.05;
+    menuMesh.rotation.y += (targetRotationY - menuMesh.rotation.y) * 0.05;
+    
+    // Constant slow rotation
+    menuMesh.rotation.z += 0.002;
+
+    menuRenderer.render(menuScene, menuCamera);
+}
+animateMenu();
+
+
+// === 7. UI LOGIC ===
 function toggleMenu() {
     const menu = document.getElementById('menu-overlay');
     menu.classList.toggle('active');
@@ -175,7 +213,6 @@ document.querySelectorAll('.reveal-text, .work-item, .timeline-row').forEach(el 
     observer.observe(el);
 });
 
-// Magnetic Buttons
 const magnetics = document.querySelectorAll('.magnetic');
 magnetics.forEach(btn => {
     btn.addEventListener('mousemove', (e) => {
