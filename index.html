@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti | Systems Engineer</title>
+    <title>Avinash Sangisetti | AI Engineer</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -14,13 +14,20 @@
 </head>
 <body>
 
+    <div id="preloader">
+        <div class="loader-content">
+            <div class="loader-text">INITIALIZING CORE...</div>
+            <div class="loader-progress">0%</div>
+        </div>
+    </div>
+
     <div id="canvas-container"></div>
     <div class="grain-overlay"></div>
 
     <nav class="fixed-nav">
         <div class="nav-inner">
-            <div class="logo">AVINASH SANGISETTI<span class="reg">®</span></div>
-            <div class="menu-btn" id="menu-toggle">MENU</div>
+            <div class="logo magnetic">AVINASH S<span class="reg">®</span></div>
+            <div class="menu-btn magnetic" id="menu-toggle">MENU</div>
         </div>
     </nav>
 
@@ -32,7 +39,7 @@
             <a href="resume.pdf" target="_blank" class="m-link" onclick="toggleMenu()">04 / Resume</a>
             <a href="#" class="m-link" onclick="toggleMenu(); openModal()">05 / Contact</a>
         </div>
-        <div class="menu-close" onclick="toggleMenu()">CLOSE</div>
+        <div class="menu-close magnetic" onclick="toggleMenu()">CLOSE</div>
     </div>
 
     <main id="smooth-wrapper">
@@ -41,19 +48,19 @@
             <div class="hero-container">
                 <div class="hero-text">
                     <span class="label">AI ARCHITECT // BENGALURU</span>
-                    <h1 class="reveal-text">Engineering <br> The Abstract.</h1>
+                    <h1 class="scramble-text">Engineering <br> The Abstract.</h1>
                     <p class="reveal-text delay-1">
                         I build resilient digital infrastructure. Specializing in High-Performance Distributed Systems and Generative AI.
                     </p>
                     <div class="hero-cta reveal-text delay-2">
-                        <button class="btn-primary open-contact-btn">Initialize</button>
-                        <a href="resume.pdf" target="_blank" class="btn-text">Resume <i class="fas fa-arrow-right"></i></a>
+                        <button class="btn-primary open-contact-btn magnetic">Initialize</button>
+                        <a href="resume.pdf" target="_blank" class="btn-text magnetic">Resume <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 
                 <div class="hero-visual reveal-text delay-1">
                     <div class="glass-monolith">
-                        <img src="PFP.png" alt="Avinash" class="monolith-img">
+                        <img src="pfp.png" alt="Avinash" class="monolith-img">
                         <div class="monolith-shine"></div>
                         <div class="monolith-border"></div>
                     </div>
@@ -69,7 +76,8 @@
                 </div>
                 
                 <div class="timeline-list">
-                    <div class="timeline-row">
+                    <div class="timeline-row spotlight-card">
+                        <div class="spotlight-overlay"></div>
                         <div class="t-date">2023 — PRESENT</div>
                         <div class="t-role">
                             <h3>KS Institute of Technology</h3>
@@ -79,7 +87,8 @@
                             Specializing in Artificial Intelligence architectures and scalable system design.
                         </div>
                     </div>
-                    <div class="timeline-row">
+                    <div class="timeline-row spotlight-card">
+                        <div class="spotlight-overlay"></div>
                         <div class="t-date">2025 — PRESENT</div>
                         <div class="t-role">
                             <h3>Freelance Architect</h3>
@@ -101,11 +110,11 @@
                 </div>
 
                 <div class="work-grid">
-                    <div class="project-item">
-                        <div class="p-header">
+                    <div class="project-item spotlight-card">
+                        <div class="spotlight-overlay"></div> <div class="p-header">
                             <h3>Smart Lecture Assistant</h3>
                             <div class="p-links">
-                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#" class="magnetic"><i class="fab fa-github"></i></a>
                             </div>
                         </div>
                         <p class="p-desc">NLP engine leveraging LLMs and RAG pipelines to distill audio streams into semantic knowledge bases.</p>
@@ -114,11 +123,12 @@
                         </div>
                     </div>
 
-                    <div class="project-item">
+                    <div class="project-item spotlight-card">
+                        <div class="spotlight-overlay"></div>
                         <div class="p-header">
                             <h3>FluxSync Engine</h3>
                             <div class="p-links">
-                                <a href="#"><i class="fas fa-sitemap"></i></a>
+                                <a href="#" class="magnetic"><i class="fas fa-sitemap"></i></a>
                             </div>
                         </div>
                         <p class="p-desc">Distributed job scheduler designed for high-concurrency. Handles 10k+ jobs with custom Raft Consensus.</p>
@@ -127,11 +137,12 @@
                         </div>
                     </div>
 
-                    <div class="project-item">
+                    <div class="project-item spotlight-card">
+                        <div class="spotlight-overlay"></div>
                         <div class="p-header">
                             <h3>SGuardian</h3>
                             <div class="p-links">
-                                <a href="#"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="#" class="magnetic"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                         </div>
                         <p class="p-desc">Real-time edge computing for Android. Detects fall anomalies using local TensorFlow Lite inference.</p>
@@ -140,11 +151,12 @@
                         </div>
                     </div>
 
-                    <div class="project-item">
+                    <div class="project-item spotlight-card">
+                        <div class="spotlight-overlay"></div>
                         <div class="p-header">
                             <h3>LiveCode Collab</h3>
                             <div class="p-links">
-                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#" class="magnetic"><i class="fab fa-github"></i></a>
                             </div>
                         </div>
                         <p class="p-desc">Real-time code editor featuring Operational Transformation (OT) for conflict-free synchronization.</p>
@@ -169,9 +181,9 @@
                     <p>Avinash Sangisetti © 2025</p>
                 </div>
                 <div class="f-right">
-                    <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-                    <a href="https://github.com" target="_blank">GitHub</a>
-                    <a href="https://instagram.com/avinashsangisetti" target="_blank">Instagram</a>
+                    <a href="https://linkedin.com" target="_blank" class="magnetic">LinkedIn</a>
+                    <a href="https://github.com" target="_blank" class="magnetic">GitHub</a>
+                    <a href="https://instagram.com/avinashsangisetti" target="_blank" class="magnetic">Instagram</a>
                 </div>
             </div>
         </footer>
@@ -182,7 +194,7 @@
         <div class="modal-content">
             <div class="modal-top">
                 <h3>Start a Project</h3>
-                <button class="modal-close" onclick="closeModal()">✕</button>
+                <button class="modal-close magnetic" onclick="closeModal()">✕</button>
             </div>
             <div class="modal-body">
                 <a href="mailto:avinashsangisetti@gmail.com" class="c-link">
