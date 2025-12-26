@@ -20,26 +20,59 @@ body {
     font-family: var(--font-sans);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
 }
 
-/* === LAYER 1: TECHNICAL GRID === */
-.tech-grid {
+/* === LAYER 1: ANIMATED GRID BACKGROUND === */
+.tech-grid-animated {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100vh;
-    z-index: -1;
+    top: -50%; left: -50%; 
+    width: 200%; height: 200%;
+    z-index: -2;
     background-size: 50px 50px;
     background-image: 
         linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+    
+    /* The Constant Animation */
+    animation: gridMove 60s linear infinite;
+    transform: perspective(500px) rotateX(20deg); /* Slight 3D tilt */
+    opacity: 0.6;
+}
+
+@keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(50px); }
 }
 
 .vignette {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100vh;
     z-index: -1;
-    background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08), transparent 60%);
+    /* Darken edges, keep center slighty visible */
+    background: radial-gradient(circle at 50% 30%, transparent 0%, var(--bg) 80%);
+    pointer-events: none;
+}
+
+/* === LAYER 2: FLOATING PARTICLES === */
+.particles {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0;
+    bottom: -10px;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0; }
+    50% { opacity: 0.4; }
+    100% { transform: translateY(-100vh); opacity: 0; }
 }
 
 /* === NAV === */
@@ -47,7 +80,7 @@ nav {
     display: flex; justify-content: space-between; align-items: center;
     padding: 20px 5%; max-width: 1200px; margin: 0 auto;
     position: sticky; top: 0; z-index: 100;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -119,7 +152,7 @@ h1 {
 .avatar-container:hover { transform: rotate(0deg) scale(1.02); }
 .avatar-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%); }
 
-/* === BENTO GRID (The Pro Look) === */
+/* === BENTO GRID === */
 .cards-wrapper { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
 .section-header h2 { font-family: var(--font-display); font-size: 24px; margin-bottom: 40px; border-left: 3px solid var(--accent); padding-left: 15px; }
 
@@ -129,16 +162,15 @@ h1 {
     gap: 20px;
 }
 
-/* SPOTLIGHT CARD LOGIC */
 .spotlight-card {
     background-color: var(--card-bg);
     border-radius: 12px;
     position: relative;
     cursor: default;
+    height: 100%; /* Ensure full height */
 }
 .spotlight-card:hover::before { opacity: 1; }
 
-/* The Glow Effect */
 .spotlight-card::before {
     content: "";
     position: absolute;
@@ -150,16 +182,13 @@ h1 {
         rgba(255, 255, 255, 0.06), 
         transparent 40%
     );
-    opacity: 0;
-    transition: opacity 0.5s;
-    z-index: 2;
-    pointer-events: none;
+    opacity: 0; transition: opacity 0.5s;
+    z-index: 2; pointer-events: none;
 }
 
-/* The Border Effect */
 .card-border {
     position: absolute; inset: 0; border-radius: inherit;
-    padding: 1px; /* Border width */
+    padding: 1px;
     background: linear-gradient(to bottom right, rgba(255,255,255,0.1), rgba(255,255,255,0.0));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -168,40 +197,40 @@ h1 {
 }
 
 .card-content {
-    padding: 30px; height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+    padding: 30px; height: 100%; display: flex; flex-direction: column; justify-content: flex-start;
     position: relative; z-index: 3;
 }
 
 .large-span { grid-column: span 2; }
 
+/* Icon Colors */
 .icon-holder {
     width: 50px; height: 50px; background: rgba(255,255,255,0.05);
     display: flex; align-items: center; justify-content: center;
-    border-radius: 10px; font-size: 22px; color: var(--accent);
+    border-radius: 10px; font-size: 22px; color: var(--accent); /* Default Gold */
     margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);
 }
-.blue { color: #60a5fa; } .purple { color: #c084fc; }
+.purple { color: #c084fc; border-color: rgba(192, 132, 252, 0.2); }
+.blue { color: #60a5fa; border-color: rgba(96, 165, 250, 0.2); }
+.green { color: #4ade80; border-color: rgba(74, 222, 128, 0.2); }
+.white-icon { color: #fff; }
 
 .text-area h3 { font-size: 20px; margin-bottom: 10px; font-weight: 600; }
-.text-area p { color: var(--text-secondary); font-size: 14px; margin-bottom: 20px; }
+.text-area p { color: var(--text-secondary); font-size: 14px; margin-bottom: 20px; flex-grow: 1; }
 
-.stack-tags { display: flex; gap: 10px; }
+.stack-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
 .stack-tags span {
-    font-size: 12px; background: rgba(255,255,255,0.05);
+    font-size: 12px; background: rgba(255,255,255,0.05); color: #ccc;
     padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05);
 }
 
 /* === STACK SECTION === */
 .stack-section { padding: 0 5% 100px; max-width: 1200px; margin: 0 auto; }
-.stack-grid {
-    display: flex; flex-wrap: wrap; gap: 15px;
-}
+.stack-grid { display: flex; flex-wrap: wrap; gap: 15px; }
 .stack-item {
     display: flex; align-items: center; gap: 10px;
-    padding: 12px 20px;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 8px; color: var(--text-secondary);
+    padding: 12px 20px; background: var(--card-bg);
+    border: 1px solid var(--card-border); border-radius: 8px; color: var(--text-secondary);
 }
 .stack-item i { color: var(--text-primary); }
 
@@ -241,4 +270,5 @@ footer { border-top: 1px solid var(--card-border); padding: 40px 5%; text-align:
     .large-span { grid-column: span 1; }
     .nav-links { display: none; }
     .avatar-container { width: 220px; height: 280px; }
+    .footer-content { flex-direction: column; gap: 20px; }
 }
