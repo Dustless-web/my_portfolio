@@ -3,28 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash Sangisetti | Software Engineer</title>
+    <title>Avinash Sangisetti | Systems Engineer</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </head>
 <body>
 
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle"></div>
+
+    <div class="noise-overlay"></div>
     <div class="tech-grid-animated"></div>
-    
-    <div class="particles-container"></div>
-    
     <div class="vignette"></div>
 
     <header>
+        <div class="scroll-progress"></div>
         <nav class="glass-nav">
-            <div class="logo">AS<span class="dot">.</span></div>
+            <div class="logo magnetic">AS<span class="dot">.</span></div>
             <ul class="nav-links">
-                <li><a href="#work">Projects</a></li>
-                <li><a href="#stack">Stack</a></li>
-                <li><button class="btn-primary open-contact-btn">Contact Me</button></li>
+                <li><a href="#work" class="magnetic-link">Work</a></li>
+                <li><a href="#experience" class="magnetic-link">Journey</a></li>
+                <li><button class="btn-primary open-contact-btn magnetic-btn">Contact</button></li>
             </ul>
         </nav>
     </header>
@@ -32,139 +34,120 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <div class="profile-badge el-animate">
-                    <div class="status-dot"></div>
-                    <span>Available for Summer '25</span>
+                <div class="code-badge el-animate">
+                    <i class="fas fa-terminal"></i>
+                    <span>v2.5.0 // SYSTEM_READY</span>
                 </div>
-                <h1 class="el-animate">Engineering scalable<br><span class="gradient-text">intelligence.</span></h1>
+                <h1 class="el-animate title-split">
+                    Architecting <br>
+                    <span class="gradient-text">Digital Reality.</span>
+                </h1>
                 <p class="bio el-animate">
-                    I'm <strong>Avinash</strong>, a CS student at KSIT Bangalore. I architect high-performance systems bridging <span class="white">AI infrastructure</span> and <span class="white">native mobile experiences</span>.
+                    I'm <strong>Avinash</strong>. I don't just write code; I engineer <span class="white">resilient systems</span>. 
+                    Specializing in high-performance Distributed Systems, AI Infrastructure, and Native Android.
                 </p>
                 <div class="hero-actions el-animate">
-                    <button class="btn-primary open-contact-btn">Get in Touch</button>
-                    <a href="#work" class="btn-secondary">View Work</a>
+                    <button class="btn-primary open-contact-btn magnetic-btn">Initiate Uplink</button>
+                    <a href="#work" class="btn-text magnetic-link">View Documentation ↓</a>
                 </div>
             </div>
+            
             <div class="hero-visual el-animate">
-                <div class="avatar-container">
-                    <img src="PFP.jpeg" alt="Avinash" class="avatar-img">
-                    <div class="avatar-glow"></div>
+                <div class="avatar-wrapper tilt-element">
+                    <div class="avatar-frame">
+                        <img src="PFP.jpeg" alt="Avinash" class="avatar-img">
+                    </div>
+                    <div class="float-card c1"><i class="fab fa-python"></i></div>
+                    <div class="float-card c2"><i class="fas fa-database"></i></div>
                 </div>
             </div>
         </section>
 
-        <section id="work" class="cards-wrapper">
-            <div class="section-header">
-                <h2 class="el-animate">Selected Work</h2>
+        <section id="work" class="section-padding">
+            <div class="section-header el-animate">
+                <span class="mono-label">01. / SELECTED WORKS</span>
+                <h2>Engineered Solutions</h2>
             </div>
             
             <div class="bento-grid">
                 
-                <div class="card spotlight-card large-span project-card">
-                    <div class="card-border"></div>
-                    <div class="card-content">
-                        <div class="icon-holder">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="text-area">
+                <div class="card tilt-card large-span">
+                    <div class="card-inner">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-top">
+                                <div class="folder-icon"><i class="far fa-folder-open"></i></div>
+                                <div class="links">
+                                    <a href="#" class="magnetic-link"><i class="fab fa-github"></i></a>
+                                    <a href="#" class="magnetic-link"><i class="fas fa-external-link-alt"></i></a>
+                                </div>
+                            </div>
                             <h3>Smart Lecture Assistant</h3>
-                            <p>An NLP-powered engine that condenses hours of lecture audio into structured notes using OpenAI's whisper & completion APIs. Optimized context windows for long-form audio.</p>
-                            <div class="stack-tags">
-                                <span>Python</span>
-                                <span>FastAPI</span>
-                                <span>React</span>
-                                <span>Docker</span>
-                            </div>
+                            <p>An NLP-powered engine processing audio streams into structured knowledge bases. Implemented vector embeddings (Pinecone) for semantic search over lecture content.</p>
+                            <ul class="tech-list">
+                                <li>Python</li>
+                                <li>OpenAI Whisper</li>
+                                <li>React</li>
+                                <li>Docker</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
 
-                <div class="card spotlight-card project-card">
-                    <div class="card-border"></div>
-                    <div class="card-content">
-                        <div class="icon-holder purple">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                        <div class="text-area">
+                <div class="card tilt-card">
+                    <div class="card-inner">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-top">
+                                <div class="folder-icon"><i class="fas fa-network-wired"></i></div>
+                            </div>
                             <h3>FluxSync Engine</h3>
-                            <p>A distributed task scheduler capable of handling 10k+ concurrent jobs. Implemented custom load balancing algorithms.</p>
-                            <div class="stack-tags">
-                                <span>Go (Golang)</span>
-                                <span>gRPC</span>
-                                <span>Redis</span>
-                            </div>
+                            <p>Distributed job scheduler handling 10k+ concurrent tasks with custom Raft consensus implementation.</p>
+                            <ul class="tech-list">
+                                <li>Go</li>
+                                <li>gRPC</li>
+                                <li>Redis</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
 
-                <div class="card spotlight-card project-card">
-                    <div class="card-border"></div>
-                    <div class="card-content">
-                        <div class="icon-holder blue">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <div class="text-area">
+                <div class="card tilt-card">
+                    <div class="card-inner">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-top">
+                                <div class="folder-icon"><i class="fas fa-mobile-alt"></i></div>
+                            </div>
                             <h3>SGuardian</h3>
-                            <p>Native Android fall-detection system leveraging accelerometer sensor fusion and background services for elderly safety.</p>
-                            <div class="stack-tags">
-                                <span>Kotlin</span>
-                                <span>Jetpack Compose</span>
-                            </div>
+                            <p>Real-time accelerometer sensor fusion for elderly fall detection running as a foreground service.</p>
+                            <ul class="tech-list">
+                                <li>Kotlin</li>
+                                <li>Android SDK</li>
+                                <li>ML Kit</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-
-                <div class="card spotlight-card large-span project-card">
-                    <div class="card-border"></div>
-                    <div class="card-content">
-                        <div class="icon-holder green">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <div class="text-area">
+                
+                <div class="card tilt-card large-span">
+                    <div class="card-inner">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-top">
+                                <div class="folder-icon"><i class="fas fa-bolt"></i></div>
+                                <div class="links">
+                                    <a href="#" class="magnetic-link"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
                             <h3>LiveCode Collab</h3>
-                            <p>A real-time collaborative code editor supporting multiple users via WebSockets. Features Operational Transformation (OT) for conflict resolution and persistent sessions.</p>
-                            <div class="stack-tags">
-                                <span>Node.js</span>
-                                <span>Socket.io</span>
-                                <span>MongoDB</span>
-                                <span>AWS EC2</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card spotlight-card project-card">
-                    <div class="card-border"></div>
-                    <div class="card-content">
-                        <div class="icon-holder">
-                            <i class="fas fa-eye"></i>
-                        </div>
-                        <div class="text-area">
-                            <h3>Neural Vision</h3>
-                            <p>Traffic flow analysis system using YOLOv8. Tracks vehicle density in real-time video feeds.</p>
-                            <div class="stack-tags">
-                                <span>PyTorch</span>
-                                <span>OpenCV</span>
-                                <span>Python</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card spotlight-card project-card">
-                    <div class="card-border"></div>
-                    <div class="card-content">
-                        <div class="icon-holder white-icon">
-                            <i class="fas fa-code-branch"></i>
-                        </div>
-                        <div class="text-area">
-                            <h3>Portfolio V1</h3>
-                            <p>High-performance personal site built with semantic HTML5, GPU-accelerated CSS animations, and zero-JS dependencies for core layout.</p>
-                            <div class="stack-tags">
-                                <span>HTML5</span>
-                                <span>CSS3</span>
-                                <span>Git</span>
-                            </div>
+                            <p>Operational Transformation (OT) based code editor. Supports conflict-free concurrent editing via WebSocket clusters on AWS EC2.</p>
+                            <ul class="tech-list">
+                                <li>Node.js</li>
+                                <li>Socket.io</li>
+                                <li>MongoDB</li>
+                                <li>AWS</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -172,169 +155,222 @@
             </div>
         </section>
 
-        <section id="stack" class="stack-section">
-            <div class="section-header">
-                <h2 class="el-animate">Technical Arsenal</h2>
+        <section id="experience" class="section-padding">
+            <div class="section-header el-animate">
+                <span class="mono-label">02. / THE JOURNEY</span>
+                <h2>Experience Log</h2>
             </div>
-            <div class="stack-grid">
-                <div class="stack-item el-animate"><i class="fab fa-python"></i><span>Python</span></div>
-                <div class="stack-item el-animate"><i class="fab fa-java"></i><span>Java</span></div>
-                <div class="stack-item el-animate"><i class="fab fa-android"></i><span>Android</span></div>
-                <div class="stack-item el-animate"><i class="fas fa-brain"></i><span>TensorFlow</span></div>
-                <div class="stack-item el-animate"><i class="fas fa-terminal"></i><span>Prompt Eng.</span></div>
-                <div class="stack-item el-animate"><i class="fab fa-git-alt"></i><span>Git</span></div>
-                <div class="stack-item el-animate"><i class="fab fa-docker"></i><span>Docker</span></div>
-                <div class="stack-item el-animate"><i class="fas fa-database"></i><span>SQL/NoSQL</span></div>
+
+            <div class="timeline">
+                <div class="timeline-item el-animate">
+                    <div class="tl-marker"></div>
+                    <div class="tl-content tilt-card">
+                        <span class="tl-date mono-label">2021 - Present</span>
+                        <h3>KS School of Engineering (KSIT)</h3>
+                        <span class="tl-role">Bachelor of Engineering in CSE</span>
+                        <p>Specializing in Artificial Intelligence and System Architecture. Leading the Student Developer Club.</p>
+                    </div>
+                </div>
+                <div class="timeline-item el-animate">
+                    <div class="tl-marker"></div>
+                    <div class="tl-content tilt-card">
+                        <span class="tl-date mono-label">2024</span>
+                        <h3>Freelance Developer</h3>
+                        <span class="tl-role">Full Stack & Mobile</span>
+                        <p>Delivered 3+ deployed applications for local businesses, reducing manual data entry by 40% via custom automation tools.</p>
+                    </div>
+                </div>
             </div>
         </section>
+
+        <section id="stack" class="section-padding">
+            <div class="marquee-container">
+                <div class="marquee-track">
+                    <div class="stack-icon"><i class="fab fa-python"></i> Python</div>
+                    <div class="stack-icon"><i class="fab fa-java"></i> Java</div>
+                    <div class="stack-icon"><i class="fab fa-js"></i> TypeScript</div>
+                    <div class="stack-icon"><i class="fab fa-docker"></i> Docker</div>
+                    <div class="stack-icon"><i class="fab fa-aws"></i> AWS</div>
+                    <div class="stack-icon"><i class="fab fa-android"></i> Android</div>
+                    <div class="stack-icon"><i class="fas fa-database"></i> SQL</div>
+                    <div class="stack-icon"><i class="fab fa-git-alt"></i> Git</div>
+                    <div class="stack-icon"><i class="fab fa-python"></i> Python</div>
+                    <div class="stack-icon"><i class="fab fa-java"></i> Java</div>
+                    <div class="stack-icon"><i class="fab fa-js"></i> TypeScript</div>
+                    <div class="stack-icon"><i class="fab fa-docker"></i> Docker</div>
+                    <div class="stack-icon"><i class="fab fa-aws"></i> AWS</div>
+                    <div class="stack-icon"><i class="fab fa-android"></i> Android</div>
+                    <div class="stack-icon"><i class="fas fa-database"></i> SQL</div>
+                    <div class="stack-icon"><i class="fab fa-git-alt"></i> Git</div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
-        <div class="footer-content">
-            <p>&copy; 2025 Avinash Sangisetti</p>
-            <div class="social-links">
-                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Avinash.</h4>
+                <p>Building for the future.</p>
             </div>
+            <div class="footer-col">
+                <h4>Socials</h4>
+                <a href="#" class="magnetic-link">LinkedIn</a>
+                <a href="#" class="magnetic-link">GitHub</a>
+                <a href="#" class="magnetic-link">Instagram</a>
+            </div>
+            <div class="footer-col">
+                <h4>Status</h4>
+                <span class="status-badge"><span class="pulse"></span> Open to Work</span>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            &copy; 2025 Avinash Sangisetti. All Systems Normal.
         </div>
     </footer>
 
     <div id="contact-modal" class="modal">
-        <div class="modal-box">
-            <button class="close-btn">&times;</button>
-            <h3>Let's Collaborate</h3>
-            <p>I'm open to full-stack and AI engineering roles.</p>
+        <div class="modal-box tilt-card">
+            <button class="close-btn magnetic-btn">&times;</button>
+            <h3>Initialize Connection</h3>
+            <p>Ready to deploy? Let's talk.</p>
             <div class="contact-list">
                 <a href="tel:+917795150609" class="c-item">
-                    <i class="fas fa-phone"></i>
                     <span>+91 7795150609</span>
+                    <i class="fas fa-arrow-right"></i>
                 </a>
                 <a href="mailto:avinashsangisetti@gmail.com" class="c-item">
-                    <i class="fas fa-envelope"></i>
                     <span>avinashsangisetti@gmail.com</span>
+                    <i class="fas fa-arrow-right"></i>
                 </a>
                 <a href="https://instagram.com/avinashsangisetti" target="_blank" class="c-item">
-                    <i class="fab fa-instagram"></i>
                     <span>@avinashsangisetti</span>
+                    <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. GENERATE PARTICLES DYNAMICALLY
-        const particleContainer = document.querySelector('.particles-container');
-        for (let i = 0; i < 50; i++) {
-            const div = document.createElement('div');
-            div.classList.add('anime-particle');
-            particleContainer.appendChild(div);
-        }
+        // 1. CUSTOM CURSOR & MAGNETIC EFFECT
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorCircle = document.querySelector('.cursor-circle');
+        const magneticElements = document.querySelectorAll('.magnetic-btn, .magnetic-link, .logo');
 
-        // 2. ANIMATE PARTICLES (The "Noticeable" Running Animation)
-        // This moves particles in random directions indefinitely
-        anime({
-            targets: '.anime-particle',
-            translateX: function() { return anime.random(-500, 500); },
-            translateY: function() { return anime.random(-500, 500); },
-            scale: function() { return anime.random(0.5, 2); },
-            opacity: function() { return anime.random(0.3, 0.8); },
-            easing: 'easeInOutQuad',
-            duration: function() { return anime.random(3000, 8000); },
-            delay: function() { return anime.random(0, 1000); },
-            direction: 'alternate',
-            loop: true
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows instantly
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Circle follows with delay (lag)
+            cursorCircle.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
         });
 
-        // 3. ANIMATE THE GRID (Breathing Effect)
-        anime({
-            targets: '.tech-grid-animated',
-            backgroundPosition: ['0% 0%', '100% 100%'],
-            scale: [1, 1.1],
-            opacity: [0.3, 0.6],
-            easing: 'linear',
-            duration: 20000,
-            direction: 'alternate',
-            loop: true
+        // Magnetic Pull Logic
+        magneticElements.forEach(elem => {
+            elem.addEventListener('mousemove', (e) => {
+                const rect = elem.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                elem.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                cursorCircle.style.transform = `scale(1.5)`;
+                cursorCircle.style.borderColor = "var(--accent)";
+            });
+
+            elem.addEventListener('mouseleave', () => {
+                elem.style.transform = 'translate(0, 0)';
+                cursorCircle.style.transform = `scale(1)`;
+                cursorCircle.style.borderColor = "var(--text-secondary)";
+            });
         });
 
-        // 4. STAGGERED ENTRANCE ANIMATION (Hero Section)
-        var tl = anime.timeline({
-            easing: 'easeOutExpo',
-            duration: 1000
+        // 2. 3D TILT EFFECT FOR CARDS
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                // Move the internal content slightly for depth (Parallax)
+                const content = card.querySelector('.card-content, .card-inner');
+                if(content) content.style.transform = `translateZ(50px)`;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                
+                // Glow effect following mouse
+                const glow = card.querySelector('.card-glow');
+                if(glow) {
+                    glow.style.left = `${x}px`;
+                    glow.style.top = `${y}px`;
+                    glow.style.opacity = '1';
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                const glow = card.querySelector('.card-glow');
+                if(glow) glow.style.opacity = '0';
+                const content = card.querySelector('.card-content, .card-inner');
+                if(content) content.style.transform = `translateZ(0px)`;
+            });
         });
 
-        tl.add({
+        // 3. ANIME.JS STAGGERED ENTRANCE
+        anime.timeline({ easing: 'easeOutExpo' })
+        .add({
             targets: '.glass-nav',
             translateY: [-50, 0],
             opacity: [0, 1],
-            delay: 200
+            duration: 1200
         })
         .add({
             targets: '.el-animate',
-            translateY: [20, 0],
+            translateY: [30, 0],
             opacity: [0, 1],
-            delay: anime.stagger(100), // Staggers each element by 100ms
-        }, '-=500');
+            delay: anime.stagger(150), // 150ms delay between items
+        }, '-=800');
 
-        // 5. MOUSE SPOTLIGHT (Vanilla JS for performance)
-        document.getElementById("work").onmousemove = e => {
-            for(const card of document.getElementsByClassName("spotlight-card")) {
-                const rect = card.getBoundingClientRect(),
-                      x = e.clientX - rect.left,
-                      y = e.clientY - rect.top;
-
-                card.style.setProperty("--mouse-x", `${x}px`);
-                card.style.setProperty("--mouse-y", `${y}px`);
-            };
-        }
-
-        // 6. SCROLL REVEAL FOR PROJECTS
-        // Simple intersection observer to trigger anime.js when projects scroll into view
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    anime({
-                        targets: entry.target,
-                        translateY: [50, 0],
-                        opacity: [0, 1],
-                        easing: 'easeOutCubic',
-                        duration: 800
-                    });
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.style.opacity = 0; // Hide initially
-            observer.observe(card);
+        // 4. SCROLL PROGRESS BAR
+        window.addEventListener('scroll', () => {
+            const scrollTotal = document.documentElement.scrollTop;
+            const heightTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTotal / heightTotal) * 100;
+            document.querySelector('.scroll-progress').style.width = scrollPercent + "%";
         });
 
-        // 7. MODAL LOGIC
+        // 5. MODAL LOGIC
         const modal = document.getElementById("contact-modal");
-        const btns = document.querySelectorAll(".open-contact-btn");
-        const close = document.querySelector(".close-btn");
+        const openBtns = document.querySelectorAll(".open-contact-btn");
+        const closeBtn = document.querySelector(".close-btn");
 
-        btns.forEach(btn => btn.onclick = () => {
+        openBtns.forEach(btn => btn.onclick = () => {
             modal.classList.add("active");
             document.body.style.overflow = "hidden";
-            // Animate modal content
-            anime({
-                targets: '.modal-box',
-                scale: [0.8, 1],
-                opacity: [0, 1],
-                duration: 300,
-                easing: 'easeOutQuad'
-            });
         });
-
+        
         const closeModal = () => {
             modal.classList.remove("active");
             document.body.style.overflow = "auto";
         };
-
-        close.onclick = closeModal;
+        closeBtn.onclick = closeModal;
         window.onclick = (e) => { if(e.target == modal) closeModal(); }
+
     </script>
 </body>
 </html>
