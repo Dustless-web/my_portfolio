@@ -109,9 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
         link: 'https://github.com/youruser/fluxsync-engine'
     },
     'proj-3': {
-        title: 'SGuardian',
+        title: 'Fall Detection Application',
         role: 'Mobile Engineer',
-        stack: 'Kotlin, TensorFlow Lite',
+        stack: 'Kotlin, Tensor Lite',
         desc: 'Edge computing fall detection system running local inference on Android devices.',
         link: 'https://github.com/Dustless-web/SGuardian' // ← put your real repo URL here
     },
