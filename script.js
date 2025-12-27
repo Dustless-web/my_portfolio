@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMenu3D();
 });
 
-// --- THREE.JS LOGIC ---
+// --- THREE.JS LOGIC (UPDATED WITH CIRCULAR PARTICLES) ---
 function initThreeJS() {
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
@@ -167,6 +167,21 @@ function initThreeJS() {
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
+    // --- Helper to create circle texture on the fly ---
+    function createCircleTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 32;
+        canvas.height = 32;
+        const ctx = canvas.getContext('2d');
+        
+        ctx.beginPath();
+        ctx.arc(16, 16, 16, 0, 2 * Math.PI); 
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        
+        return new THREE.CanvasTexture(canvas);
+    }
+
     const geometry = new THREE.BufferGeometry();
     const count = 1200;
     const posArray = new Float32Array(count * 3);
@@ -175,7 +190,18 @@ function initThreeJS() {
         if (i % 3 === 1) posArray[i] = (Math.random() - 0.5) * 6; 
     }
     geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const material = new THREE.PointsMaterial({ size: 0.015, color: 0xffffff, transparent: true, opacity: 0.4 });
+
+    // --- Material updated to use the circle texture ---
+    const material = new THREE.PointsMaterial({ 
+        size: 0.02, 
+        color: 0xffffff, 
+        transparent: true, 
+        opacity: 0.6,
+        map: createCircleTexture(), // Uses the helper function above
+        alphaTest: 0.5,             // Prevents black box artifacts
+        depthWrite: false           // Improves blending
+    });
+
     const mesh = new THREE.Points(geometry, material);
     scene.add(mesh);
     camera.position.z = 5;
