@@ -94,11 +94,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === 5. PROJECT DATA & OVERLAYS ===
     const projectData = {
-        'proj-1': { title: 'Smart Lecture Assistant', role: 'AI Engineer', stack: 'Python, OpenAI, Pinecone', desc: 'Autonomous NLP engine for university lectures. Uses Whisper for transcription and RAG for semantic search.', link: '#' },
-        'proj-2': { title: 'FluxSync Engine', role: 'Systems Architect', stack: 'Go, gRPC, Kubernetes', desc: 'Distributed job scheduler handling 10k+ concurrent tasks with custom Raft Consensus.', link: '#' },
-        'proj-3': { title: 'SGuardian', role: 'Mobile Engineer', stack: 'Kotlin, TensorFlow Lite', desc: 'Edge computing fall detection system running local inference on Android devices.', link: '#' },
-        'proj-4': { title: 'LiveCode Collab', role: 'Full Stack', stack: 'Node.js, WebSockets', desc: 'Real-time collaborative code editor with Operational Transformation.', link: '#' }
-    };
+    'proj-1': {
+        title: 'Smart Lecture Assistant',
+        role: 'AI Engineer',
+        stack: 'Python, OpenAI, Pinecone',
+        desc: 'Autonomous NLP engine for university lectures. Uses Whisper for transcription and RAG for semantic search.',
+        link: 'https://github.com/youruser/smart-lecture-assistant'
+    },
+    'proj-2': {
+        title: 'FluxSync Engine',
+        role: 'Systems Architect',
+        stack: 'Go, gRPC, Kubernetes',
+        desc: 'Distributed job scheduler handling 10k+ concurrent tasks with custom Raft Consensus.',
+        link: 'https://github.com/youruser/fluxsync-engine'
+    },
+    'proj-3': {
+        title: 'SGuardian',
+        role: 'Mobile Engineer',
+        stack: 'Kotlin, TensorFlow Lite',
+        desc: 'Edge computing fall detection system running local inference on Android devices.',
+        link: 'https://github.com/Dustless-web/SGuardian' // ← put your real repo URL here
+    },
+    'proj-4': {
+        title: 'LiveCode Collab',
+        role: 'Full Stack',
+        stack: 'Node.js, WebSockets',
+        desc: 'Real-time collaborative code editor with Operational Transformation.',
+        link: 'https://github.com/youruser/livecode-collab'
+    }
+};
+
 
     const projectOverlay = document.getElementById('project-overlay');
     const closeProjectBtn = document.getElementById('close-project-btn');
