@@ -222,7 +222,7 @@ function initThreeJS() {
         color: 0xffffff, 
         transparent: true, 
         opacity: 0.6,
-        map: createCircleTexture(), // Uses the helper function above
+        map: createCircleTexture(), // Uses the helper function abovee
         alphaTest: 0.5,             // Prevents black box artifacts
         depthWrite: false           // Improves blending
     });
