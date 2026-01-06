@@ -116,10 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
         link: 'https://github.com/Dustless-web/SGuardian' // ← put your real repo URL here
     },
     'proj-4': {
-        title: 'LiveCode Collab',
+        title: 'eather Wise',
         role: 'Full Stack',
         stack: 'Node.js, WebSockets',
-        desc: 'Real-time collaborative code editor with Operational Transformation.',
+        desc: 'Real-time weather tracker and lifestyle advisor.',
         link: 'https://github.com/Dustless-web/WeatherWise'
     }
 };
