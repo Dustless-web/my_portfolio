@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         role: 'Full Stack',
         stack: 'Node.js, WebSockets',
         desc: 'Real-time collaborative code editor with Operational Transformation.',
-        link: 'https://github.com/youruser/livecode-collab'
+        link: 'https://github.com/Dustless-web/WeatherWise'
     }
 };
 
