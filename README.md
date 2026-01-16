@@ -1,3 +1,3 @@
 # my_portfolio
-Portfolio website prototype
+Portfolio website prototype (minimal, interactive).
 ..
