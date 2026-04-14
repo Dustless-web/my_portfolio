@@ -2,7 +2,7 @@
 
 > Personal portfolio website for **Avinash Sangisetti**, AI Engineer & Full Stack Developer based in Bengaluru, India.
 
-**Live →** `https://dustless-web.github.io/my_portfolio`
+**Live →** `https://avinashs.vercel.app`
 
 ---
 
