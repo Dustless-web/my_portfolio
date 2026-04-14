@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 </head>
 <body>
@@ -32,12 +32,13 @@
 
     <nav class="fixed-nav">
         <div class="nav-inner">
-            <div class="logo magnetic">AVINASH</div>
+            <a href="#hero" class="logo magnetic" id="logo-link">AVINASH</a>
             <div class="menu-btn magnetic" id="menu-toggle">MENU</div>
         </div>
     </nav>
 
     <div class="menu-overlay" id="menu-overlay">
+        <button class="menu-x-btn magnetic" id="menu-close-x" aria-label="Close menu">✕</button>
         <div class="menu-content-wrapper">
             <div id="menu-3d-container"></div>
             <div class="menu-links-container">
@@ -228,7 +229,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
 
