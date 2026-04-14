@@ -213,28 +213,76 @@ footer { padding: 100px 50px 50px; background: #080808; margin-top: 100px; }
 
 /* === MOBILE OPTIMIZATION === */
 @media (max-width: 768px) {
-    .fixed-nav { padding: 20px; backdrop-filter: blur(10px); background: rgba(5, 5, 5, 0.85); }
-    .hero-section { padding: 120px 20px 60px 20px; min-height: auto; display: block; }
-    .hero-container { display: flex; flex-direction: column-reverse; gap: 40px; text-align: center; align-items: center; }
-    .hero-text { margin-top: 0; width: 100%; }
-    .hero-visual { display: flex; justify-content: center; width: 100%; margin-bottom: 10px; }
-    .glitch-wrapper { width: 260px; height: 340px; }
-    h1 { font-size: 2.8rem; line-height: 1.1; margin-bottom: 20px; }
-    p { font-size: 15px; margin-bottom: 30px; }
-    .hero-cta { justify-content: center; flex-wrap: wrap; }
-    .btn-primary { padding: 14px 28px; font-size: 11px; }
-    .section-padding { padding: 80px 20px; }
-    .work-grid, .timeline-row, .f-bottom, .overlay-meta { grid-template-columns: 1fr; }
-    .timeline-row { gap: 15px; text-align: left; padding: 30px 20px; }
-    .f-top h2 { font-size: 36px; }
-    .overlay-content h2 { font-size: 32px; }
-    .menu-content-wrapper { flex-direction: column-reverse; }
-    #menu-3d-container { width: 100%; height: 30vh; }
+
+    /* --- Nav --- */
+    .fixed-nav { padding: 18px 20px; backdrop-filter: blur(12px); background: rgba(5,5,5,0.85); }
+
+    /* --- Hero --- */
+    .hero-section { padding: 110px 20px 60px; min-height: auto; }
+    .hero-container { grid-template-columns: 1fr; flex-direction: column-reverse; text-align: center; gap: 32px; }
+    .hero-content { max-width: 100%; }
+    .hero-meta { justify-content: center; flex-wrap: wrap; gap: 10px; }
+    h1 { font-size: clamp(2.2rem, 9vw, 3rem); letter-spacing: -1px; margin-bottom: 20px; }
+    p { font-size: 15px; margin: 0 auto 28px; }
+    .hero-cta { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .btn-text { margin-left: 0; }
+    .hero-visual { justify-content: center; }
+    .glitch-wrapper { width: 220px; height: 290px; }
+
+    /* --- Sections --- */
+    .section-padding { padding: 70px 20px; }
+    h2 { font-size: 32px; margin-bottom: 40px; }
+
+    /* --- Timeline --- */
+    .timeline-row { grid-template-columns: 1fr; gap: 10px; padding: 24px 20px; text-align: left; }
+    .t-date { font-size: 11px; }
+
+    /* --- Work grid --- */
+    .work-grid { grid-template-columns: 1fr; gap: 16px; }
+    .project-item { padding: 28px 20px; }
+    .p-header h3 { font-size: 15px; }
+    .p-tags span { font-size: 9px; padding: 4px 10px; }
+
+    /* --- Footer --- */
+    footer { padding: 60px 20px 40px; margin-top: 60px; }
+    .f-top { gap: 20px; }
+    .f-top h2 { font-size: 28px; }
+    .f-bottom { grid-template-columns: 1fr; gap: 30px; padding-top: 30px; }
+
+    /* --- Marquee --- */
+    .marquee-inner span { font-size: 7vw; }
+
+    /* --- Menu overlay --- */
+    .menu-x-btn { top: 20px; right: 20px; width: 36px; height: 36px; font-size: 14px; }
+    .menu-content-wrapper { flex-direction: column-reverse; padding: 0 20px; gap: 20px; }
+    #menu-3d-container { width: 100%; height: 25vh; }
     .menu-links-container { width: 100%; justify-content: center; }
-    .menu-links { text-align: center; }
-    .m-link { font-size: 32px; }
-    
+    .menu-links { text-align: center; gap: 12px; }
+    .m-link { font-size: 28px; }
+    .menu-footer { bottom: 24px; padding: 0 20px; }
+
+    /* --- Project overlay --- */
+    .project-overlay { padding: 24px 20px; }
+    .close-overlay { top: 20px; right: 20px; font-size: 11px; }
+    .overlay-content { margin-top: 60px; }
+    .overlay-content h2 { font-size: 26px; margin-bottom: 30px; }
+    .overlay-meta { grid-template-columns: 1fr; padding: 20px 0; gap: 16px; margin-bottom: 30px; }
+    .overlay-body { font-size: 16px; margin-bottom: 30px; }
+
+    /* --- Contact modal --- */
+    .modal-content { width: 95%; }
+    .c-link { font-size: 15px; flex-direction: column; gap: 4px; padding: 18px 0; }
+    .c-link .val { color: var(--text-muted); font-size: 13px; }
+
+    /* --- Hide custom cursor on touch --- */
     #cursor { display: none; }
     * { cursor: auto !important; }
 }
 
+/* Slightly tighten up mid-range tablets too */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .hero-container { gap: 20px; }
+    .glitch-wrapper { width: 280px; height: 380px; }
+    h1 { font-size: clamp(3rem, 5vw, 5rem); }
+    .m-link { font-size: 44px; }
+}
